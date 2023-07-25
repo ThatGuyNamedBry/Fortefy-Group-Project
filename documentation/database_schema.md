@@ -15,7 +15,7 @@
 | albums      | albums    | user                  |
 | songs       | songs     | user                  |
 | likes       | likes     | user                  |
-| playlists   | playlist  | user                  |   
+| playlists   | playlist  | user                  |
 
 
 ## `albums`
@@ -59,7 +59,6 @@
 ## `likes`
 | column name | data type | details               |
 |-------------|-----------|-----------------------|
-| id          | integer   | not null, primary key |
 | songId      | integer   | not null, foreign key |
 | userId      | integer   | not null, foreign key |
 
