@@ -16,5 +16,13 @@ class PlaylistSong(db.Model):
     createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
     updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
-    song = db.relationship('Song', back_populates='playlist_songs')
+    song= db.relationship('Song', back_populates='playlist_songs')
     playlist = db.relationship('Playlist', back_populates='playlist_songs')
+
+    def to_dict(self):
+        return {
+         'id': self.id,
+         'song_id': self.song_id,
+         'playlist_id': self.playlist_id,
+         'song': self.song.to_dict(),
+     }
