@@ -10,6 +10,7 @@ class PlaylistSong(db.Model):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
+    id = db.Column(db.Integer, primary_key=True)
     songId = db.Column(db.Integer, db.ForeignKey('songs.id'), nullable=False)
     playlistId = db.Column(db.Integer, db.ForeignKey('playlists.id'), nullable=False)
     createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
