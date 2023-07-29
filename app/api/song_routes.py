@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from app.models import Song
+from app.models import Song, Like
 
 # NEED to add prefix line to app/init.py
 song_routes = Blueprint('song', __name__)
@@ -30,3 +30,17 @@ def get_user_songs():
     user_songs = Song.query.filter(Song.user_id == current_user.id)
     songs_dict = [song.to_dict() for song in user_songs]
     return jsonify(songs_dict)
+
+# @song_routes.route('/<int:id>/add-like', methods=['POST'])
+# @login_required
+# def add_song_like(id):
+#     """
+#     Adds a like to the selected song and return the like in a dictionary
+#     """
+#     song = Song.query.get(id).to_dict()
+#     index = song.likes
+#     print(song)
+
+    # is_liked = Like.query.filter(Like.user_id == current_user.id)
+    # print(is_liked)
+    # return "hi"
