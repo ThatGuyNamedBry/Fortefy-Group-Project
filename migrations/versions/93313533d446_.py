@@ -31,6 +31,10 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+
     op.create_table('albums',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=255), nullable=False),
@@ -45,6 +49,10 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE albums SET SCHEMA {SCHEMA};")
+
     op.create_table('playlists',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -54,6 +62,10 @@ def upgrade():
     sa.ForeignKeyConstraint([add_prefix_for_prod('user_id')], [add_prefix_for_prod('users.id')], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE playlists SET SCHEMA {SCHEMA};")
+
     op.create_table('songs',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=255), nullable=False),
@@ -66,6 +78,10 @@ def upgrade():
     sa.ForeignKeyConstraint([add_prefix_for_prod('album_id')], [add_prefix_for_prod('albums.id')], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE songs SET SCHEMA {SCHEMA};")
+
     op.create_table('likes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('song_id', sa.Integer(), nullable=False),
@@ -74,6 +90,10 @@ def upgrade():
     sa.ForeignKeyConstraint([add_prefix_for_prod('user_id')], [add_prefix_for_prod('users.id')], ),
     sa.PrimaryKeyConstraint('id')
     )
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE likes SET SCHEMA {SCHEMA};")
+
     op.create_table('playlist_songs',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('song_id', sa.Integer(), nullable=False),
@@ -86,11 +106,6 @@ def upgrade():
     )
 
     if environment == "production":
-        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
-        op.execute(f"ALTER TABLE albums SET SCHEMA {SCHEMA};")
-        op.execute(f"ALTER TABLE playlists SET SCHEMA {SCHEMA};")
-        op.execute(f"ALTER TABLE songs SET SCHEMA {SCHEMA};")
-        op.execute(f"ALTER TABLE likes SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE playlist_songs SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
