@@ -12,6 +12,7 @@ import os
 environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
+from app.models.db import add_prefix_for_prod, environment, SCHEMA
 # revision identifiers, used by Alembic.
 revision = '93313533d446'
 down_revision = None
@@ -40,7 +41,7 @@ def upgrade():
     sa.Column('genre', sa.String(length=50), nullable=False),
     sa.Column('createdAt', sa.DateTime(), nullable=False),
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint([add_prefix_for_prod('user_id')], [add_prefix_for_prod('users.id')], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
@@ -50,7 +51,7 @@ def upgrade():
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('art', sa.String(), nullable=True),
     sa.Column('description', sa.String(), nullable=True),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint([add_prefix_for_prod('user_id')], [add_prefix_for_prod('users.id')], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('songs',
@@ -61,16 +62,16 @@ def upgrade():
     sa.Column('duration', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['album_id'], ['albums.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint([add_prefix_for_prod('user_id')], [add_prefix_for_prod('users.id')], ),
+    sa.ForeignKeyConstraint([add_prefix_for_prod('album_id')], [add_prefix_for_prod('albums.id')], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('likes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('song_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['song_id'], ['songs.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint([add_prefix_for_prod('song_id')], [add_prefix_for_prod('songs.id')], ),
+    sa.ForeignKeyConstraint([add_prefix_for_prod('user_id')], [add_prefix_for_prod('users.id')], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('playlist_songs',
@@ -79,8 +80,8 @@ def upgrade():
     sa.Column('playlist_id', sa.Integer(), nullable=False),
     sa.Column('createdAt', sa.DateTime(), nullable=False),
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
-    sa.ForeignKeyConstraint(['playlist_id'], ['playlists.id'], ),
-    sa.ForeignKeyConstraint(['song_id'], ['songs.id'], ),
+    sa.ForeignKeyConstraint([add_prefix_for_prod('playlist_id')], [add_prefix_for_prod('playlists.id')], ),
+    sa.ForeignKeyConstraint([add_prefix_for_prod('song_id')], [add_prefix_for_prod('songs.id')], ),
     sa.PrimaryKeyConstraint('id')
     )
 
