@@ -1,4 +1,4 @@
-from app.models import db, User, environment, SCHEMA, Playlist
+from app.models import db, environment, SCHEMA, Playlist
 from sqlalchemy.sql import text
 
 def seed_playlists():
