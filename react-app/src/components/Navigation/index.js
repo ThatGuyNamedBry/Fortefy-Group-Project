@@ -8,9 +8,12 @@ function Navigation({ isLoaded }){
 	const sessionUser = useSelector(state => state.session.user);
 
 	return (
-		<ul>
+		<ul id ='NavigationContainer'>
 			<li>
 				<NavLink exact to="/">Home</NavLink>
+			</li>
+			<li>
+				<h1> Welcome to Fortefy!</h1>
 			</li>
 			{isLoaded && (
 				<li>
