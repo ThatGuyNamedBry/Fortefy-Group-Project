@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from app.models import Playlist
 
-# NEED to add prefix line to app/init.py
 playlist_routes = Blueprint('playlists', __name__)
 
 @playlist_routes.route('')
