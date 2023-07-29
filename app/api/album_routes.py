@@ -20,13 +20,11 @@ def get_album_by_id(id):
     return jsonify(album.to_dict())
 
 @album_routes.route('/current')
+@login_required
 def get_user_albums():
     """
     Query for all albums created by the current user and return them in a list of album dictionaries
     """
-    if current_user.is_authenticated:
-        user_albums = Album.query.filter(Album.user_id == current_user.id)
-        albums_dict = [album.to_dict() for album in user_albums]
-        return jsonify(albums_dict)
-
-    return {'errors': ['User is not logged in']}
+    user_albums = Album.query.filter(Album.user_id == current_user.id)
+    albums_dict = [album.to_dict() for album in user_albums]
+    return jsonify(albums_dict)
