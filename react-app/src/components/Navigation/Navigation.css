@@ -1,7 +1,31 @@
 .profile-dropdown {
   position: absolute;
+  top: 45px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  align-items: center;
+  padding: 5px 5px;
+}
+
+.profile-dropdown li button {
+  align-items: center;
+  padding:2px 5px;
+  margin-bottom: 3px;
+  width: 69px
 }
 
 .hidden {
   display: none;
+}
+
+#NavigationContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#NavigationContainer li {
+  list-style-type: none;
 }
