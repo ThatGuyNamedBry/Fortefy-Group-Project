@@ -30,5 +30,5 @@ class Song(db.Model):
             'album_id': self.album_id,
             'duration': self.duration,
             'user': self.user.to_dict(),
-            'likes': self.likes.to_dict(),
+            'likes': [like.to_dict() for like in self.likes],
         }
