@@ -159,7 +159,7 @@ const initialState = {
   const albumReducer = (state = initialState, action) => {
     switch (action.type) {
       case LOAD_ALBUMS:
-        console.log(action.payload);
+        // console.log(action.payload);
         const allAlbumsObject = {};
         action.payload.forEach((album) => {
           allAlbumsObject[album.id] = album;

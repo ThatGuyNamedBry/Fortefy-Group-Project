@@ -5,27 +5,34 @@
 }
 
 .your-library-container {
-    width: 30%;
+    width: 25%;
 }
 
 .discover-music-container {
-    width: 70%;
+    width: 75%;
 }
 
 .album-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
     gap: 20px;
 }
 
-.album-item {
+.album-tile {
+    width: 180px;
+    height: 252px;
     list-style-type: none;
     text-align: center;
+    background-color: rgb(49, 49, 49);
+    margin-top: 0px;
 }
-
+.album-tile h3{
+    margin: 0px;
+    font-size: medium;
+}
 .album-image {
-    width: 100%;
-    height: 200px;
+    width: 150px;
+    height: 180px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -34,5 +41,12 @@
 #all-albums-container {
     display: flex;
     flex-direction: row;
-    gap:15px;
+}
+
+.album-grid-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-right: 50px;
 }
