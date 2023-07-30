@@ -43,6 +43,11 @@
     flex-direction: row;
 }
 
+#all-songs-container {
+    display: flex;
+    flex-direction: row;
+}
+
 .album-grid-header {
     display: flex;
     flex-direction: row;
