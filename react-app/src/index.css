@@ -1,5 +1,7 @@
 /* TODO Add site wide styles */
 
 html {
-    background-color: lightgrey
+    background-color: rgb(34, 34, 34);
+    font-family: 'Lato', sans-serif;
+    color: #f5f5f5
 }

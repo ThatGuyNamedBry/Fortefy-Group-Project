@@ -1,12 +1,13 @@
 .profile-dropdown {
   position: absolute;
-  top: 45px;
-  right: 8px;
+  top: 60px;
+  right: 15px;
   display: flex;
   flex-direction: column;
   border: 1px solid black;
   align-items: center;
   padding: 5px 5px;
+  background-color: rgb(70, 70, 70);
 }
 
 .profile-dropdown li button {
@@ -20,12 +21,48 @@
   display: none;
 }
 
+.nav-link {
+  text-decoration: none;
+  display: flex;
+  gap: 20px;
+  color: #f5f5f5;
+  font-weight:600;
+  font-size: large;
+}
+
 #NavigationContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 28px;
+  padding-inline-start: 25px;
 }
 
 #NavigationContainer li {
   list-style-type: none;
+  margin-right: 25px;
+}
+
+#profile-bttn {
+  width: 29px;
+  height: 29px;
+  border-radius:50%;
+  font-size: 31px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.1s;
+}
+
+#profile-bttn:hover {
+  transform: scale(0.95);
+}
+
+#profile-bttn:active {
+  transform: scale(0.90);
+}
+
+.welcome-text {
+  font-size: 24px;
+  font-weight: bold;
 }

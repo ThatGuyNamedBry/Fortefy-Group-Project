@@ -10,10 +10,11 @@ function Navigation({ isLoaded }){
 	return (
 		<ul id ='NavigationContainer'>
 			<li>
-				<NavLink exact to="/">Home</NavLink>
+				<NavLink exact to="/" className="nav-link">
+				<i className="fas fa-home" ></i>Home</NavLink>
 			</li>
 			<li>
-				<h1> Welcome to Fortefy!</h1>
+				<span className="welcome-text">Welcome to Fortefy!</span>
 			</li>
 			{isLoaded && (
 				<li>
