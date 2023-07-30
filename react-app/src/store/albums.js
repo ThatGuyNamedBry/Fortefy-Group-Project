@@ -54,7 +54,7 @@ export const deleteAlbumAction = (albumId) => {
 export const getAllAlbumsThunk = () => async (dispatch) => {
   const response = await fetch('/api/albums');
   const albums = await response.json();
-  dispatch(getAllAlbumsAction(albums.Albums));
+  dispatch(getAllAlbumsAction(albums));
   return response;
 };
 
@@ -62,7 +62,7 @@ export const getAllAlbumsThunk = () => async (dispatch) => {
 export const getCurrentUserAllAlbumsThunk = () => async (dispatch) => {
   const response = await fetch('/api/albums/current');
   const albums = await response.json();
-  dispatch(getAllAlbumsAction(albums.Albums));
+  dispatch(getAllAlbumsAction(albums));
   return response;
 };
 
@@ -159,6 +159,7 @@ const initialState = {
   const albumReducer = (state = initialState, action) => {
     switch (action.type) {
       case LOAD_ALBUMS:
+        console.log(action.payload);
         const allAlbumsObject = {};
         action.payload.forEach((album) => {
           allAlbumsObject[album.id] = album;
