@@ -1,0 +1,52 @@
+.home-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.your-library-container {
+    width: 25%;
+}
+
+.discover-music-container {
+    width: 75%;
+}
+
+.album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
+    gap: 20px;
+}
+
+.album-tile {
+    width: 180px;
+    height: 252px;
+    list-style-type: none;
+    text-align: center;
+    background-color: rgb(49, 49, 49);
+    margin-top: 0px;
+}
+.album-tile h3{
+    margin: 0px;
+    font-size: medium;
+}
+.album-image {
+    width: 150px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+#all-albums-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.album-grid-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-right: 50px;
+}
