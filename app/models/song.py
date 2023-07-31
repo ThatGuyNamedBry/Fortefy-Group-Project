@@ -14,6 +14,8 @@ class Song(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     album_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('albums.id')), nullable=False)
     duration = db.Column(db.Integer, nullable=False)
+    song_url = db.Column(db.String(255), nullable=False)
+    track_number = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, default=datetime.now())
 
@@ -31,15 +33,17 @@ class Song(db.Model):
             'duration': self.duration,
             'user': self.user.to_dict(),
             'likes': [like.to_dict() for like in self.likes],
+            'song_url': self.song_url,
+            'track_number': self.track_number
         }
 
     def to_dict_likes(self):
         return {
-            'id': self.id,
-            'name': self.name,
-            'user_id': self.user_id,
-            'album_id': self.album_id,
-            'duration': self.duration,
-            'user': self.user.to_dict(),
+            # 'id': self.id,
+            # 'name': self.name,
+            # 'user_id': self.user_id,
+            # 'album_id': self.album_id,
+            # 'duration': self.duration,
+            # 'user': self.user.to_dict(),
             'likes': self.likes,
         }
