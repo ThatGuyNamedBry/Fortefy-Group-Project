@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from app.models import Song, Like
+from app.models import db, Song, Like
 
 song_routes = Blueprint('song', __name__)
 
@@ -30,13 +30,56 @@ def get_user_songs():
     songs_dict = [song.to_dict() for song in user_songs]
     return jsonify(songs_dict)
 
-# @song_routes.route('/<int:id>/add-like', methods=['POST'])
-# @login_required
-# def add_song_like(id):
-#     """
-#     Adds a like to the selected song and return the like in a dictionary
-#     """
-#     song = Song.query.get(id).to_dict()
-#     print(song)
-#     # Next step, find if song already has user like
-#     return "hi"
+@song_routes.route("/<int:id>/likes")
+@login_required
+def get_song_likes(id):
+    """
+    Query for a song by id and return a list of like dictionaries for that song
+    """
+    song_likes = Song.query.get(id).to_dict()["likes"]
+    return jsonify(song_likes)
+
+@song_routes.route('/<int:id>/add-like', methods=['POST'])
+@login_required
+def add_song_like(id):
+    """
+    Add a like to a selected song and return likes for the song in a list of like dictionaries
+    """
+    song = Song.query.get(id).to_dict()
+    # If song already has user's like, return error
+    for like in song["likes"]:
+        if like["user_id"] == current_user.id:
+            return { "errors": "User has already liked song" }
+
+    # Else create and add new like to song
+    like = Like(
+        song_id=id,
+        user_id=current_user.id
+    )
+
+    db.session.add(like)
+    db.session.commit()
+    return like.to_dict()
+
+@song_routes.route('/<int:id>/remove-like', methods=['DELETE'])
+@login_required
+def remove_song_like(id):
+    """
+    Remove a like from a selected song and return likes for the song in a list of like dictionaries
+    """
+    song = Song.query.get(id)
+    
+    # Iterate through list of like dictionaries which CANNOT be deleted from the db
+    ind = 0
+    for like in song.to_dict()["likes"]:
+        # find user's like, and ind will now equal it's index in the list
+        if like["user_id"] == current_user.id:
+            # use **to_dict_likes** method to get a list of like INSTANCES that CAN be deleted from the db
+            delete_like = song.to_dict_likes()["likes"][ind]
+            # use corresponding index to delete the like instance from db
+            db.session.delete(delete_like)
+            db.session.commit()
+            return {"message": "Like successfully deleted"}
+        ind += 1
+
+    return { "errors": "User has not liked this song" }
