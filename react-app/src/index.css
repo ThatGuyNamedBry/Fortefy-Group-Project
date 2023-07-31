@@ -3,5 +3,9 @@
 html {
     background-color: rgb(34, 34, 34);
     font-family: 'Lato', sans-serif;
-    color: #f5f5f5
+    color: #f5f5f5;
+}
+
+button {
+    cursor: pointer;
 }
