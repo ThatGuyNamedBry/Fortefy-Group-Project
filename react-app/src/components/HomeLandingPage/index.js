@@ -9,14 +9,21 @@ const HomeLandingPage = () => {
     const allAlbums = useSelector(state => state.albums.allAlbums);
     const allSongs = useSelector(state => state.songs.allSongs);
 
+    const [sortedSongs, setSortedSongs] = useState([]);
+    const [startIndexAlbums, setStartIndexAlbums] = useState(0);
+    const [startIndexSongs, setStartIndexSongs] = useState(0);
+
+    const itemsPerPage = 4;
+
     useEffect(() => {
         dispatch(getAllAlbumsThunk());
         dispatch(getAllSongsThunk());
     }, [dispatch]);
 
-    const itemsPerPage = 4;
-    const [startIndexAlbums, setStartIndexAlbums] = useState(0);
-    const [startIndexSongs, setStartIndexSongs] = useState(0);
+    useEffect(() => {
+        setSortedSongs(Object.values(allSongs).sort(() => Math.random() - 0.5));
+    }, [allSongs]);
+
 
     const handleNextClickAlbums = () => {
         if (startIndexAlbums + itemsPerPage < Object.values(allAlbums).length) {
@@ -70,12 +77,11 @@ const HomeLandingPage = () => {
                     <h2>Discover Songs</h2>
                     <div className="item-scroll">
                         <button onClick={handlePrevClickSongs} disabled={startIndexSongs === 0}>&#8249;&#8249;</button>
-                        <button onClick={handleNextClickSongs} disabled={startIndexSongs + itemsPerPage >= Object.values(allSongs).length}>&#8250;&#8250;</button>
+                        <button onClick={handleNextClickSongs} disabled={startIndexSongs + itemsPerPage >= sortedSongs.length}>&#8250;&#8250;</button>
                     </div>
                 </div>
                 <div id='all-songs-container' className="album-grid">
-                    {Object.values(allSongs)
-                        .sort(() => Math.random() - 0.5)
+                    {sortedSongs
                         .slice(startIndexSongs, startIndexSongs + itemsPerPage)
                         .map(song => {
                             const album = allAlbums[song.album_id];
@@ -84,7 +90,6 @@ const HomeLandingPage = () => {
                                     <img src={album?.art} alt={album?.name} className="album-image" />
                                     <h3>{song.name}</h3>
                                     <p>{album?.artist}</p>
-                                    {/* <p>{album?.name}</p> */}
                                 </div>
                             );
                         })}
