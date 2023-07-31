@@ -34,7 +34,9 @@ class Song(db.Model):
             'user': self.user.to_dict(),
             'likes': [like.to_dict() for like in self.likes],
             'song_url': self.song_url,
-            'track_number': self.track_number
+            'track_number': self.track_number,
+            'artist': self.album.artist,
+            "album_art": self.album.art
         }
 
     def to_dict_likes(self):

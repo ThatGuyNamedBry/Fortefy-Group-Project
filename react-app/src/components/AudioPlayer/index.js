@@ -16,13 +16,28 @@ const AudioPlayerComponent = () => {
     }
   }, [allSongs, currentSong]);
 
+  const handleNextSong = () => {
+    const songs = Object.keys(allSongs);
+    const randomSong = songs[Math.floor(Math.random() * songs.length)];
+    setCurrentSong(allSongs[randomSong]);
+  };
+
   return (
     <>
       <AudioPlayer
+        layout='stacked-reverse'
         autoPlay={false}
-        showJumpControls={true}
+        showSkipControls={true}
         src={currentSong?.song_url}
         header={`${currentSong?.name} - ${currentSong?.artist}`}
+        customAdditionalControls={[
+          <img
+            key="album-art"
+            className="audio-player-art"
+            src={currentSong?.album_art}
+          />,
+        ]}
+        onClickNext={handleNextSong}
       />
     </>
   );
