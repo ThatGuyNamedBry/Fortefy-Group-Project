@@ -25,22 +25,38 @@
     text-align: center;
     background-color: rgb(49, 49, 49);
     margin-top: 0px;
+    border-radius: 8px;
 }
+
 .album-tile h3{
     margin: 0px;
     font-size: medium;
 }
+
+.album-tile p{
+    margin: 0px;
+    font-size: medium;
+}
+
 .album-image {
     width: 150px;
     height: 180px;
     object-fit: cover;
     border-radius: 8px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
 #all-albums-container {
     display: flex;
     flex-direction: row;
+    margin-bottom: 20px;
+}
+
+#all-songs-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
 }
 
 .album-grid-header {
