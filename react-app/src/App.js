@@ -17,15 +17,13 @@ function App() {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
-  const allSongs = useSelector(state => state.songs.allSongs);
-
   return (
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
           <Route exact path="/" component={HomeLandingPage} />
-          <Route exact path="/login" >
+          <Route exact path="/login">
             <LoginFormPage />
           </Route>
           <Route exact path="/signup">
@@ -36,9 +34,20 @@ function App() {
           </Route>
         </Switch>
       )}
-      <AudioPlayerComponent audioSrc="http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3" title="Audio Title" />
+        <AudioPlayerComponent />
     </>
   );
 }
 
 export default App;
+
+// const [audioSrc, setAudioSrc] = useState(null);
+// const [title, setTitle] = useState(null);
+// const singleSong = useSelector((state) => state.songs.singleSong);
+
+// useEffect(() => {
+  //   if (singleSong) {
+    //     setAudioSrc(singleSong.song_url);
+    //     setTitle(singleSong.title);
+    //   }
+    // }, [singleSong]);
