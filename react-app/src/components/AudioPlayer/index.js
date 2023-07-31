@@ -19,10 +19,10 @@ const AudioPlayerComponent = () => {
   return (
     <>
       <AudioPlayer
-        autoPlay={true}
+        autoPlay={false}
         showJumpControls={true}
         src={currentSong?.song_url}
-        header={currentSong?.title}
+        header={`${currentSong?.name} - ${currentSong?.artist}`}
       />
     </>
   );

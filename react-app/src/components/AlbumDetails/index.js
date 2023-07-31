@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAlbumByIdThunk } from '../../store/albums';
 import { secsToHrs, secsToMins } from '../../helpers';
+import { getAlbumByIdThunk } from '../../store/albums';
+import LikeButton from '../LikeButton';
 import './AlbumDetails.css';
 
 const AlbumDetails = () => {
@@ -19,7 +20,7 @@ const AlbumDetails = () => {
     }
 
     const albumTime = singleAlbum.songs.reduce((acc, song) => acc + song.duration, 0);
-
+    const albumSongs = singleAlbum.songs.sort((song1, song2) => song1.track_number - song2.track_number)
     return (
         <div className='album-details-container'>
             <div className='album-header-container'>
@@ -41,13 +42,11 @@ const AlbumDetails = () => {
                     <p>Title</p>
                     <img src='' alt='clock'></img>
                 </li>
-                {singleAlbum.songs.map(song => (
+                {albumSongs.map(song => (
                     <li key={song.id} className='albums-songs-li'>
-                        <p></p>
+                        <p>{song.track_number}</p>
                         <p>{song.name}</p>
-                        <button>
-                            <img src='' alt='like-btn'></img>
-                        </button>
+                        <LikeButton />
                         <p>{secsToMins(song.duration)}</p>
                     </li>
                 ))}
