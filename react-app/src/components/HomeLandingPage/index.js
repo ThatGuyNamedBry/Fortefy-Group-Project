@@ -50,7 +50,7 @@ const HomeLandingPage = () => {
             <div className="discover-music-container">
                 <div className="album-grid-header">
                     <h2>All Albums</h2>
-                    <div className="album-scroll">
+                    <div className="item-scroll">
                         <button onClick={handlePrevClickAlbums} disabled={startIndexAlbums === 0}>&#8249;&#8249;</button>
                         <button onClick={handleNextClickAlbums} disabled={startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length}>&#8250;&#8250;</button>
                     </div>
@@ -68,14 +68,14 @@ const HomeLandingPage = () => {
                 </div>
                 <div className="album-grid-header">
                     <h2>Discover Songs</h2>
-                    <div className="album-scroll">
+                    <div className="item-scroll">
                         <button onClick={handlePrevClickSongs} disabled={startIndexSongs === 0}>&#8249;&#8249;</button>
                         <button onClick={handleNextClickSongs} disabled={startIndexSongs + itemsPerPage >= Object.values(allSongs).length}>&#8250;&#8250;</button>
                     </div>
                 </div>
                 <div id='all-songs-container' className="album-grid">
                     {Object.values(allSongs)
-                        .sort(() => Math.random() - 0.5) 
+                        .sort(() => Math.random() - 0.5)
                         .slice(startIndexSongs, startIndexSongs + itemsPerPage)
                         .map(song => {
                             const album = allAlbums[song.album_id];
@@ -84,6 +84,7 @@ const HomeLandingPage = () => {
                                     <img src={album?.art} alt={album?.name} className="album-image" />
                                     <h3>{song.name}</h3>
                                     <p>{album?.artist}</p>
+                                    {/* <p>{album?.name}</p> */}
                                 </div>
                             );
                         })}
