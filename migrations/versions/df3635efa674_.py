@@ -44,7 +44,6 @@ def upgrade():
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('name')
     )
     if environment == "production":
         op.execute(f"ALTER TABLE albums SET SCHEMA {SCHEMA};")
