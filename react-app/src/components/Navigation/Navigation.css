@@ -43,6 +43,11 @@
   margin-right: 25px;
 }
 
+#nav-right {
+  display: flex;
+  gap: 20px
+}
+
 #profile-bttn {
   width: 29px;
   height: 29px;
