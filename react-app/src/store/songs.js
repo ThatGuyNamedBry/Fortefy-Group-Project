@@ -4,6 +4,8 @@ const LOAD_SONG = 'songs/LOAD_SONG';
 const CREATE_SONG = 'songs/CREATE_SONG';
 const UPDATE_SONG = 'songs/UPDATE_SONG';
 const DELETE_SONG = 'songs/DELETE_SONG';
+const ADD_LIKE = 'songs/ADD_LIKE';
+const REMOVE_LIKE = 'songs/REMOVE_LIKE';
 
 
 //                                         Action Creators
@@ -48,6 +50,22 @@ export const deleteSongAction = (songId) => {
     payload: songId,
   };
 };
+
+//Add a Like Action
+export const addLikeAction = (songId, like) => {
+  return {
+    type: ADD_LIKE,
+    payload: songId, like
+  }
+}
+
+//Remove a Like Action
+export const removeLikeAction = (songId, likeId) => {
+  return {
+    type: REMOVE_LIKE,
+    payload: songId, likeId
+  }
+}
 
 //                                             Thunks
 //Get All Songs Thunk
@@ -149,6 +167,33 @@ export const deleteSpotThunk = (songId) => async (dispatch) => {
   }
 };
 
+//Add a Like Thunk
+export const addLikeThunk = (songId) => async (dispatch) => {
+    const response = await fetch(`/api/songs/${songId}/add-like`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (response.ok) {
+      const newLike = await response.json();
+      dispatch(addLikeAction(songId, newLike));
+      return newLike;
+    }
+};
+
+//Remove a Like Thunk
+export const removeLikeThunk = (songId, likeId) => async (dispatch) => {
+  const response = await fetch(`/api/songs/${songId}/remove-like`, {
+    method: 'DELETE'
+  });
+
+  if (response.ok) {
+    dispatch(removeLikeAction(songId, likeId))
+  }
+}
+
 
 //Reducer function
 const initialState = {
@@ -175,6 +220,15 @@ const initialState = {
         const newSongs = { ...state.allSongs };
         delete newSongs[action.payload];
         return { ...state, allSongs: newSongs };
+      case ADD_LIKE:
+        const songLikesAdded = [...state.allSongs[action.payload.songId].likes, action.payload.like];
+        return { ...state, allSongs: { ...state.allSongs, [action.payload.songId]: { ...state.allSongs[action.payload.songId], likes: [...songLikesAdded] } } }
+      case REMOVE_LIKE:
+        const currentLikes = [...state.allSongs[action.payload.songId].likes];
+        const deleteLike = currentLikes.find(like => like.id === action.payload.likeId);
+        const ind = currentLikes.indexOf(deleteLike);
+        const removedLikes = [...currentLikes.slice(0, ind), ...currentLikes.slice(ind + 1)];
+        return { ...state, allSongs: { ...state.allSongs, [action.payload.songId]: { ...state.allSongs[action.payload.songId], likes: [...removedLikes] } } }
       default:
         return state;
         }
