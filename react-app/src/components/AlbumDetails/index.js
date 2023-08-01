@@ -8,6 +8,7 @@ import LikeButton from '../LikeButton';
 import './AlbumDetails.css';
 
 const AlbumDetails = () => {
+    
     const dispatch = useDispatch();
     const { albumId } = useParams();
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
