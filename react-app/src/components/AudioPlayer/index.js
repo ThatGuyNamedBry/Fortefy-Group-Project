@@ -1,44 +1,67 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import './AudioPlayer.css';
+import { PlaybackContext } from '../../context/PlaybackContext';
+
 
 const AudioPlayerComponent = () => {
   const allSongs = useSelector((state) => state.songs.allSongs);
-  const [currentSong, setCurrentSong] = useState(null);
+  const { currentPlaylist,
+    setCurrentPlaylist,
+    currentSongIndex,
+    setCurrentSongIndex,
+    isPlaying,
+    setIsPlaying } = useContext(PlaybackContext);
+  // const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  // const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    if (!currentSong) {
-      const songs = Object.keys(allSongs);
-      const randomSong = songs[Math.floor(Math.random() * songs.length)];
-      setCurrentSong(allSongs[randomSong]);
+    if (currentPlaylist && currentPlaylist.length > 0) {
+      setCurrentSongIndex(0);
+      setIsPlaying(true);
     }
-  }, [allSongs, currentSong]);
+  }, [currentPlaylist]);
 
   const handleNextSong = () => {
-    const songs = Object.keys(allSongs);
-    const randomSong = songs[Math.floor(Math.random() * songs.length)];
-    setCurrentSong(allSongs[randomSong]);
+    if (currentSongIndex + 1 < currentPlaylist.length) {
+      setCurrentSongIndex((prevIndex) => prevIndex + 1);
+    } else {
+      setIsPlaying(false);
+    }
+  };
+
+  const handlePlayPause = () => {
+    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
   };
 
   return (
     <>
-      <AudioPlayer
-        layout='stacked-reverse'
-        autoPlay={false}
-        showSkipControls={true}
-        src={currentSong?.song_url}
-        header={`${currentSong?.name} - ${currentSong?.artist}`}
-        customAdditionalControls={[
-          <img
-            key="album-art"
-            className="audio-player-art"
-            src={currentSong?.album_art}
-          />,
-        ]}
-        onClickNext={handleNextSong}
-      />
+      {currentPlaylist && currentPlaylist.length > 0 && (
+        <AudioPlayer
+          layout='stacked-reverse'
+          autoPlay={true}
+          showSkipControls={true}
+          showJumpControls={true}
+          hasDefaultKeyBindings={false}
+          src={allSongs[currentPlaylist[currentSongIndex]]?.song_url}
+          header={`${allSongs[currentPlaylist[currentSongIndex]]?.name} - ${allSongs[currentPlaylist[currentSongIndex]]?.artist}`}
+          customAdditionalControls={[
+            <img
+              key="album-art"
+              className="audio-player-art"
+              src={allSongs[currentPlaylist[currentSongIndex]]?.album_art}
+              alt={allSongs[currentPlaylist[currentSongIndex]]?.name}
+            />,
+          ]}
+          onClickNext={handleNextSong}
+          onClickPrevious={handleNextSong}
+          onClickPlay={handlePlayPause}
+          onClickPause={handlePlayPause}
+          playing={isPlaying}
+        />
+      )}
     </>
   );
 };

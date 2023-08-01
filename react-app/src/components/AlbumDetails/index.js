@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
@@ -8,6 +8,8 @@ import AddMusicButton from '../AddMusicButton';
 import LikeButton from '../LikeButton';
 import AddMusicModal from '../AddMusicModal'
 import './AlbumDetails.css';
+import AudioPlayerComponent from '../AudioPlayer';
+import { PlaybackContext } from '../../context/PlaybackContext';
 
 const AlbumDetails = () => {
 
@@ -17,6 +19,13 @@ const AlbumDetails = () => {
     const user = useSelector(state => state.session.user)
     const [hoveredSong, setHoveredSong] = useState(-1);
     const [userOwned, setUserOwned] = useState(false);
+    const { currentPlaylist,
+        setCurrentPlaylist,
+        currentSongIndex,
+        setCurrentSongIndex,
+        isPlaying,
+        setIsPlaying } = useContext(PlaybackContext);
+    // const [currentPlaylist, setCurrentPlaylist] = useState([]);
 
     const showPlayButton = (i) => {
         setHoveredSong(i);
@@ -46,6 +55,16 @@ const AlbumDetails = () => {
 
     }
 
+    const handlePlayAlbum = () => {
+        const albumSongIds = albumSongs.map((song) => song.id);
+        setCurrentPlaylist(albumSongIds);
+    };
+
+    const handlePlaySong = (songId) => {
+        setCurrentPlaylist([songId]);
+    };
+
+
     if (!singleAlbum) {
         return null;
     }
@@ -63,7 +82,7 @@ const AlbumDetails = () => {
                 </div>
             </div>
             <div className='album-buttons-container'>
-                <button className='album-play-button'>
+            <button className='album-play-button' onClick={handlePlayAlbum}>
                     <i class="fa-sharp fa-solid fa-circle-play"></i>
                 </button>
                 <div className="add-music-button-container">
@@ -83,6 +102,7 @@ const AlbumDetails = () => {
                     <button key={song.id} className='albums-songs-button'
                         onMouseEnter={(e) => showPlayButton(i)}
                         onMouseLeave={() => hidePlayButton()}
+                        onClick={() => handlePlaySong(song.id)}
                     >
                         <div className='number-name-container'>
                             <div className='song-track-number'>
@@ -111,6 +131,7 @@ const AlbumDetails = () => {
                     </button>
                 ))}
             </ul>
+
         </div>
     );
 };
