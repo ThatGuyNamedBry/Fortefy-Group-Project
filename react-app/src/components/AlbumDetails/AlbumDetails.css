@@ -78,7 +78,14 @@
 }
 
 .album-buttons-container {
+    display: flex;
+    align-items: center;
     height: 100%;
+    gap: 11px;
+}
+
+.add-music-button-container:hover {
+    cursor: pointer;
 }
 
 .album-play-button {

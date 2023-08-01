@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getAlbumByIdThunk } from '../../store/albums';
 import { getAllSongsAction } from '../../store/songs';
+import AddMusicButton from '../AddMusicButton';
 import LikeButton from '../LikeButton';
+import AddMusicModal from '../AddMusicModal'
 import './AlbumDetails.css';
 
 const AlbumDetails = () => {
@@ -64,10 +66,17 @@ const AlbumDetails = () => {
                 <button className='album-play-button'>
                     <i class="fa-sharp fa-solid fa-circle-play"></i>
                 </button>
+                <div className="add-music-button-container">
+
+                    {user && singleAlbum.user.id === user.id ? <AddMusicButton
+                        modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} />}
+                    /> : null}
+                </div>
+
             </div>
             <ul className='album-songs-container'>
                 <li className='album-songs-header'>
-                    <p style={{color: "rgb(160, 160, 160)"}}> &nbsp; # &nbsp; &nbsp; Title</p>
+                    <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
                     <i class="fa-regular fa-clock"></i>
                 </li>
                 {albumSongs.map((song, i) => (
@@ -77,26 +86,26 @@ const AlbumDetails = () => {
                     >
                         <div className='number-name-container'>
                             <div className='song-track-number'>
-                                <div style={hoveredSong !== i ? {display: "block"} : {display: "none"}}>{song.track_number}</div>
-                                <div style={hoveredSong === i ? {display: "block"} : {display: "none"}}>
-                                    <i className="fa-sharp fa-solid fa-play" style={{color: "white"}}></i>
+                                <div style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{song.track_number}</div>
+                                <div style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
+                                    <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
                                 </div>
                             </div>
-                            <p style={{color: "white"}}> &nbsp; &nbsp; {song.name}</p>
+                            <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
                         </div>
                         <div className='heart-time-container'>
-                            <div className='heart-container' style={hoveredSong === i ? {display: "block"} : {color: "rgb(34, 34, 34)"}}>
+                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(34, 34, 34)" }}>
                                 <LikeButton
                                     songId={song.id}
                                 />
                             </div>
                             {userOwned ?
-                            <div style={hoveredSong === i ? {display: "block"} : {color: "rgb(34, 34, 34)"}}>
-                                <i onClick={editHandleClick} className="fa-solid fa-pen-to-square"></i>
-                                &nbsp; &nbsp;
-                                <i onClick={deleteHandleClick} className="fa-regular fa-trash-can"></i>
-                            </div>
-                            : null}
+                                <div style={hoveredSong === i ? { display: "block" } : { color: "rgb(34, 34, 34)" }}>
+                                    <i onClick={editHandleClick} className="fa-solid fa-pen-to-square"></i>
+                                    &nbsp; &nbsp;
+                                    <i onClick={deleteHandleClick} className="fa-regular fa-trash-can"></i>
+                                </div>
+                                : null}
                             <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
                         </div>
                     </button>

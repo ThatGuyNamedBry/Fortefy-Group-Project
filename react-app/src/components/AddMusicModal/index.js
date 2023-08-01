@@ -6,6 +6,7 @@ import "./AddMusicModal.css"
 function AddMusicModal({ album }) {
   const dispatch = useDispatch();
   const [songName, setSongName] = useState('');
+  const [trackNumber, setTrackNumber] = useState('')
   const [errors, setErrors] = useState('');
   const { closeModal } = useModal();
 
