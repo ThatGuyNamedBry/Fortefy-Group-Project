@@ -84,7 +84,7 @@ export const getPlaylistByIdThunk = (playlistId) => async (dispatch) => {
 export const createPlaylistThunk = (formData) => async (dispatch) => {
     // console.log('Create playlist thunk running, this is formData : ', formData)
     try {
-        const response = await fetch('/api/playlists/new-playlist', {
+        const response = await fetch('/api/playlists/new', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),
