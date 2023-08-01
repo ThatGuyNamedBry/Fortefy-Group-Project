@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
@@ -11,10 +11,12 @@ import AudioPlayerComponent from "./components/AudioPlayer";
 import AlbumCreate from "./components/AlbumCreate";
 import AlbumUpdate from "./components/AlbumUpdate";
 import ProfilePage from "./components/ProfilePage";
+import { PlaybackContext } from '../src/context/PlaybackContext';
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const { currentPlaylist} = useContext(PlaybackContext);
 
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true));
@@ -34,7 +36,7 @@ function App() {
           <Route path="/albums/:albumId" component={AlbumDetails}/>
         </Switch>
       )}
-        <AudioPlayerComponent />
+        <AudioPlayerComponent currentPlaylist={currentPlaylist} />
     </>
   );
 }
