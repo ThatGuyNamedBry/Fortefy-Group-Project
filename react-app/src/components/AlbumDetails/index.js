@@ -46,7 +46,9 @@ const AlbumDetails = () => {
                     <li key={song.id} className='albums-songs-li'>
                         <p>{song.track_number}</p>
                         <p>{song.name}</p>
-                        <LikeButton />
+                        <LikeButton
+                            songId={song.id}
+                        />
                         <p>{secsToMins(song.duration)}</p>
                     </li>
                 ))}

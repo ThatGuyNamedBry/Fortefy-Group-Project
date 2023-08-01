@@ -1,6 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Album
+from app.models import Album, db
+from app.forms import CreateAlbumForm, EditAlbumForm
+from app.api.auth_routes import validation_errors_to_error_messages
 
 album_routes = Blueprint('albums', __name__)
 
@@ -11,6 +13,7 @@ def get_all_albums():
     """
     return jsonify([album.to_dict() for album in Album.query.all()])
 
+
 @album_routes.route('/<int:id>')
 def get_album_by_id(id):
     """
@@ -18,6 +21,7 @@ def get_album_by_id(id):
     """
     album = Album.query.get(id)
     return jsonify(album.to_dict())
+
 
 @album_routes.route('/current')
 @login_required
@@ -28,3 +32,70 @@ def get_user_albums():
     user_albums = Album.query.filter(Album.user_id == current_user.id)
     albums_dict = [album.to_dict() for album in user_albums]
     return jsonify(albums_dict)
+
+
+# Deleting an Album created by the user
+@album_routes.route('/delete/<int:id>', methods=['DELETE'])
+@login_required
+def delete_album(id):
+    album = Album.query.get(id)
+
+    if album is None or album.user_id != current_user.id:
+        return {'errors': 'Album not found'}, 404
+
+    db.session.delete(album)
+    db.session.commit()
+
+    return { 'message': 'Successfully Deleted'}
+
+
+# Creating a new Album
+@album_routes.route('/newAlbum', methods=['POST'])
+@login_required
+def create_new_album():
+    form = CreateAlbumForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    form.data['user_id'] = current_user.id
+    if form.validate_on_submit():
+
+        new_album = Album (
+            user_id = current_user.id,
+            name = form.data['name'],
+            art = form.data['art'],
+            artist = form.data['artist'],
+            year = form.data['year'],
+            genre = form.data['genre']
+        )
+
+        db.session.add(new_album)
+        db.session.commit()
+        return jsonify(new_album.to_dict())
+
+    return { 'errors': validation_errors_to_error_messages(form.errors) }, 401
+
+
+# Editing an Album a user already created
+@album_routes.route('/edit/<int:id>', methods=['PUT'])
+@login_required
+def edit_album(id):
+    form = EditAlbumForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        album = Album.query.get(id)
+
+        if album is None or album.user_id != current_user.id:
+            return { 'errors': 'Album not found'}, 404
+
+        album.name = form.data['name']
+        album.art = form.data['art']
+        album.artist = form.data['artist']
+        album.year = form.data['year']
+        album.genre = form.data['genre']
+
+        db.session.commit()
+
+        return jsonify(album.to_dict())
+
+    return { 'errors': validation_errors_to_error_messages(form.errors) }, 401
