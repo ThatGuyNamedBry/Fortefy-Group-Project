@@ -10,6 +10,7 @@ import AlbumDetails from "./components/AlbumDetails";
 import AudioPlayerComponent from "./components/AudioPlayer";
 import AlbumCreate from "./components/AlbumCreate";
 import AlbumUpdate from "./components/AlbumUpdate";
+import ProfilePage from "./components/ProfilePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route exact path="/" component={HomeLandingPage}/>
+          <Route exact path="/profile" component={ProfilePage}/>
           <Route path="/login" component={LoginFormPage}/>
           <Route path="/signup" component={SignupFormPage}/>
           <Route path="/albums/new" component={AlbumCreate}/>

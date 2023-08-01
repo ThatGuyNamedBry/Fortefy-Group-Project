@@ -1,0 +1,14 @@
+.section-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.album-grid {
+    display: flex;
+    flex-direction: row;
+}
+
+.song-grid {
+    display: flex;
+    flex-direction: row;
+}
