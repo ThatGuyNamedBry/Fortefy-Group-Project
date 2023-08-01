@@ -29,3 +29,13 @@ def get_user_playlists():
     user_playlists = Playlist.query.filter(Playlist.user_id == current_user.id)
     playlists_dict = [playlist.to_dict() for playlist in user_playlists]
     return jsonify(playlists_dict)
+
+@playlist_routes.route('/new', methods=['POST'])
+@login_required
+def create_new_playlist():
+    return
+
+@playlist_routes.route('/<int:id>/edit')
+@login_required
+def edit_playlist():
+    return
