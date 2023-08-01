@@ -72,7 +72,7 @@ def create_new_album():
         db.session.commit()
         return jsonify(new_album.to_dict())
 
-    return { 'errors': validation_errors_to_error_messages(form.errors) }, 401
+    return { 'errors': validation_errors_to_error_messages(form.errors) }, 400
 
 
 # Editing an Album a user already created
@@ -98,4 +98,4 @@ def edit_album(id):
 
         return jsonify(album.to_dict())
 
-    return { 'errors': validation_errors_to_error_messages(form.errors) }, 401
+    return { 'errors': validation_errors_to_error_messages(form.errors) }, 400
