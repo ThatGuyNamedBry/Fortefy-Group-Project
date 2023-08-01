@@ -20,6 +20,7 @@ itsdangerous==2.1.2
 jinja2==3.1.2
 mako==1.2.4
 markupsafe==2.1.2
+mutagen==1.46.0
 python-dateutil==2.8.2
 python-dotenv==0.21.0
 python-editor==1.0.4
