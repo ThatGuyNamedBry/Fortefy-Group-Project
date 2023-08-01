@@ -1,14 +1,32 @@
+.profile-container {
+    margin-inline-start: 30px;
+}
+
 .section-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .album-grid {
     display: flex;
     flex-direction: row;
+    margin-bottom: 30px;
 }
 
 .song-grid {
     display: flex;
     flex-direction: row;
 }
+
+.profile-tile-buttons {
+    display:flex;
+    justify-content: flex-end;
+    margin-bottom: -15px;
+}
+
+.profile-tile-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
+    gap: 25px;
+}
+

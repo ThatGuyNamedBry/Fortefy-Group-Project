@@ -116,7 +116,7 @@ export const updateAlbumThunk = (album, formData) => async (dispatch) => {
 
 //Delete an Album Thunk
 export const deleteAlbumThunk = (albumId) => async (dispatch) => {
-  const response = await fetch(`/api/albums/${albumId}`, {
+  const response = await fetch(`/api/albums/${albumId}/delete`, {
     method: 'DELETE',
   });
 

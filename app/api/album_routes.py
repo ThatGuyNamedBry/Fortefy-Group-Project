@@ -35,7 +35,7 @@ def get_user_albums():
 
 
 # Deleting an Album created by the user
-@album_routes.route('/delete/<int:id>', methods=['DELETE'])
+@album_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_album(id):
     album = Album.query.get(id)
