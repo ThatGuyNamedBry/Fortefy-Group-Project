@@ -14,6 +14,8 @@ function AddMusicModal({ album }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(file1)
+
+    
   }
 
   return (
