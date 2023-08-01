@@ -97,7 +97,6 @@ export const getSongByIdThunk = (songId) => async (dispatch) => {
 //Create a Song Thunk
 export const createSongThunk = (album, formData) => async (dispatch) => {
   // console.log('Create song thunk running, this is the formData', formData)
-  console.log('store:', formData)
   const response = await fetch(`/api/albums/${album.id}/song`, {
     method: 'POST',
     body: formData,
