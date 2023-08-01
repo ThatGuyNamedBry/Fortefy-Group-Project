@@ -99,3 +99,11 @@
     width: 100%;
     height: 100%;
 }
+
+.fa-regular.fa-trash-can:hover {
+    color: white;
+}
+
+.fa-solid.fa-pen-to-square:hover {
+    color: white;
+}
