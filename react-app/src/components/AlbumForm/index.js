@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { createAlbumThunk, updateAlbumThunk } from "../../store/albums";
 import "./AlbumForm.css"
 
 const AlbumForm = ({ album, formType }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [artist, setArtist] = useState(album?.artist);
   const [name, setName] = useState(album?.name);
   const [year, setYear] = useState(album?.year);
@@ -23,20 +25,25 @@ const AlbumForm = ({ album, formType }) => {
     if (!genre) frontEndErrorsObj.genre = "Genre is required";
 
     if (Object.keys(frontEndErrorsObj).length === 0) {
-      if (formType === 'Create Album') {
-        console.log('ready to create')
+      const formData = { artist, name, year, genre, art }
 
+      if (formType === 'Create Album') {
+        album = await dispatch(createAlbumThunk(formData))
+        
       } else if (formType === 'Update Album') {
-        console.log('ready to update')
+        album = await dispatch(updateAlbumThunk(album, formData))
+      }
+
+      if (album.errors) {
+        setErrors(album.errors)
+      } else {
+        history.push(`/albums/${album.payload.id}`);
       }
 
     } else {
       setErrors(frontEndErrorsObj);
     }
-
-
   }
-
 
   return (
     <div className="album-form-container">
