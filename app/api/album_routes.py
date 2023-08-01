@@ -4,6 +4,7 @@ from app.models import Album, db, Song
 from app.forms import CreateAlbumForm, EditAlbumForm, CreateSongForm
 from app.api.auth_routes import validation_errors_to_error_messages
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3
+from mutagen.mp3 import MP3
 
 album_routes = Blueprint('albums', __name__)
 
@@ -81,13 +82,14 @@ def create_new_album():
 @album_routes.route('/<int:id>/song', methods=['POST'])
 @login_required
 def create_album_song(id):
+
     form = CreateSongForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
+    print('form data:', form.data)
+
     if form.validate_on_submit():
         album = Album.query.get(id)
-
-        print("album info", album)
 
         if album is None or album.user_id != current_user.id:
             return { 'errors': 'Album not found'}, 404
@@ -95,6 +97,8 @@ def create_album_song(id):
         song = form.data['song']
         song.filename = get_unique_filename(song.filename)
         upload = upload_file_to_s3(song)
+
+        audio = MP3(song)
 
         if 'url' not in upload:
             return { 'errors': 'upload error'}
@@ -105,7 +109,7 @@ def create_album_song(id):
             song_url = upload['url'],
             user_id = album.user_id,
             album_id = album.id,
-            duration = 310
+            duration = audio.info.length
         )
 
         db.session.add(newSong)
@@ -113,7 +117,8 @@ def create_album_song(id):
 
         return jsonify(newSong.to_dict())
 
-    return { 'errors': validation_errors_to_error_messages(form.errors)}, 401
+    print(validation_errors_to_error_messages(form.errors))
+    return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
 
 
 # Editing an Album a user already created

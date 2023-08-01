@@ -35,8 +35,8 @@ const AlbumDetails = () => {
     useEffect(() => {
         dispatch(getAllSongsAction(albumSongs));
         setUserOwned(singleAlbum?.user?.id === user?.id);
-        console.log(singleAlbum);
     }, [dispatch, singleAlbum, albumSongs, user]);
+
 
     const editHandleClick = (e) => {
 
