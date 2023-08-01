@@ -1,0 +1,101 @@
+.album-details-container {
+    padding-left: 3%;
+}
+
+.album-header-container {
+    display: flex;
+    margin-bottom: 2%;
+}
+
+.album-info-container {
+    width: 100%;
+    align-self: bottom;
+    padding-left: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.album-details-art {
+    width: 20%;
+}
+
+.album-name-header {
+    font-size: 400%;
+    margin-top: 0%;
+    margin-bottom: 0%;
+}
+
+.album-songs-container {
+    padding-left: 0%;
+    margin-top: 1%;
+}
+
+.album-songs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: fit-content;
+    border-bottom: .5px solid rgb(74, 74, 74);
+}
+
+.fa-regular.fa-clock {
+    color: rgb(160, 160, 160);
+    padding-right: 5%;
+}
+
+.album-song-time {
+    color: rgb(160, 160, 160);
+
+}
+
+.albums-songs-button {
+    background-color: rgb(34, 34, 34);
+    color: rgb(160, 160, 160);
+    border: 0px;
+    box-shadow: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-right: 5%;
+}
+.number-name-container {
+    display: flex;
+    align-items: center;
+}
+
+.heart-time-container {
+    display: flex;
+    align-items: center;
+}
+
+.song-track-number {
+    background-color: rgb(34, 34, 34);
+    color: rgb(160, 160, 160);
+    border: 0px;
+    box-shadow: 0px;
+}
+
+.album-buttons-container {
+    height: 100%;
+}
+
+.album-play-button {
+    background-color: rgb(34, 34, 34);
+    color: rgb(33, 204, 6);
+    border: 0px;
+    box-shadow: 0px;
+    height: 100%;
+    font-size: 400%
+}
+
+.album-play-button:hover {
+    color: rgb(34, 255, 0);
+    font-size: 403%;
+}
+
+.fa-sharp.fa-solid.fa-circle-play {
+    width: 100%;
+    height: 100%;
+}

@@ -5,20 +5,19 @@ import './LikeButton.css'
 
 const LikeButton = ({ songId }) => {
     const dispatch = useDispatch();
-    const song = useSelector(state => state.songs.allSongs['songId']);
+    const song = useSelector(state => state.songs.allSongs[songId]);
     const user = useSelector(state => state.session.user);
     const [userLike, setUserLike] = useState(false)
-    const [isLiked, setIsLiked] = useState('');
+
     useEffect(() => {
-        setIsLiked('');
         if (user && song) {
             setUserLike(song.likes.find(like => like.user_id === user.id));
-            setIsLiked(userLike ? 'fill' : '');
         }
-    }, [song, user])
+    }, [song, user, userLike])
+
     const likeClick = (e) => {
         e.stopPropagation();
-        if (!isLiked) {
+        if (!userLike) {
             dispatch(addLikeThunk(songId));
         } else {
             dispatch(removeLikeThunk(songId, userLike.id));
@@ -30,7 +29,10 @@ const LikeButton = ({ songId }) => {
     }
 
     return (
-        <button className={`like-button${isLiked}`} onClick={likeClick}>**LikeButton**</button>
+        <button className="like-button" onClick={likeClick}>
+            {userLike ? <i id='filled-like-heart' className="fa-sharp fa-solid fa-heart" style={{color: "#f96262"}}></i>
+            : <i className="fa-sharp fa-regular fa-heart"></i>}
+        </button>
     );
 };
 

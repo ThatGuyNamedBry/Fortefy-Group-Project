@@ -49,7 +49,7 @@ def add_song_like(id):
     # If song already has user's like, return error
     for like in song["likes"]:
         if like["user_id"] == current_user.id:
-            return { "errors": "User has already liked song" }
+            return { "errors": "User has already liked song" }, 405
 
     # Else create and add new like to song
     like = Like(
@@ -82,4 +82,4 @@ def remove_song_like(id):
             return {"message": "Like successfully deleted"}
         ind += 1
 
-    return { "errors": "User has not liked this song" }
+    return { "errors": "User has not liked this song" }, 405
