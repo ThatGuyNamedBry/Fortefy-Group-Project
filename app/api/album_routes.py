@@ -81,8 +81,13 @@ def create_new_album():
 @album_routes.route('/<int:id>/song', methods=['POST'])
 @login_required
 def create_album_song(id):
+
+    print('request', request.data)
+
     form = CreateSongForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
+    print('form data:', form.data)
 
     if form.validate_on_submit():
         album = Album.query.get(id)
@@ -113,7 +118,8 @@ def create_album_song(id):
 
         return jsonify(newSong.to_dict())
 
-    return { 'errors': validation_errors_to_error_messages(form.errors)}, 401
+    print(validation_errors_to_error_messages(form.errors))
+    return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
 
 
 # Editing an Album a user already created

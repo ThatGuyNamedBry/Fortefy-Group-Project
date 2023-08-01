@@ -95,43 +95,19 @@ export const getSongByIdThunk = (songId) => async (dispatch) => {
 };
 
 //Create a Song Thunk
-export const createSongThunk = (formData) => async (dispatch) => {
+export const createSongThunk = (album, formData) => async (dispatch) => {
   // console.log('Create song thunk running, this is the formData', formData)
-  const response = await fetch('/api/songs', {
+  console.log('store:', formData)
+  const response = await fetch(`/api/albums/${album.id}/song`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData),
+    body: formData,
   });
   // console.log('After fetch, this is the response', response)
   if (response.ok) {
     const song = await response.json();
     // console.log('If response is okay running, this is song', song)
-    for (const image of formData.images) {
-      if (image.url) {
-        await dispatch(createImageforSongThunk(song, image));
-      }
-    }
+    dispatch(createSongAction(song))
     return song;
-  } else {
-    const errorData = await response.json();
-    return errorData;
-  }
-};
-
-//Create Song Image Thunk
-export const createImageforSongThunk = (song, images) => async (dispatch) => {
-  // console.log('Create Image for song Thunk, this is song and image ', song, images)
-  const response = await fetch(`/api/songs/${song.id}/images`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(images),
-  });
-  if (response.ok) {
-    const newImage = await response.json();
-    // console.log('THIS IS NEW IMAGE RESPONSE', newImage)
-    song.url = newImage.url;
-    dispatch(createSongAction(song));
-    return newImage;
   } else {
     const errorData = await response.json();
     return errorData;
