@@ -88,6 +88,22 @@ def remove_song_like(id):
     return { "errors": "User has not liked this song" }, 405
 
 
+
+# deleting a Song
+@song_routes.route('/delete/<int:id>', methods=['DELETE'])
+@login_required
+def delete_song(id):
+    selected_song = Song.query.get(id)
+
+    if selected_song.to_dict()['user_id'] != current_user.id:
+        return { 'errors': 'Song not found' }, 404
+
+    db.session.delete(selected_song)
+    db.session.commit()
+
+    return { 'message': 'Deleted Successfully' }
+
+
 # editing a Song
 @song_routes.route('/edit/<int:id>', methods=['PUT'])
 @login_required

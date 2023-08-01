@@ -6,6 +6,6 @@ from ..api.aws_helper import ALLOWED_EXTENSIONS
 
 class EditSongForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
-    song = FileField('song', validators=[FileAllowed(list(ALLOWED_EXTENSIONS)), FileRequired()])
+    song = FileField('song', validators=[FileAllowed(list(ALLOWED_EXTENSIONS))])
     track_number = IntegerField('track_number', validators=[DataRequired()])
     submit = SubmitField('Submit')

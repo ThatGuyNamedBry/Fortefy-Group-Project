@@ -87,6 +87,8 @@ def create_album_song(id):
     if form.validate_on_submit():
         album = Album.query.get(id)
 
+        print("album info", album)
+
         if album is None or album.user_id != current_user.id:
             return { 'errors': 'Album not found'}, 404
 
@@ -100,7 +102,10 @@ def create_album_song(id):
         newSong = Song (
             name = form.data['name'],
             track_number = form.data['track_number'],
-            song_url = form.data['url']
+            song_url = upload['url'],
+            user_id = album.user_id,
+            album_id = album.id,
+            duration = 310
         )
 
         db.session.add(newSong)
