@@ -55,7 +55,8 @@ export const deleteSongAction = (songId) => {
 export const addLikeAction = (songId, like) => {
   return {
     type: ADD_LIKE,
-    payload: songId, like
+    songId,
+    like
   }
 }
 
@@ -63,7 +64,8 @@ export const addLikeAction = (songId, like) => {
 export const removeLikeAction = (songId, likeId) => {
   return {
     type: REMOVE_LIKE,
-    payload: songId, likeId
+    songId,
+    likeId
   }
 }
 
@@ -221,14 +223,14 @@ const initialState = {
         delete newSongs[action.payload];
         return { ...state, allSongs: newSongs };
       case ADD_LIKE:
-        const songLikesAdded = [...state.allSongs[action.payload.songId].likes, action.payload.like];
-        return { ...state, allSongs: { ...state.allSongs, [action.payload.songId]: { ...state.allSongs[action.payload.songId], likes: [...songLikesAdded] } } }
+        const songLikesAdded = [...state.allSongs[action.songId].likes, action.like];
+        return { ...state, allSongs: { ...state.allSongs, [action.songId]: { ...state.allSongs[action.songId], likes: [...songLikesAdded] } } }
       case REMOVE_LIKE:
-        const currentLikes = [...state.allSongs[action.payload.songId].likes];
-        const deleteLike = currentLikes.find(like => like.id === action.payload.likeId);
+        const currentLikes = [...state.allSongs[action.songId].likes];
+        const deleteLike = currentLikes.find(like => like.id === action.likeId);
         const ind = currentLikes.indexOf(deleteLike);
         const removedLikes = [...currentLikes.slice(0, ind), ...currentLikes.slice(ind + 1)];
-        return { ...state, allSongs: { ...state.allSongs, [action.payload.songId]: { ...state.allSongs[action.payload.songId], likes: [...removedLikes] } } }
+        return { ...state, allSongs: { ...state.allSongs, [action.songId]: { ...state.allSongs[action.songId], likes: [...removedLikes] } } }
       default:
         return state;
         }
