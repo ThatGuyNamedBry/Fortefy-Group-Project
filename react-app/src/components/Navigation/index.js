@@ -13,8 +13,9 @@ function Navigation({ isLoaded }) {
 				<NavLink exact to="/" className="nav-link">
 					<i className="fas fa-home" ></i>Home</NavLink>
 			</li>
-			<li>
-				<span className="welcome-text">Welcome to Fortefy!</span>
+			<li id='welcome-text'>
+				<span className="welcome-text-symbol">&#119185;</span>
+				<span className="welcome-text">ortefy</span>
 			</li>
 			<li id="nav-right">
 			{sessionUser && (

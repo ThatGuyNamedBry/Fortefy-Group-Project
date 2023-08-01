@@ -69,7 +69,7 @@ const HomeLandingPage = () => {
                         .map(album => (
                             <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
                                 <img src={album.art} alt={album.name} className="album-image" />
-                                <h3>{album.name.length > 24 ? album.name.slice(0, 24) + '...' : album.name}</h3>
+                                <h3>{album.name.length > 22 ? album.name.slice(0, 22) + '...' : album.name}</h3>
                                 <p>{album.artist}</p>
                             </Link>
                         ))}
