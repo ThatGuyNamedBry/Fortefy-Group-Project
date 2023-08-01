@@ -8,11 +8,13 @@ import LikeButton from '../LikeButton';
 import './AlbumDetails.css';
 
 const AlbumDetails = () => {
-    
+
     const dispatch = useDispatch();
     const { albumId } = useParams();
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
+    const user = useSelector(state => state.session.user)
     const [hoveredSong, setHoveredSong] = useState(-1);
+    const [userOwned, setUserOwned] = useState(false);
 
     const showPlayButton = (i) => {
         setHoveredSong(i);
@@ -30,7 +32,17 @@ const AlbumDetails = () => {
 
     useEffect(() => {
         dispatch(getAllSongsAction(albumSongs));
-    }, [dispatch, singleAlbum, albumSongs])
+        setUserOwned(singleAlbum?.user?.id === user?.id);
+        console.log(singleAlbum);
+    }, [dispatch, singleAlbum, albumSongs, user]);
+
+    const editHandleClick = (e) => {
+
+    }
+
+    const deleteHandleClick = (e) => {
+
+    }
 
     if (!singleAlbum) {
         return null;
@@ -78,6 +90,13 @@ const AlbumDetails = () => {
                                     songId={song.id}
                                 />
                             </div>
+                            {userOwned ?
+                            <div style={hoveredSong === i ? {display: "block"} : {color: "rgb(34, 34, 34)"}}>
+                                <i onClick={editHandleClick} className="fa-solid fa-pen-to-square"></i>
+                                &nbsp; &nbsp;
+                                <i onClick={deleteHandleClick} className="fa-regular fa-trash-can"></i>
+                            </div>
+                            : null}
                             <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
                         </div>
                     </button>
