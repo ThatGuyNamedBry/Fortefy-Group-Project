@@ -1,6 +1,9 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db, Song, Like
+from app.forms import EditSongForm
+from app.api.aws_helper import get_unique_filename, upload_file_to_s3
+from app.api.auth_routes import validation_errors_to_error_messages
 
 song_routes = Blueprint('song', __name__)
 
@@ -68,7 +71,7 @@ def remove_song_like(id):
     Remove a like from a selected song and return likes for the song in a list of like dictionaries
     """
     song = Song.query.get(id)
-    
+
     # Iterate through list of like dictionaries which CANNOT be deleted from the db
     ind = 0
     for like in song.to_dict()["likes"]:
@@ -83,3 +86,49 @@ def remove_song_like(id):
         ind += 1
 
     return { "errors": "User has not liked this song" }, 405
+
+
+
+# deleting a Song
+@song_routes.route('/delete/<int:id>', methods=['DELETE'])
+@login_required
+def delete_song(id):
+    selected_song = Song.query.get(id)
+
+    if selected_song.to_dict()['user_id'] != current_user.id:
+        return { 'errors': 'Song not found' }, 404
+
+    db.session.delete(selected_song)
+    db.session.commit()
+
+    return { 'message': 'Deleted Successfully' }
+
+
+# editing a Song
+@song_routes.route('/edit/<int:id>', methods=['PUT'])
+@login_required
+def edit_song(id):
+    form = EditSongForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        current_song = Song.query.get(id)
+
+        if form.data['song'] is not None:
+            new_song = form.data['song']
+            new_song.filename = get_unique_filename(new_song.filename)
+            upload = upload_file_to_s3(new_song)
+
+            if 'url' not in upload:
+                return { 'error': 'upload error'}
+
+            current_song.song_url = upload['url']
+
+        current_song.name = form.data['name']
+        current_song.track_number = form.data['track_number']
+
+        db.session.commit()
+
+        return jsonify(current_song.to_dict())
+
+    return { 'errors': validation_errors_to_error_messages(form.errors)}, 401
