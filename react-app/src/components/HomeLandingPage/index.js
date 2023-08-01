@@ -87,7 +87,7 @@ const HomeLandingPage = () => {
                         .map(song => {
                             const album = allAlbums[song.album_id];
                             return (
-                                <Link key={`${album.id}-${song.id}`} to={`/albums/${album.id}`} className="album-tile link-as-text">
+                                <Link key={`${album?.id}-${song?.id}`} to={`/albums/${album?.id}`} className="album-tile link-as-text">
                                     <img src={album?.art} alt={album?.name} className="album-image" />
                                     <h3>{song.name}</h3>
                                     <p>{album?.artist}</p>
