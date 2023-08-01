@@ -28,6 +28,10 @@
     border-radius: 8px;
 }
 
+.album-tile Link{
+    text-decoration: none;
+}
+
 .album-tile h3{
     margin: 0px;
     font-size: medium;
@@ -66,3 +70,13 @@
     align-items: baseline;
     margin-right: 50px;
 }
+
+.link-as-text {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .link-as-text:hover {
+    text-decoration: underline;
+  }

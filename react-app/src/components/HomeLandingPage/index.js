@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllAlbumsThunk } from '../../store/albums';
 import { getAllSongsThunk } from '../../store/songs';
 import './HomeLandingPage.css';
+import { Link } from 'react-router-dom';
 
 const HomeLandingPage = () => {
     const dispatch = useDispatch();
@@ -66,11 +67,11 @@ const HomeLandingPage = () => {
                     {Object.values(allAlbums)
                         .slice(startIndexAlbums, startIndexAlbums + itemsPerPage)
                         .map(album => (
-                            <div key={album.id} className="album-tile">
+                            <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
                                 <img src={album.art} alt={album.name} className="album-image" />
                                 <h3>{album.name.length > 24 ? album.name.slice(0, 24) + '...' : album.name}</h3>
                                 <p>{album.artist}</p>
-                            </div>
+                            </Link>
                         ))}
                 </div>
                 <div className="album-grid-header">
@@ -86,11 +87,11 @@ const HomeLandingPage = () => {
                         .map(song => {
                             const album = allAlbums[song.album_id];
                             return (
-                                <div key={song.id} className="album-tile">
+                                <Link key={`${album.id}-${song.id}`} to={`/albums/${album.id}`} className="album-tile link-as-text">
                                     <img src={album?.art} alt={album?.name} className="album-image" />
                                     <h3>{song.name}</h3>
                                     <p>{album?.artist}</p>
-                                </div>
+                                </Link>
                             );
                         })}
                 </div>
