@@ -189,7 +189,7 @@ const playlistReducer = (state = initialState, action) => {
             });
             return { ...state, allPlaylists: allPlaylistsObject };
         case RECEIVE_PLAYLIST:
-            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: { ...action.payload } };
+            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: { ...action.payload } }, singlePlaylist: { ...action.payload } };
         // case LOAD_PLAYLIST:
         //     return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: { ...action.payload } };
         // case CREATE_PLAYLIST:
