@@ -84,7 +84,7 @@ const AlbumDetails = () => {
                 <div className='album-info-container'>
                     <p>Album</p>
                     <h3 className='album-name-header'>{singleAlbum.name}</h3>
-                    <p>{singleAlbum.artist} · {singleAlbum.year} · {singleAlbum.songs.length} songs, {secsToHrs(albumTime)}</p>
+                    <p>{singleAlbum.artist} · {singleAlbum.year} · {singleAlbum.songs.length} {singleAlbum.songs.length === 1 ? `song` : `songs`} songs, {secsToHrs(albumTime)}</p>
                 </div>
             </div>
             <div className='album-buttons-container'>
