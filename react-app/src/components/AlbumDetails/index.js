@@ -91,7 +91,7 @@ const AlbumDetails = () => {
                 <div className="add-music-button-container">
 
                     {user && singleAlbum.user.id === user.id ? <AddMusicButton
-                        modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} />}
+                        modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} type="create"/>}
                     /> : null}
                 </div>
 

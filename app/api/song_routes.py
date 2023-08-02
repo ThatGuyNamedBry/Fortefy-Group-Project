@@ -108,7 +108,7 @@ def delete_song(id):
 
 
 # editing a Song
-@song_routes.route('/edit/<int:id>', methods=['PUT'])
+@song_routes.route('/<int:id>', methods=['PUT'])
 @login_required
 def edit_song(id):
     form = EditSongForm()
@@ -117,16 +117,6 @@ def edit_song(id):
     if form.validate_on_submit():
         current_song = Song.query.get(id)
 
-        if form.data['song'] is not None:
-            new_song = form.data['song']
-            new_song.filename = get_unique_filename(new_song.filename)
-            upload = upload_file_to_s3(new_song)
-
-            if 'url' not in upload:
-                return { 'error': 'upload error'}
-
-            current_song.song_url = upload['url']
-
         current_song.name = form.data['name']
         current_song.track_number = form.data['track_number']
 
@@ -134,4 +124,4 @@ def edit_song(id):
 
         return jsonify(current_song.to_dict())
 
-    return { 'errors': validation_errors_to_error_messages(form.errors)}, 401
+    return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
