@@ -114,12 +114,11 @@ export const createSongThunk = (album, formData) => async (dispatch) => {
 };
 
 //Edit/Update a song Thunk
-export const updateSongThunk = (song) => async (dispatch) => {
+export const updateSongThunk = (song, formData) => async (dispatch) => {
   // console.log('Edit/Update an song Thunk, this is song  ', song);
   const response = await fetch(`/api/songs/${song.id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(song),
+    body: formData
   });
 
   if (response.ok) {

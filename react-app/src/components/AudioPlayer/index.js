@@ -3,11 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import './AudioPlayer.css';
-import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
+import { setIsPlaying, setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 
 const AudioPlayerComponent = () => {
-  const allSongs = useSelector((state) => state.songs.allSongs);
-
   const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
   const currentSongIndex = useSelector((state) => state.player.currentSongIndex);
   const isPlaying = useSelector((state) => state.player.isPlaying);
@@ -22,6 +20,7 @@ const AudioPlayerComponent = () => {
 
   const handleNextSong = () => {
     if (currentSongIndex + 1 < currentPlaylist.length) {
+      dispatch(setIsPlaying(true));
       dispatch(setCurrentSongIndex(currentSongIndex + 1));
     } else {
       dispatch(setIsPlaying(false));
@@ -42,14 +41,14 @@ const AudioPlayerComponent = () => {
           showSkipControls={true}
           showJumpControls={true}
           hasDefaultKeyBindings={false}
-          src={allSongs[currentPlaylist[currentSongIndex]]?.song_url}
-          header={`${allSongs[currentPlaylist[currentSongIndex]]?.name} - ${allSongs[currentPlaylist[currentSongIndex]]?.artist}`}
+          src={currentPlaylist[currentSongIndex]?.song_url}
+          header={`${currentPlaylist[currentSongIndex]?.name} - ${currentPlaylist[currentSongIndex]?.artist}`}
           customAdditionalControls={[
             <img
               key="album-art"
               className="audio-player-art"
-              src={allSongs[currentPlaylist[currentSongIndex]]?.album_art}
-              alt={allSongs[currentPlaylist[currentSongIndex]]?.name}
+              src={currentPlaylist[currentSongIndex]?.album_art}
+              alt={currentPlaylist[currentSongIndex]?.name}
             />,
           ]}
           onClickNext={handleNextSong}
@@ -64,3 +63,4 @@ const AudioPlayerComponent = () => {
 };
 
 export default AudioPlayerComponent;
+

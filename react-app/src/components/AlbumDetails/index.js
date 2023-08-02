@@ -17,6 +17,8 @@ const AlbumDetails = () => {
     const dispatch = useDispatch();
     const { albumId } = useParams();
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
+    const songs = useSelector(state => state.songs.allSongs)
+    const singleSong = useSelector(state => state.songs.singleSong)
     const user = useSelector(state => state.session.user)
     const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
     const [hoveredSong, setHoveredSong] = useState(-1);
@@ -34,39 +36,40 @@ const AlbumDetails = () => {
         dispatch(getAlbumByIdThunk(albumId));
     }, [dispatch, albumId]);
 
-    const albumSongs = singleAlbum ? singleAlbum.songs.sort((song1, song2) => song1.track_number - song2.track_number) : [];
+    useEffect(() => {
+        const albumSongs = singleAlbum ? singleAlbum.songs.sort((song1, song2) => song1.track_number - song2.track_number) : [];
+        dispatch(getAllSongsAction(albumSongs));
+    }, [dispatch, singleAlbum])
+
 
     useEffect(() => {
         setUserOwned(singleAlbum?.user?.id === user?.id);
-    }, [dispatch, singleAlbum, albumSongs, user]);
+    }, [dispatch, singleAlbum, songs, user]);
 
-    useEffect(() => {
-        if (currentPlaylist.length > 0) {
-          return;
-        }
-        dispatch(getAllSongsAction(albumSongs));
-      }, [dispatch, albumSongs]);
+
 
     const editHandleClick = (e) => {
 
     }
 
-    const deleteHandleClick = (e) => {
-
+    const deleteHandleClick = async () => {
+        await dispatch(getAlbumByIdThunk(singleAlbum?.id))
     }
 
     const handlePlayAlbum = () => {
-        const albumSongIds = albumSongs.map((song) => song.id);
-        dispatch(setCurrentPlaylist(albumSongIds));
+        const albumSongIds = singleAlbum.songs.map((song) => song.id);
+        const albumSongs = albumSongIds.map((songId) => songs[songId]);
+        dispatch(setCurrentPlaylist(albumSongs));
         dispatch(setCurrentSongIndex(0));
         dispatch(setIsPlaying(true));
     };
 
     const handlePlaySong = (songId) => {
-        dispatch(setCurrentPlaylist([songId]));
+        const selectedSong = songs[songId];
+        dispatch(setCurrentPlaylist([selectedSong]));
         dispatch(setCurrentSongIndex(0));
         dispatch(setIsPlaying(true));
-    };
+      };
 
     if (!singleAlbum) {
         return null;
@@ -91,7 +94,7 @@ const AlbumDetails = () => {
                 <div className="add-music-button-container">
 
                     {user && singleAlbum.user.id === user.id ? <AddMusicButton
-                        modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} />}
+                        modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} type="create"/>}
                     /> : null}
                 </div>
 
@@ -101,7 +104,7 @@ const AlbumDetails = () => {
                     <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
                     <i class="fa-regular fa-clock"></i>
                 </li>
-                {albumSongs.map((song, i) => (
+                {Object.values(songs).map((song, i) => (
                     <button key={song.id} className='albums-songs-button'
                         onMouseEnter={(e) => showPlayButton(i)}
                         onMouseLeave={() => hidePlayButton()}
@@ -126,7 +129,8 @@ const AlbumDetails = () => {
                                 <div style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
                                     <i onClick={editHandleClick} className="fa-solid fa-pen-to-square"></i>
                                     &nbsp; &nbsp;
-                                    <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />} />
+                                    <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />}
+                                        onClick={deleteHandleClick} />
                                 </div>
                                 : null}
                             <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>

@@ -4,6 +4,8 @@ import { useHistory, Link } from 'react-router-dom';
 import { getCurrentUserAllAlbumsThunk, deleteAlbumThunk } from '../../store/albums';
 import { getCurrentUserAllSongsThunk, deleteSongAction } from '../../store/songs';
 import { getCurrentUserAllPlaylistsThunk } from '../../store/playlists';
+import EditSongButton from '../EditSongButton';
+import AddMusicModal from '../AddMusicModal';
 import DeleteModal from '../DeleteModal';
 import DeleteMusicButton from '../DeleteMusicButton/DeleteMusicButton';
 import './ProfilePage.css';
@@ -69,7 +71,7 @@ const ProfilePage = () => {
             return (
               <div key={`${album?.id}-${song?.id}`} className="profile-tile-container">
                 <div className="profile-tile-buttons">
-                  <button onClick={() => handleUpdateSong(song.id)} className='fa-solid fa-pen-to-square'></button>
+                  <EditSongButton modalComponent={<AddMusicModal className="add-music-modal" album={album} song={song} type="update"/>}/>
                   <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />} />
                 </div>
                 <Link to={`/albums/${album?.id}`} className="album-tile link-as-text">
