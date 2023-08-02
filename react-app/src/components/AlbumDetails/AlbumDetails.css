@@ -50,7 +50,7 @@
 }
 
 .albums-songs-button {
-    background-color: rgb(34, 34, 34);
+    background-color: rgb(19, 19, 19);
     color: rgb(160, 160, 160);
     border: 0px;
     box-shadow: 0px;
@@ -71,7 +71,7 @@
 }
 
 .song-track-number {
-    background-color: rgb(34, 34, 34);
+    background-color: rgb(19, 19, 19);
     color: rgb(160, 160, 160);
     border: 0px;
     box-shadow: 0px;
@@ -89,7 +89,7 @@
 }
 
 .album-play-button {
-    background-color: rgb(34, 34, 34);
+    background-color: rgb(19, 19, 19);
     color: rgb(33, 204, 6);
     border: 0px;
     box-shadow: 0px;
