@@ -6,7 +6,7 @@ import './AudioPlayer.css';
 import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 
 const AudioPlayerComponent = () => {
-  const allSongs = useSelector((state) => state.songs.allSongs);
+  // const allSongs = useSelector((state) => state.songs.allSongs);
 
   const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
   const currentSongIndex = useSelector((state) => state.player.currentSongIndex);
@@ -42,8 +42,8 @@ const AudioPlayerComponent = () => {
           showSkipControls={true}
           showJumpControls={true}
           hasDefaultKeyBindings={false}
-          src={allSongs[currentPlaylist[currentSongIndex]]?.song_url}
-          header={`${allSongs[currentPlaylist[currentSongIndex]]?.name} - ${allSongs[currentPlaylist[currentSongIndex]]?.artist}`}
+          src={[currentPlaylist[currentSongIndex]]?.song_url}
+          header={`${[currentPlaylist[currentSongIndex]]?.name} - ${allSongs[currentPlaylist[currentSongIndex]]?.artist}`}
           customAdditionalControls={[
             <img
               key="album-art"
