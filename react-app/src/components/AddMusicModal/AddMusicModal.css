@@ -1,0 +1,97 @@
+.add-music-container {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+#add-music-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+    margin-right: 40px;
+    margin-bottom: 19px;
+}
+
+.song-field-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 71px;
+    gap:30px;
+}
+
+.song-field {
+    display: flex;
+    gap: 2px;
+}
+
+#song-name {
+    margin-left: 25px;
+    background-color: rgb(68, 66, 66);
+    border: none;
+    color: white;
+    border-radius: 20px;
+    text-indent: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+#track-number {
+    margin-left: 9px;
+    background-color: rgb(68, 66, 66);
+    border: none;
+    color: white;
+    border-radius: 20px;
+    text-indent: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+::placeholder {
+    text-indent: 6px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Hide default arrows */
+  /* Add custom styles for arrows */
+  width: 16px;
+  height: 16px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  color: #333; /* Arrow color */
+  display: none;
+}
+
+#file1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 57px;
+}
+
+#submit-song-button {
+    border: none;
+    margin-top: 25px;
+    padding: 14px 44px;
+    border-radius: 25px;
+    background-color: rgb(0, 191, 0);
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+#submit-song-button:hover {
+    /* padding: 15px 45px; */
+    /* width: 10px;
+    height: 20px; */
+    background-color: rgb(233, 233, 233);
+    color: rgb(12, 147, 0);
+    /* font-weight: bold; */
+    /* font-size: 15px; */
+    border-radius: 30px;
+}
