@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import db, Playlist
+from app.models import db, Playlist, PlaylistSong, Song
 from app.forms import CreatePlaylistForm, EditPlaylistForm
 from app.api.auth_routes import validation_errors_to_error_messages
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3
@@ -16,14 +16,6 @@ def get_all_playlists():
     playlists = [playlist.to_dict() for playlist in Playlist.query.all()]
     return jsonify(playlists)
 
-# Get a Playlist By Id
-@playlist_routes.route('/<int:id>')
-def get_playlist_by_id(id):
-    """
-    Query for a playlist by id and returns that playlist in a dictionary
-    """
-    playlist = Playlist.query.get(id)
-    return jsonify(playlist.to_dict())
 
 # Get All User-Created Playlists
 @playlist_routes.route('/current')
@@ -57,6 +49,44 @@ def create_new_playlist():
 
     # print(validation_errors_to_error_messages(form.errors))
     return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
+
+# Add a Song to a Playlist with Playlist Id and **SONG** ID
+@playlist_routes.route('/<int:playlist_id>/playlist-songs/<int:song_id>/new', methods=['POST'])
+@login_required
+def add_playlist_song(playlist_id, song_id):
+    """
+    Create a playlist_song instance and return the altered playlist as a dictionary
+    """
+    playlist_song = PlaylistSong(
+        song_id = song_id,
+        playlist_id = playlist_id
+    )
+
+    updated_playlist = Playlist.query.get(playlist_id)
+    if updated_playlist is None:
+        return {"errors": "Playlist could not be found"}, 404
+
+    db.session.add(playlist_song)
+    db.session.commit()
+
+    return jsonify(updated_playlist.to_dict())
+
+# Remove a Song from a Playlist By **PLAYLISTSONG** ID
+@playlist_routes.route('/<int:playlist_id>/playlist-songs/<int:playlist_song_id>/delete', methods=['DELETE'])
+@login_required
+def remove_playlist_song(playlist_id, playlist_song_id):
+    """Query for a playlist_song by it's playlist_song_id, delete it from the db and return the altered playlist as a dictionary"""
+    playlist_song = PlaylistSong.query.get(playlist_song_id)
+
+    if playlist_song is None:
+        return {"errors": "Song cannot be found in Playlist"}, 404
+
+    db.session.delete(playlist_song)
+    db.session.commit()
+
+    updated_playlist = Playlist.query.get(playlist_id)
+
+    return jsonify(updated_playlist.to_dict())
 
 # Edit a User-Created Playlist
 @playlist_routes.route('/<int:id>/edit', methods=['PUT'])
@@ -96,3 +126,13 @@ def delete_playlist(id):
     db.session.delete(playlist)
     db.session.commit()
     return {'message': 'Successfully Deleted'}
+
+
+# Get a Playlist By Id
+@playlist_routes.route('/<int:id>')
+def get_playlist_by_id(id):
+    """
+    Query for a playlist by id and returns that playlist in a dictionary
+    """
+    playlist = Playlist.query.get(id)
+    return jsonify(playlist.to_dict())

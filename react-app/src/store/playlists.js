@@ -68,7 +68,7 @@ export const getCurrentUserAllPlaylistsThunk = () => async (dispatch) => {
     }
 };
 
-//Get Playlist by ID Thunk
+//Get Playlist by Id Thunk
 export const getPlaylistByIdThunk = (playlistId) => async (dispatch) => {
     const response = await fetch(`/api/playlists/${playlistId}`);
     if (response.ok) {
@@ -77,8 +77,6 @@ export const getPlaylistByIdThunk = (playlistId) => async (dispatch) => {
         return playlist;
     }
 };
-
-/********* CREATE BACKEND ROUTES FOR ALL THUNKS BELOW THIS POINT ************/
 
 //Create a Playlist Thunk
 export const createPlaylistThunk = (formData) => async (dispatch) => {
@@ -127,11 +125,46 @@ export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
     });
 
     if (response.ok) {
+        const data = await response.json()
         dispatch(deletePlaylistAction(playlistId));
-        return response.json();
+        return data;
     }
 };
 
+//Add a Song to a Playlist Thunk
+    // Arguments = playlist Id, **SONG ID**
+        // Notice distinction songId from below thunk
+export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => {
+    const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${songId}/new`, {
+        method: 'POST',
+    });
+
+    if (response.ok) {
+        const updatedPlaylist = await response.json();
+        dispatch(getPlaylistByIdAction(updatedPlaylist));
+        // If code doesn't work, comment OUT the line above, and comment IN the line below
+        // dispatch(getPlaylistByIdThunk(playlistId));
+        return updatedPlaylist;
+
+    }
+}
+
+//Remove a Song from a Playlist Thunk
+    // Arguments = playlist Id, **PLAYLISTSONG ID**
+        // Notice distinction playlistSongId from above thunk
+export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (dispatch) => {
+    const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${playlistSongId}/delete`, {
+        method: 'DELETE'
+    });
+
+    if (response.ok) {
+        const updatedPlaylist = await response.json();
+        dispatch(getPlaylistByIdAction(updatedPlaylist));
+        // If code doesn't work, comment OUT the line above, and comment IN the line below
+        // dispatch(getPlaylistByIdThunk(playlistId));
+        return updatedPlaylist;
+    }
+}
 
 //Reducer function
 const initialState = {
@@ -148,11 +181,11 @@ const playlistReducer = (state = initialState, action) => {
             });
             return { ...state, allPlaylists: allPlaylistsObject };
         case LOAD_PLAYLIST:
-            return { ...state, singlePlaylist: { [action.payload.id]: action.payload } };
+            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: { ...action.payload } };
         case CREATE_PLAYLIST:
-            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload } };
+            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: { ...action.payload } };
         case UPDATE_PLAYLIST:
-            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: { [action.payload.id]: action.payload } };
+            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: { ...action.payload } };
         case DELETE_PLAYLIST:
             const newPlaylists = { ...state.allPlaylists };
             delete newPlaylists[action.payload];
