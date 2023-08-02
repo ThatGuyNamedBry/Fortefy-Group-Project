@@ -65,10 +65,11 @@ const AlbumDetails = () => {
     };
 
     const handlePlaySong = (songId) => {
-        dispatch(setCurrentPlaylist([songId]));
+        const selectedSong = songs[songId];
+        dispatch(setCurrentPlaylist([selectedSong]));
         dispatch(setCurrentSongIndex(0));
         dispatch(setIsPlaying(true));
-    };
+      };
 
     if (!singleAlbum) {
         return null;
