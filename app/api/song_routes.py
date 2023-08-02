@@ -90,7 +90,7 @@ def remove_song_like(id):
 
 
 # deleting a Song
-@song_routes.route('/delete/<int:id>', methods=['DELETE'])
+@song_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_song(id):
     selected_song = Song.query.get(id)
