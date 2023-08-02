@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from app.models import Album, db, Song
 from app.forms import CreateAlbumForm, EditAlbumForm, CreateSongForm
 from app.api.auth_routes import validation_errors_to_error_messages
-from app.api.aws_helper import get_unique_filename, upload_file_to_s3
+from app.api.aws_helper import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from mutagen.mp3 import MP3
 
 album_routes = Blueprint('albums', __name__)
@@ -41,9 +41,12 @@ def get_user_albums():
 @login_required
 def delete_album(id):
     album = Album.query.get(id)
+    songs = album.to_dict()['songs']
 
     if album is None or album.user_id != current_user.id:
         return {'errors': 'Album not found'}, 404
+    
+    [remove_file_from_s3(song['song_url']) for song in songs]
 
     db.session.delete(album)
     db.session.commit()

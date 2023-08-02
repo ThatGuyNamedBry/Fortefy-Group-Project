@@ -19,7 +19,7 @@ class Album(db.Model):
     updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
     user = db.relationship('User', back_populates='albums')
-    songs = db.relationship('Song', back_populates='album')
+    songs = db.relationship('Song', back_populates='album', cascade="all, delete")
 
     def to_dict(self):
         return {

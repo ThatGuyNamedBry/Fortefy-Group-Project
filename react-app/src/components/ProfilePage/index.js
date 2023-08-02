@@ -30,16 +30,8 @@ const ProfilePage = () => {
   // console.log("userAlbums", userAlbums)
   // console.log("userSongs", userSongs)
 
-  const handleDeleteSong = (song) => {
-    dispatch(deleteSongAction(song));
-  };
-
   const handleUpdateSong = (song) => {
     history.push(`/albums/${song.id}/edit`);
-  };
-
-  const handleDeleteAlbum = (album) => {
-    dispatch(deleteAlbumThunk(album));
   };
 
   const handleUpdateAlbum = (album) => {
@@ -57,7 +49,7 @@ const ProfilePage = () => {
             <div key={album?.id} className="profile-tile-container">
               <div className="profile-tile-buttons">
                 <button onClick={() => handleUpdateAlbum(album)} className='fa-solid fa-pen-to-square'></button>
-                <button onClick={() => handleDeleteAlbum(album.id)} className="fa-regular fa-trash-can"></button>
+                <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='album' id={album.id} />} />
               </div>
               <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
                 <img src={album.art} alt={album.name} className="album-image" />
