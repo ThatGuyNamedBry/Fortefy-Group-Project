@@ -11,6 +11,7 @@ import AudioPlayerComponent from "./components/AudioPlayer";
 import AlbumCreate from "./components/AlbumCreate";
 import AlbumUpdate from "./components/AlbumUpdate";
 import ProfilePage from "./components/ProfilePage";
+import PlaylistDetails from "./components/PlaylistDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function App() {
           <Route path="/albums/new" component={AlbumCreate}/>
           <Route path="/albums/:albumId/edit" component={AlbumUpdate}/>
           <Route path="/albums/:albumId" component={AlbumDetails}/>
+          <Route path="/playlists/:playlistId" component={PlaylistDetails}/>
         </Switch>
       )}
         <AudioPlayerComponent />
@@ -40,5 +42,3 @@ function App() {
 }
 
 export default App;
-
-
