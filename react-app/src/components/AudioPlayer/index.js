@@ -29,6 +29,7 @@ const AudioPlayerComponent = () => {
       setCurrentSongIndex((prevIndex) => prevIndex + 1);
     } else {
       setIsPlaying(false);
+      setCurrentPlaylist([]);
     }
   };
 
