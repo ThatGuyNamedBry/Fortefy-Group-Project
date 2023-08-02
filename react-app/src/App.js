@@ -11,12 +11,10 @@ import AudioPlayerComponent from "./components/AudioPlayer";
 import AlbumCreate from "./components/AlbumCreate";
 import AlbumUpdate from "./components/AlbumUpdate";
 import ProfilePage from "./components/ProfilePage";
-import { PlaybackContext } from '../src/context/PlaybackContext';
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const { currentPlaylist} = useContext(PlaybackContext);
 
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true));
@@ -36,20 +34,11 @@ function App() {
           <Route path="/albums/:albumId" component={AlbumDetails}/>
         </Switch>
       )}
-        <AudioPlayerComponent currentPlaylist={currentPlaylist} />
+        <AudioPlayerComponent />
     </>
   );
 }
 
 export default App;
 
-// const [audioSrc, setAudioSrc] = useState(null);
-// const [title, setTitle] = useState(null);
-// const singleSong = useSelector((state) => state.songs.singleSong);
 
-// useEffect(() => {
-  //   if (singleSong) {
-    //     setAudioSrc(singleSong.song_url);
-    //     setTitle(singleSong.title);
-    //   }
-    // }, [singleSong]);

@@ -8,8 +8,7 @@ import AddMusicButton from '../AddMusicButton';
 import LikeButton from '../LikeButton';
 import AddMusicModal from '../AddMusicModal'
 import './AlbumDetails.css';
-import AudioPlayerComponent from '../AudioPlayer';
-import { PlaybackContext } from '../../context/PlaybackContext';
+import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 
 const AlbumDetails = () => {
 
@@ -17,15 +16,9 @@ const AlbumDetails = () => {
     const { albumId } = useParams();
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
     const user = useSelector(state => state.session.user)
+    const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
     const [hoveredSong, setHoveredSong] = useState(-1);
     const [userOwned, setUserOwned] = useState(false);
-    const { currentPlaylist,
-        setCurrentPlaylist,
-        currentSongIndex,
-        setCurrentSongIndex,
-        isPlaying,
-        setIsPlaying } = useContext(PlaybackContext);
-    // const [currentPlaylist, setCurrentPlaylist] = useState([]);
 
     const showPlayButton = (i) => {
         setHoveredSong(i);
@@ -57,13 +50,16 @@ const AlbumDetails = () => {
 
     const handlePlayAlbum = () => {
         const albumSongIds = albumSongs.map((song) => song.id);
-        setCurrentPlaylist(albumSongIds);
-    };
+        dispatch(setCurrentPlaylist(albumSongIds));
+        dispatch(setCurrentSongIndex(0));
+        dispatch(setIsPlaying(true));
+      };
 
-    const handlePlaySong = (songId) => {
-        setCurrentPlaylist([songId]);
-    };
-
+      const handlePlaySong = (songId) => {
+        dispatch(setCurrentPlaylist([songId]));
+        dispatch(setCurrentSongIndex(0));
+        dispatch(setIsPlaying(true));
+      };
 
     if (!singleAlbum) {
         return null;
@@ -82,7 +78,7 @@ const AlbumDetails = () => {
                 </div>
             </div>
             <div className='album-buttons-container'>
-            <button className='album-play-button' onClick={handlePlayAlbum}>
+                <button className='album-play-button' onClick={handlePlayAlbum}>
                     <i class="fa-sharp fa-solid fa-circle-play"></i>
                 </button>
                 <div className="add-music-button-container">
@@ -131,7 +127,6 @@ const AlbumDetails = () => {
                     </button>
                 ))}
             </ul>
-
         </div>
     );
 };

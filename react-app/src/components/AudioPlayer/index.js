@@ -1,40 +1,36 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import './AudioPlayer.css';
-import { PlaybackContext } from '../../context/PlaybackContext';
-
+import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 
 const AudioPlayerComponent = () => {
   const allSongs = useSelector((state) => state.songs.allSongs);
-  const { currentPlaylist,
-    setCurrentPlaylist,
-    currentSongIndex,
-    setCurrentSongIndex,
-    isPlaying,
-    setIsPlaying } = useContext(PlaybackContext);
-  // const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  // const [isPlaying, setIsPlaying] = useState(false);
+
+  const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
+  const currentSongIndex = useSelector((state) => state.player.currentSongIndex);
+  const isPlaying = useSelector((state) => state.player.isPlaying);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (currentPlaylist && currentPlaylist.length > 0) {
-      setCurrentSongIndex(0);
-      setIsPlaying(true);
+      dispatch(setIsPlaying(true));
     }
-  }, [currentPlaylist]);
+  }, [currentPlaylist, dispatch]);
 
   const handleNextSong = () => {
     if (currentSongIndex + 1 < currentPlaylist.length) {
-      setCurrentSongIndex((prevIndex) => prevIndex + 1);
+      dispatch(setCurrentSongIndex(currentSongIndex + 1));
     } else {
-      setIsPlaying(false);
-      setCurrentPlaylist([]);
+      dispatch(setIsPlaying(false));
+      dispatch(setCurrentPlaylist({}));
     }
   };
 
   const handlePlayPause = () => {
-    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+    dispatch(setIsPlaying(!isPlaying));
   };
 
   return (
