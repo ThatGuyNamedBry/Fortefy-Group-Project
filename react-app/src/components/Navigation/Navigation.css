@@ -84,11 +84,11 @@
   font-style: italic;
 }
 
-.welcome-text-symbol {
+/* .welcome-text-symbol {
   font-size: 50px;
   font-weight: bold;
   margin-right: -7px;
-}
+} */
 
 #welcome-text {
   display: flex;

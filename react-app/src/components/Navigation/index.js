@@ -14,8 +14,8 @@ function Navigation({ isLoaded }) {
 					<i className="fas fa-home" ></i>Home</NavLink>
 			</li>
 			<li id='welcome-text'>
-				<span className="welcome-text-symbol">&#119185;</span>
-				<span className="welcome-text">ortefy</span>
+				{/* <span className="welcome-text-symbol">ƒ</span> */}
+				<span className="welcome-text">ƒorteƒy</span>
 			</li>
 			<li id="nav-right">
 			{sessionUser && (
