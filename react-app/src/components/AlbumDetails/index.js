@@ -7,8 +7,10 @@ import { getAllSongsAction } from '../../store/songs';
 import AddMusicButton from '../AddMusicButton';
 import LikeButton from '../LikeButton';
 import AddMusicModal from '../AddMusicModal'
+import DeleteModal from '../DeleteModal';
 import './AlbumDetails.css';
 import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
+import DeleteMusicButton from '../DeleteMusicButton/DeleteMusicButton';
 
 const AlbumDetails = () => {
 
@@ -53,13 +55,13 @@ const AlbumDetails = () => {
         dispatch(setCurrentPlaylist(albumSongIds));
         dispatch(setCurrentSongIndex(0));
         dispatch(setIsPlaying(true));
-      };
+    };
 
-      const handlePlaySong = (songId) => {
+    const handlePlaySong = (songId) => {
         dispatch(setCurrentPlaylist([songId]));
         dispatch(setCurrentSongIndex(0));
         dispatch(setIsPlaying(true));
-      };
+    };
 
     if (!singleAlbum) {
         return null;
@@ -119,7 +121,7 @@ const AlbumDetails = () => {
                                 <div style={hoveredSong === i ? { display: "block" } : { color: "rgb(34, 34, 34)" }}>
                                     <i onClick={editHandleClick} className="fa-solid fa-pen-to-square"></i>
                                     &nbsp; &nbsp;
-                                    <i onClick={deleteHandleClick} className="fa-regular fa-trash-can"></i>
+                                    <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />} />
                                 </div>
                                 : null}
                             <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
