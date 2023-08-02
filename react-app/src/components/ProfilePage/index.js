@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
-import { getCurrentUserAllAlbumsThunk, deleteAlbumThunk } from '../../store/albums';
-import { getCurrentUserAllSongsThunk, deleteSongAction } from '../../store/songs';
+import { getCurrentUserAllAlbumsThunk } from '../../store/albums';
+import { getCurrentUserAllSongsThunk } from '../../store/songs';
 import { getCurrentUserAllPlaylistsThunk } from '../../store/playlists';
 import EditSongButton from '../EditSongButton';
 import AddMusicModal from '../AddMusicModal';
@@ -28,13 +28,6 @@ const ProfilePage = () => {
   const userAlbums = Object.values(userAlbumsObject);
   const userSongs = Object.values(userSongsObject);
   const userPlaylists = Object.values(userPlaylistsObject);
-
-  // console.log("userAlbums", userAlbums)
-  // console.log("userSongs", userSongs)
-
-  const handleUpdateSong = (song) => {
-    history.push(`/albums/${song.id}/edit`);
-  };
 
   const handleUpdateAlbum = (album) => {
     history.push(`/albums/${album.id}/edit`);

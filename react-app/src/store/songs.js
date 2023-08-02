@@ -131,8 +131,8 @@ export const updateSongThunk = (song, formData) => async (dispatch) => {
   }
 };
 
-//Delete a Spot Thunk
-export const deleteSpotThunk = (songId) => async (dispatch) => {
+//Delete a Song Thunk
+export const deleteSongThunk = (songId) => async (dispatch) => {
   const response = await fetch(`/api/songs/${songId}/delete`, {
     method: 'DELETE',
   });
@@ -191,7 +191,7 @@ const initialState = {
       case CREATE_SONG:
         return {...state, allSongs: {  ...state.allSongs, [action.payload.id]: action.payload }};
       case UPDATE_SONG:
-        return {...state, singleSong: { [action.payload.id]: action.payload}};
+        return { ...state, allSongs: { ...state.allSongs, [action.payload.id]: action.payload }, singleSong: { [action.payload.id]: action.payload} }
       case DELETE_SONG:
         const newSongs = { ...state.allSongs };
         delete newSongs[action.payload];
