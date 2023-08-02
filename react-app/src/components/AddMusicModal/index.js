@@ -40,13 +40,13 @@ function AddMusicModal({ album }) {
 
           <div className="song-field">
             <div className="field-label">
-              <label htmlFor="song-name">Track Name</label>
+              <label htmlFor="song-name">Track Name:</label>
               {errors.name ? <p className="errors">{errors.name}</p> : null}
             </div>
             <input
               id="song-name"
               type="text"
-              placeholder="Track name"
+              placeholder="Track Name"
               onChange={e => setSongName(e.target.value)}
               value={songName}
             />
@@ -54,13 +54,13 @@ function AddMusicModal({ album }) {
 
           <div className="song-field">
             <div className="field-label">
-              <label htmlFor="track-number">Track Number</label>
+              <label htmlFor="track-number">Track Number:</label>
               {errors.track_number ? <p className="errors">{errors.track_number}</p> : null}
             </div>
             <input
               id="track-number"
               type="number"
-              placeholder="Track number"
+              placeholder="Track Number"
               onChange={e => setTrackNumber(e.target.value)}
               value={trackNumber}
             />
@@ -68,18 +68,18 @@ function AddMusicModal({ album }) {
 
           <div className="song-field">
             <div className="field-label">
-              <label htmlFor="track-number">Upload</label>
+              <label htmlFor="track-number">Upload:</label>
               {errors.track_number ? <p className="errors">{errors.track_number}</p> : null}
             </div>
-          </div>
           <input
             id="file1"
             type="file"
             placeholder="Select file"
             onChange={e => setFile1(e.target.files[0])}
           />
+          </div>
         </div>
-        <button id="submit-song-button" onClick={handleSubmit} disabled={disableButton}>Submit</button>
+        <button id="submit-song-button" onClick={handleSubmit} disabled={disableButton}>Add Song</button>
 
       </form>
     </div>
