@@ -71,11 +71,11 @@
 }
 
 #profile-bttn:hover {
-  transform: scale(0.95);
+  transform: scale(0.90);
 }
 
 #profile-bttn:active {
-  transform: scale(0.90);
+  transform: scale(0.85);
 }
 
 .welcome-text {
@@ -84,11 +84,11 @@
   font-style: italic;
 }
 
-.welcome-text-symbol {
+/* .welcome-text-symbol {
   font-size: 50px;
   font-weight: bold;
   margin-right: -7px;
-}
+} */
 
 #welcome-text {
   display: flex;
