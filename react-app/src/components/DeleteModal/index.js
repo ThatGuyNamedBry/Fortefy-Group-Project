@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useModal } from '../../context/Modal';
 import { deleteAlbumThunk } from "../../store/albums";
-import { deleteSpotThunk } from "../../store/songs";
+import { deleteSongThunk } from "../../store/songs";
 import './DeleteModal.css';
 
 function DeleteModal({ type, id }) {
@@ -13,7 +13,7 @@ function DeleteModal({ type, id }) {
     if (type === 'album') {
       dispatch(deleteAlbumThunk(id));
     } else if (type === 'song') {
-      dispatch(deleteSpotThunk(id));
+      dispatch(deleteSongThunk(id));
     }
     closeModal();
   }

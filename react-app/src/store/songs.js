@@ -131,8 +131,8 @@ export const updateSongThunk = (song, formData) => async (dispatch) => {
   }
 };
 
-//Delete a Spot Thunk
-export const deleteSpotThunk = (songId) => async (dispatch) => {
+//Delete a Song Thunk
+export const deleteSongThunk = (songId) => async (dispatch) => {
   const response = await fetch(`/api/songs/${songId}/delete`, {
     method: 'DELETE',
   });
