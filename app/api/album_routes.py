@@ -89,8 +89,6 @@ def create_album_song(id):
     form = CreateSongForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    print('form data:', form.data)
-
     if form.validate_on_submit():
         album = Album.query.get(id)
 
@@ -100,8 +98,8 @@ def create_album_song(id):
         song = form.data['song']
         audio = MP3(song)
         song.filename = get_unique_filename(song.filename)
+        song.seek(0)
         upload = upload_file_to_s3(song)
-
 
         if 'url' not in upload:
             return { 'errors': 'upload error'}

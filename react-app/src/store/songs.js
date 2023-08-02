@@ -101,6 +101,7 @@ export const createSongThunk = (album, formData) => async (dispatch) => {
     method: 'POST',
     body: formData,
   });
+  console.log("response:", response)
   // console.log('After fetch, this is the response', response)
   if (response.ok) {
     const song = await response.json();
