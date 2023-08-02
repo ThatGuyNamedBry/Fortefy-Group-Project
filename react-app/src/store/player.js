@@ -20,7 +20,7 @@ export const setCurrentPlaylist = (currentPlaylist) => ({
     payload: { isPlaying },
   });
 
-//                                         Redicer Function
+//                                         Reducer Function
 
 const initialState = {
     currentPlaylist: [],
@@ -34,7 +34,6 @@ const initialState = {
         return {
           ...state,
           currentPlaylist: action.payload.currentPlaylist,
-          currentSongIndex: 0,
           isPlaying: true,
         };
       case SET_SONG_INDEX:

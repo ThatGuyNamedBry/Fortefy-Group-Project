@@ -35,10 +35,15 @@ const AlbumDetails = () => {
     const albumSongs = singleAlbum ? singleAlbum.songs.sort((song1, song2) => song1.track_number - song2.track_number) : [];
 
     useEffect(() => {
-        dispatch(getAllSongsAction(albumSongs));
         setUserOwned(singleAlbum?.user?.id === user?.id);
     }, [dispatch, singleAlbum, albumSongs, user]);
 
+    useEffect(() => {
+        if (currentPlaylist.length > 0) {
+          return;
+        }
+        dispatch(getAllSongsAction(albumSongs));
+      }, [dispatch, albumSongs]);
 
     const editHandleClick = (e) => {
 
