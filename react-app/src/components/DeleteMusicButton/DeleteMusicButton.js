@@ -1,5 +1,6 @@
 import React from 'react';
 import { useModal } from '../../context/Modal';
+import "./DeleteMusicButton.css";
 
 function DeleteMusicButton({
   modalComponent, // component to render inside the modal
@@ -15,7 +16,7 @@ function DeleteMusicButton({
   };
 
   return (
-    <i onClick={onClick} className="fa-regular fa-trash-can"></i>
+    <i onClick={onClick} className="delete-music-button fa-regular fa-trash-can"></i>
   );
 }
 

@@ -45,7 +45,7 @@ def delete_album(id):
 
     if album is None or album.user_id != current_user.id:
         return {'errors': 'Album not found'}, 404
-    
+
     [remove_file_from_s3(song['song_url']) for song in songs]
 
     db.session.delete(album)
@@ -100,6 +100,7 @@ def create_album_song(id):
         song = form.data['song']
         audio = MP3(song)
         song.filename = get_unique_filename(song.filename)
+        song.seek(0)
         upload = upload_file_to_s3(song)
 
 

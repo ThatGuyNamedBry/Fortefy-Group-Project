@@ -1,0 +1,8 @@
+.delete-music-button {
+    color: rgb(160, 160, 160);
+  }
+
+.delete-music-button:hover {
+    cursor: pointer;
+    color: white;
+  }
