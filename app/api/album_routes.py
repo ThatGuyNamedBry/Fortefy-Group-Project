@@ -95,10 +95,10 @@ def create_album_song(id):
             return { 'errors': 'Album not found'}, 404
 
         song = form.data['song']
+        audio = MP3(song)
         song.filename = get_unique_filename(song.filename)
         upload = upload_file_to_s3(song)
 
-        audio = MP3(song)
 
         if 'url' not in upload:
             return { 'errors': 'upload error'}
