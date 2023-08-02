@@ -8,13 +8,27 @@
   align-items: center;
   padding: 5px 5px;
   background-color: rgb(70, 70, 70);
+  border-radius: 10px;
+  width: 120px;
+  height: fit-content;
+  gap: 8px;
 }
 
 .profile-dropdown li button {
   align-items: center;
   padding:2px 5px;
   margin-bottom: 3px;
-  width: 69px
+  width: 90px;
+  border: none;
+  background-color: rgb(69, 69, 69);
+  color: rgb(12, 147, 0);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.profile-dropdown li button:hover {
+  /* background-color: rgb(233, 233, 233); */
+  color: rgb(233, 233, 233);
 }
 
 .hidden {
@@ -51,7 +65,7 @@
 
 #NavigationContainer li {
   list-style-type: none;
-  margin-right: 25px;
+  margin-right: 5px;
 }
 
 #nav-right {
