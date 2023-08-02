@@ -1,24 +1,29 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
-import { getAllAlbumsThunk, deleteAlbumThunk } from '../../store/albums';
-import { getAllSongsThunk, deleteSongAction } from '../../store/songs';
+import { getCurrentUserAllAlbumsThunk, deleteAlbumThunk } from '../../store/albums';
+import { getCurrentUserAllSongsThunk, deleteSongAction } from '../../store/songs';
+import { getCurrentUserAllPlaylistsThunk } from '../../store/playlists';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+
   const user = useSelector((state) => state.session.user);
-  const allAlbums = useSelector((state) => state.albums.allAlbums);
-  const allSongs = useSelector((state) => state.songs.allSongs);
+  const userAlbumsObject = useSelector((state) => state.albums.allAlbums);
+  const userSongsObject = useSelector((state) => state.songs.allSongs);
+  const userPlaylistsObject = useSelector((state) => state.playlists.allPlaylists)
 
   useEffect(() => {
-    dispatch(getAllAlbumsThunk());
-    dispatch(getAllSongsThunk());
+    dispatch(getCurrentUserAllAlbumsThunk());
+    dispatch(getCurrentUserAllSongsThunk());
+    dispatch(getCurrentUserAllPlaylistsThunk());
   }, [dispatch]);
 
-  const userAlbums = Object.values(allAlbums).filter((album) => album.user.id === user.id);
-  const userSongs = Object.values(allSongs).filter((song) => song.user_id === user.id);
+  const userAlbums = Object.values(userAlbumsObject);
+  const userSongs = Object.values(userSongsObject);
+  const userPlaylists = Object.values(userPlaylistsObject);
 
   // console.log("userAlbums", userAlbums)
   // console.log("userSongs", userSongs)
@@ -47,7 +52,7 @@ const ProfilePage = () => {
         <h2>Your Albums</h2>
         <div className="album-grid">
           {userAlbums.map((album) => (
-            <div key={album.id} className="profile-tile-container">
+            <div key={album?.id} className="profile-tile-container">
               <div className="profile-tile-buttons">
                 <button onClick={() => handleUpdateAlbum(album)} className='fa-solid fa-pen-to-square'></button>
                 <button onClick={() => handleDeleteAlbum(album.id)} className="fa-regular fa-trash-can"></button>
@@ -63,47 +68,48 @@ const ProfilePage = () => {
       </div>
 
       <div className="section-container">
-      <h2>Your Songs</h2>
-      <div className="album-grid">
-        {userSongs.map((song) => {
-          const album = allAlbums[song.album_id];
-          return (
-            <div key={`${album?.id}-${song?.id}`} className="profile-tile-container">
-              <div className="profile-tile-buttons">
-                <button onClick={() => handleUpdateSong(song.id)} className='fa-solid fa-pen-to-square'></button>
-                <button onClick={() => handleDeleteSong(song.id)} className="fa-regular fa-trash-can"></button>
-              </div>
-              <Link to={`/albums/${album?.id}`} className="album-tile link-as-text">
-                <img src={album?.art} alt={album?.name} className="album-image" />
-                <h3>{song.name}</h3>
-                <p>{album?.artist}</p>
-              </Link>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-
-      <div className="section-container">
-        <h2>Your Playlists</h2>
-        {/* <div className="playlist-grid">
-        {userPlaylists.map((song) => {
-            const playlist = allPlaylists[song.album_id];
+        <h2>Your Songs</h2>
+        <div className="album-grid">
+          {userSongs.map((song) => {
+            const album = userAlbumsObject[song.album_id]
             return (
-              <div key={`${playlist?.id}-${playlist?.id}`} to={`/playlists/${playlist?.id}`} className="album-tile ">
-                <img src={album?.art} alt={album?.name} className="album-image" />
-                <h3>{song.name}</h3>
-                <p>{album?.artist}</p>
+              <div key={`${album?.id}-${song?.id}`} className="profile-tile-container">
                 <div className="profile-tile-buttons">
-                  <button onClick={() => handleUpdateSong(song.id)}>Update</button>
-                  <button onClick={() => handleDeleteSong(song.id)}>Delete</button>
+                  <button onClick={() => handleUpdateSong(song.id)} className='fa-solid fa-pen-to-square'></button>
+                  <button onClick={() => handleDeleteSong(song.id)} className="fa-regular fa-trash-can"></button>
                 </div>
+                <Link to={`/albums/${album?.id}`} className="album-tile link-as-text">
+                  <img src={album?.art} alt={album?.name} className="album-image" />
+                  <h3>{song.name}</h3>
+                  <p>{album?.artist}</p>
+                </Link>
               </div>
             );
           })}
-        </div> */}
+        </div>
       </div>
 
+      <div className="section-container">
+        <h2>Your Playlists</h2>
+        <div className="album-grid">
+        {userPlaylists.map((playlist) => (
+            <div key={playlist?.id} className="profile-tile-container">
+              <div className="profile-tile-buttons">
+                <button className='fa-solid fa-pen-to-square'>
+                  {/* Edit Playlist Modal Here (Optional) */}
+                </button>
+                <button className="fa-regular fa-trash-can">
+                  {/* Delete Playlist Modal Here */}
+                </button>
+              </div>
+              <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
+                <img src={playlist?.art} alt={playlist?.name} className="album-image" />
+                <h3>{playlist?.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
+              </Link>
+            </div>
+        ))}
+        </div>
+      </div>
     </div>
   );
 };
