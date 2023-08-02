@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
-import { getPlaylistByIdThunk } from '../../store/playlists';
+import { getPlaylistByIdThunk, removePlaylistSongThunk } from '../../store/playlists';
 import { getAllSongsAction } from '../../store/songs';
 import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 import LikeButton from '../LikeButton';
@@ -37,19 +37,16 @@ const PlaylistDetails = () => {
 
     useEffect(() => {
         if (playlist?.id) {
-            setPlaylistDuration(0);
             const songsArr = [];
             let time = 0;
+            setPlaylistDuration(0);
+
             playlist.playlist_songs.forEach(playlistSong => {
                 songsArr.push(playlistSong.song);
                 time += playlistSong.song.duration;
             });
+
             setPlaylistDuration(time);
-            // may have to adjust
-            // if (currentPlaylist.length > 0) {
-            //     return;
-            // }
-            //
             dispatch(getAllSongsAction(songsArr));
         }
     }, [dispatch, playlist]);
@@ -67,8 +64,10 @@ const PlaylistDetails = () => {
         dispatch(setIsPlaying(true));
     };
 
-    const removeSongClick = (e) => {
-
+    const removeSongClick = (e, songId) => {
+        e.stopPropagation();
+        const removePlaylistSong = playlist.playlist_songs.find(playlistSong => playlistSong.song_id === songId);
+        dispatch(removePlaylistSongThunk(playlistId, removePlaylistSong.id));
     }
 
     return (
@@ -111,7 +110,7 @@ const PlaylistDetails = () => {
                             />
                         </div>
                         <div className='playlist-songs-buttons'>
-                            <i className="fa-solid fa-circle-minus" onClick={removeSongClick}></i>
+                            <i className="fa-solid fa-circle-minus" onClick={ (e) => removeSongClick(e, song?.id)}></i>
                         </div>
                         <p className='playlist-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
                     </div>
