@@ -1,8 +1,10 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Album, db
-from app.forms import CreateAlbumForm, EditAlbumForm
+from app.models import Album, db, Song
+from app.forms import CreateAlbumForm, EditAlbumForm, CreateSongForm
 from app.api.auth_routes import validation_errors_to_error_messages
+from app.api.aws_helper import get_unique_filename, upload_file_to_s3
+from mutagen.mp3 import MP3
 
 album_routes = Blueprint('albums', __name__)
 
@@ -35,7 +37,7 @@ def get_user_albums():
 
 
 # Deleting an Album created by the user
-@album_routes.route('/delete/<int:id>', methods=['DELETE'])
+@album_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_album(id):
     album = Album.query.get(id)
@@ -70,9 +72,53 @@ def create_new_album():
 
         db.session.add(new_album)
         db.session.commit()
+
         return jsonify(new_album.to_dict())
 
     return { 'errors': validation_errors_to_error_messages(form.errors) }, 400
+
+
+# Create a Song for an album
+@album_routes.route('/<int:id>/song', methods=['POST'])
+@login_required
+def create_album_song(id):
+
+    form = CreateSongForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    print('form data:', form.data)
+
+    if form.validate_on_submit():
+        album = Album.query.get(id)
+
+        if album is None or album.user_id != current_user.id:
+            return { 'errors': 'Album not found'}, 404
+
+        song = form.data['song']
+        song.filename = get_unique_filename(song.filename)
+        upload = upload_file_to_s3(song)
+
+        audio = MP3(song)
+
+        if 'url' not in upload:
+            return { 'errors': 'upload error'}
+
+        newSong = Song (
+            name = form.data['name'],
+            track_number = form.data['track_number'],
+            song_url = upload['url'],
+            user_id = album.user_id,
+            album_id = album.id,
+            duration = audio.info.length
+        )
+
+        db.session.add(newSong)
+        db.session.commit()
+
+        return jsonify(newSong.to_dict())
+
+    print(validation_errors_to_error_messages(form.errors))
+    return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
 
 
 # Editing an Album a user already created

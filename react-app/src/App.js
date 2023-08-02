@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
@@ -10,6 +10,7 @@ import AlbumDetails from "./components/AlbumDetails";
 import AudioPlayerComponent from "./components/AudioPlayer";
 import AlbumCreate from "./components/AlbumCreate";
 import AlbumUpdate from "./components/AlbumUpdate";
+import ProfilePage from "./components/ProfilePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route exact path="/" component={HomeLandingPage}/>
+          <Route exact path="/profile" component={ProfilePage}/>
           <Route path="/login" component={LoginFormPage}/>
           <Route path="/signup" component={SignupFormPage}/>
           <Route path="/albums/new" component={AlbumCreate}/>
@@ -39,13 +41,4 @@ function App() {
 
 export default App;
 
-// const [audioSrc, setAudioSrc] = useState(null);
-// const [title, setTitle] = useState(null);
-// const singleSong = useSelector((state) => state.songs.singleSong);
 
-// useEffect(() => {
-  //   if (singleSong) {
-    //     setAudioSrc(singleSong.song_url);
-    //     setTitle(singleSong.title);
-    //   }
-    // }, [singleSong]);

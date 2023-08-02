@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getAlbumByIdThunk } from '../../store/albums';
 import { getAllSongsAction } from '../../store/songs';
+import AddMusicButton from '../AddMusicButton';
 import LikeButton from '../LikeButton';
+import AddMusicModal from '../AddMusicModal'
 import './AlbumDetails.css';
+import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 
 const AlbumDetails = () => {
+
     const dispatch = useDispatch();
     const { albumId } = useParams();
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
+    const user = useSelector(state => state.session.user)
+    const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
     const [hoveredSong, setHoveredSong] = useState(-1);
+    const [userOwned, setUserOwned] = useState(false);
 
     const showPlayButton = (i) => {
         setHoveredSong(i);
@@ -29,7 +36,30 @@ const AlbumDetails = () => {
 
     useEffect(() => {
         dispatch(getAllSongsAction(albumSongs));
-    }, [dispatch, singleAlbum, albumSongs])
+        setUserOwned(singleAlbum?.user?.id === user?.id);
+    }, [dispatch, singleAlbum, albumSongs, user]);
+
+
+    const editHandleClick = (e) => {
+
+    }
+
+    const deleteHandleClick = (e) => {
+
+    }
+
+    const handlePlayAlbum = () => {
+        const albumSongIds = albumSongs.map((song) => song.id);
+        dispatch(setCurrentPlaylist(albumSongIds));
+        dispatch(setCurrentSongIndex(0));
+        dispatch(setIsPlaying(true));
+      };
+
+      const handlePlaySong = (songId) => {
+        dispatch(setCurrentPlaylist([songId]));
+        dispatch(setCurrentSongIndex(0));
+        dispatch(setIsPlaying(true));
+      };
 
     if (!singleAlbum) {
         return null;
@@ -48,35 +78,50 @@ const AlbumDetails = () => {
                 </div>
             </div>
             <div className='album-buttons-container'>
-                <button className='album-play-button'>
+                <button className='album-play-button' onClick={handlePlayAlbum}>
                     <i class="fa-sharp fa-solid fa-circle-play"></i>
                 </button>
+                <div className="add-music-button-container">
+
+                    {user && singleAlbum.user.id === user.id ? <AddMusicButton
+                        modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} />}
+                    /> : null}
+                </div>
+
             </div>
             <ul className='album-songs-container'>
                 <li className='album-songs-header'>
-                    <p style={{color: "rgb(160, 160, 160)"}}> &nbsp; # &nbsp; &nbsp; Title</p>
+                    <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
                     <i class="fa-regular fa-clock"></i>
                 </li>
                 {albumSongs.map((song, i) => (
                     <button key={song.id} className='albums-songs-button'
                         onMouseEnter={(e) => showPlayButton(i)}
                         onMouseLeave={() => hidePlayButton()}
+                        onClick={() => handlePlaySong(song.id)}
                     >
                         <div className='number-name-container'>
                             <div className='song-track-number'>
-                                <div style={hoveredSong !== i ? {display: "block"} : {display: "none"}}>{song.track_number}</div>
-                                <div style={hoveredSong === i ? {display: "block"} : {display: "none"}}>
-                                    <i className="fa-sharp fa-solid fa-play" style={{color: "white"}}></i>
+                                <div style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{song.track_number}</div>
+                                <div style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
+                                    <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
                                 </div>
                             </div>
-                            <p style={{color: "white"}}> &nbsp; &nbsp; {song.name}</p>
+                            <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
                         </div>
                         <div className='heart-time-container'>
-                            <div className='heart-container' style={hoveredSong === i ? {display: "block"} : {color: "rgb(34, 34, 34)"}}>
+                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(34, 34, 34)" }}>
                                 <LikeButton
                                     songId={song.id}
                                 />
                             </div>
+                            {userOwned ?
+                                <div style={hoveredSong === i ? { display: "block" } : { color: "rgb(34, 34, 34)" }}>
+                                    <i onClick={editHandleClick} className="fa-solid fa-pen-to-square"></i>
+                                    &nbsp; &nbsp;
+                                    <i onClick={deleteHandleClick} className="fa-regular fa-trash-can"></i>
+                                </div>
+                                : null}
                             <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
                         </div>
                     </button>

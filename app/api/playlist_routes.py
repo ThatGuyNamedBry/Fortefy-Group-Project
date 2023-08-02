@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from app.models import Playlist
+from app.models import db, Playlist
 
 playlist_routes = Blueprint('playlists', __name__)
 
@@ -29,3 +29,27 @@ def get_user_playlists():
     user_playlists = Playlist.query.filter(Playlist.user_id == current_user.id)
     playlists_dict = [playlist.to_dict() for playlist in user_playlists]
     return jsonify(playlists_dict)
+
+@playlist_routes.route('/new', methods=['POST'])
+@login_required
+def create_new_playlist():
+    return
+
+@playlist_routes.route('/<int:id>/edit')
+@login_required
+def edit_playlist(id):
+    return
+
+@playlist_routes.route('/<int:id>/delete')
+@login_required
+def delete_playlist(id):
+    playlist = Playlist.query.get(id)
+
+    if playlist is None:
+        return {'errors': 'Playlist not found'}, 404
+    elif playlist.user_id != current_user.id:
+        return {"errors": "Playlist does not belong to user"}, 403
+
+    db.session.delete(playlist)
+    db.session.commit()
+    return {'message': 'Successfully Deleted'}

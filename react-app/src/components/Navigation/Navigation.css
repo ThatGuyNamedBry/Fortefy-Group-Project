@@ -30,6 +30,17 @@
   font-size: large;
 }
 
+.nav-link-profile {
+  text-decoration: none;
+  display: flex;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  color: inherit;
+}
+.nav-link-profile:hover {
+  text-decoration: underline;
+}
+
 #NavigationContainer {
   display: flex;
   flex-direction: row;
@@ -70,4 +81,17 @@
 .welcome-text {
   font-size: 24px;
   font-weight: bold;
+  font-style: italic;
+}
+
+.welcome-text-symbol {
+  font-size: 50px;
+  font-weight: bold;
+  margin-right: -7px;
+}
+
+#welcome-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
