@@ -117,13 +117,13 @@ const AlbumDetails = () => {
                             <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
                         </div>
                         <div className='heart-time-container'>
-                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(34, 34, 34)" }}>
+                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
                                 <LikeButton
                                     songId={song.id}
                                 />
                             </div>
                             {userOwned ?
-                                <div style={hoveredSong === i ? { display: "block" } : { color: "rgb(34, 34, 34)" }}>
+                                <div style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
                                     <i onClick={editHandleClick} className="fa-solid fa-pen-to-square"></i>
                                     &nbsp; &nbsp;
                                     <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />} />
