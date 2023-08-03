@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUserAllPlaylistsThunk, addPlaylistSongThunk } from '../../store/playlists';
-import './AddPLSong';
+import './AddPLSong.css';
 
 const AddPLSongButton = ({ songId }) => {
     const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const AddPLSongButton = ({ songId }) => {
     }
     return (
         <button>
-
+            Add
         </button>
     )
 };
