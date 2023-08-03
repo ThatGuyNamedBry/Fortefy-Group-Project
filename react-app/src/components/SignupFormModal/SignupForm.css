@@ -10,8 +10,8 @@
 }
 
 .signup-form-modal-container h1 {
-    margin-bottom: 15px;
-    margin-top: -5px;
+    margin-bottom: 17px;
+    margin-top: -9px;
 }
 
 .signup-form {
@@ -41,7 +41,7 @@
 }
 
 .signup-form::after {
-    bottom: 60px;
+    bottom: 65px;
     width: 140%;
     left: -45px;
 }
@@ -66,7 +66,7 @@
 }
 
 .signup-button {
-    margin-top: 20px;
+    margin-top: 30px;
     padding: 16px 20px;
     border: none;
     border-radius: 4px;
