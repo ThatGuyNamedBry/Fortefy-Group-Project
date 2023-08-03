@@ -87,6 +87,7 @@ const PlaylistDetails = () => {
         dispatch(removePlaylistSongThunk(playlistId, removeSong.id));
     }
 
+    console.log(songs[0]);
     return (
         <div className='playlist-details-container'>
             <div className='playlist-header-container'>
@@ -103,16 +104,16 @@ const PlaylistDetails = () => {
             </div>
             <div className='playlist-buttons-container'>
                 <button className='album-play-button' onClick={handlePlayPlaylist}>
-                    <i class="fa-sharp fa-solid fa-circle-play"></i>
+                    <i className="fa-sharp fa-solid fa-circle-play"></i>
                 </button>
             </div>
             <ul className='playlist-songs-container'>
                 <li className='playlist-songs-header'>
                 <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
-                    <i class="fa-regular fa-clock"></i>
+                    <i className="fa-regular fa-clock"></i>
                 </li>
                 {songs.map((song, i) => (
-                    <li key={song.playlistId} className='albums-songs-button'
+                <li key={song.playlistSongId} className='albums-songs-button'
                     onMouseEnter={(e) => showPlayButton(i)}
                     onMouseLeave={() => hidePlayButton()}
                     onClick={() => handlePlaySong(song.id)}
