@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { login } from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import SignupFormModal from "../SignupFormModal";
+import OpenModalButton from "../OpenModalButton";
+
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -9,7 +12,7 @@ function LoginFormModal() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
-  const { closeModal } = useModal();
+  const { closeModal, setModalContent } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +20,7 @@ function LoginFormModal() {
     if (data) {
       setErrors(data);
     } else {
-        closeModal()
+      closeModal()
     }
   };
 
@@ -40,15 +43,22 @@ function LoginFormModal() {
       });
   };
 
+
+  const openSignupModal = (e) => {
+    e.preventDefault();
+    setModalContent(<SignupFormModal />);
+  };
+
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="login-modal-container">
+      <h1 className="Log-in-text">Log in to ƒorteƒy</h1>
+      <form onSubmit={handleSubmit} className="login-form">
         <ul>
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
           ))}
         </ul>
+        <button className="demoUserLink" onClick={demoUserLogin}>Continue with Demo User</button>
         <label>
           Email
           <input
@@ -68,9 +78,12 @@ function LoginFormModal() {
           />
         </label>
         <button type="submit">Log In</button>
-        <button className="demoUserLink" onClick={demoUserLogin}>Demo User</button>
       </form>
-    </>
+      <p className="sign-up-link">
+        Don't have an account?{" "}
+        <a href="" onClick={openSignupModal}>Sign up for ƒorteƒy</a>
+      </p>
+    </div>
   );
 }
 
