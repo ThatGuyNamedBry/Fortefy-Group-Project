@@ -49,7 +49,7 @@ const AlbumDetails = () => {
 
 
     const editHandleClick = (e) => {
-
+        e.stopPropagation();
     }
 
     const deleteHandleClick = async () => {
