@@ -5,6 +5,7 @@ import { secsToHrs, secsToMins } from '../../helpers';
 import { getAlbumByIdThunk } from '../../store/albums';
 import { getAllSongsAction } from '../../store/songs';
 import AddMusicButton from '../AddMusicButton';
+import EditSongButton from '../EditSongButton';
 import LikeButton from '../LikeButton';
 import AddMusicModal from '../AddMusicModal'
 import DeleteModal from '../DeleteModal';
@@ -69,7 +70,7 @@ const AlbumDetails = () => {
         dispatch(setCurrentPlaylist([selectedSong]));
         dispatch(setCurrentSongIndex(0));
         dispatch(setIsPlaying(true));
-      };
+    };
 
     if (!singleAlbum) {
         return null;
@@ -94,7 +95,7 @@ const AlbumDetails = () => {
                 <div className="add-music-button-container">
 
                     {user && singleAlbum.user.id === user.id ? <AddMusicButton
-                        modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} type="create"/>}
+                        modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} type="create" />}
                     /> : null}
                 </div>
 
@@ -127,7 +128,7 @@ const AlbumDetails = () => {
                             </div>
                             {userOwned ?
                                 <div style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
-                                    <i onClick={editHandleClick} className="fa-solid fa-pen-to-square"></i>
+                                    <EditSongButton modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} song={song} type="update" />} />
                                     &nbsp; &nbsp;
                                     <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />}
                                         onClick={deleteHandleClick} />
