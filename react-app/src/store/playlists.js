@@ -1,11 +1,8 @@
 //                                           Action Types
 const LOAD_PLAYLISTS = 'playlists/LOAD_PLAYLISTS';
 const RECEIVE_PLAYLIST = 'playlists/RECEIVE_PLAYLIST'
-// const LOAD_PLAYLIST = 'playlists/LOAD_PLAYLIST';
-// const CREATE_PLAYLIST = 'playlists/CREATE_PLAYLIST';
-// const UPDATE_PLAYLIST = 'playlists/UPDATE_PLAYLIST';
 const DELETE_PLAYLIST = 'playlists/DELETE_PLAYLIST';
-
+const LOAD_PLAYLIST_SONGS = 'playlists/LOAD_PLAYLIST_SONGS'
 
 //                                         Action Creators
 
@@ -25,30 +22,6 @@ export const receivePlaylistAction = (playlist) => {
     }
 }
 
-// // Get Playlist By ID Action
-// export const getPlaylistByIdAction = (playlist) => {
-//     return {
-//         type: LOAD_PLAYLIST,
-//         payload: playlist,
-//     };
-// };
-
-// //Create Playlist Action
-// export const createPlaylistAction = (playlist) => {
-//     return {
-//         type: CREATE_PLAYLIST,
-//         payload: playlist,
-//     };
-// };
-
-// // Edit/Update a Playlist Action
-// export const updatePlaylistAction = (playlist) => {
-//     return {
-//         type: UPDATE_PLAYLIST,
-//         payload: playlist,
-//     };
-// };
-
   //Delete a Playlist Action
 export const deletePlaylistAction = (playlistId) => {
     return {
@@ -56,6 +29,14 @@ export const deletePlaylistAction = (playlistId) => {
         payload: playlistId,
     };
 };
+
+// Load all Songs in Playlist Action
+export const loadPlaylistSongsAction = (songs) => {
+    return {
+        type: LOAD_PLAYLIST_SONGS,
+        payload: songs,
+    }
+}
 
   //                                             Thunks
 //Get All Playlists Thunk
@@ -141,7 +122,7 @@ export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
 
 //Add a Song to a Playlist Thunk
     // Arguments = playlist Id, **SONG ID**
-        // Notice distinction songId from below thunk
+        // Distinction: songId from below thunk
 export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => {
     const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${songId}/new`, {
         method: 'POST',
@@ -150,7 +131,7 @@ export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => 
     if (response.ok) {
         const updatedPlaylist = await response.json();
         dispatch(receivePlaylistAction(updatedPlaylist));
-        // If code doesn't work, comment OUT the line above, and comment IN the line below
+        // IF FAILS, comment OUT above line, comment IN below line
         // await dispatch(getPlaylistByIdThunk(playlistId));
         return updatedPlaylist;
 
@@ -159,7 +140,7 @@ export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => 
 
 //Remove a Song from a Playlist Thunk
     // Arguments = playlist Id, **PLAYLISTSONG ID**
-        // Notice distinction playlistSongId from above thunk
+        // Distinction: playlistSongId from above thunk
 export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (dispatch) => {
     const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${playlistSongId}/delete`, {
         method: 'DELETE'
@@ -168,7 +149,7 @@ export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (di
     if (response.ok) {
         const updatedPlaylist = await response.json();
         dispatch(receivePlaylistAction(updatedPlaylist));
-        // If code doesn't work, comment OUT the line above, and comment IN the line below
+        // IF FAILS, comment OUT above line, comment IN below line
         // await dispatch(getPlaylistByIdThunk(playlistId));
         return updatedPlaylist;
     }
@@ -177,7 +158,8 @@ export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (di
 //Reducer function
 const initialState = {
     allPlaylists: {},
-    singlePlaylist: {}
+    singlePlaylist: {},
+    playlistSongs: {}
 }
 
 const playlistReducer = (state = initialState, action) => {
@@ -189,17 +171,17 @@ const playlistReducer = (state = initialState, action) => {
             });
             return { ...state, allPlaylists: allPlaylistsObject };
         case RECEIVE_PLAYLIST:
-            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: { ...action.payload } }, singlePlaylist: { ...action.payload } };
-        // case LOAD_PLAYLIST:
-        //     return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: { ...action.payload } };
-        // case CREATE_PLAYLIST:
-        //     return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: { ...action.payload } };
-        // case UPDATE_PLAYLIST:
-        //     return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: { ...action.payload } };
+            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: action.payload };
         case DELETE_PLAYLIST:
             const newPlaylists = { ...state.allPlaylists };
             delete newPlaylists[action.payload];
             return { ...state, allPlaylists: newPlaylists };
+        case LOAD_PLAYLIST_SONGS:
+            const playlistsSongsObject = {};
+            action.payload.forEach((song) => {
+                playlistsSongsObject[song.playlistSongId] = song;
+            });
+            return { ...state, playlistSongs: playlistsSongsObject };
         default:
             return state;
     }

@@ -7,6 +7,10 @@
     flex-direction: column;
 }
 
+.section-container h2{
+    margin-bottom: -13px;
+}
+
 .album-grid {
     display: flex;
     flex-direction: row;
@@ -29,4 +33,3 @@
     grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
     gap: 25px;
 }
-

@@ -8,14 +8,15 @@ function EditSongButton({
 }) {
   const { setModalContent, setOnModalClose } = useModal();
 
-  const onClick = () => {
+  const onClick = (e) => {
+    e.stopPropagation();
     if (onModalClose) setOnModalClose(onModalClose);
     setModalContent(modalComponent);
     if (onButtonClick) onButtonClick();
   };
 
   return (
-    <i onClick={onClick} className="fa-solid fa-pen-to-square"></i>
+    <i onClick={onClick} className="update-delte-music-buttons fa-solid fa-pen-to-square"></i>
   );
 }
 

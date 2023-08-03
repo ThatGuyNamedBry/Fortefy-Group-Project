@@ -43,7 +43,7 @@ const ProfilePage = () => {
           {userAlbums.map((album) => (
             <div key={album?.id} className="profile-tile-container">
               <div className="profile-tile-buttons">
-                <button onClick={() => handleUpdateAlbum(album)} className='fa-solid fa-pen-to-square'></button>
+                <div onClick={() => handleUpdateAlbum(album)} className='update-delte-music-buttons fa-solid fa-pen-to-square'></div>
                 <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='album' id={album.id} />} />
               </div>
               <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
@@ -84,12 +84,12 @@ const ProfilePage = () => {
         {userPlaylists.map((playlist) => (
             <div key={playlist?.id} className="profile-tile-container">
               <div className="profile-tile-buttons">
-                <button className='fa-solid fa-pen-to-square'>
+                <div className='update-delte-music-buttons fa-solid fa-pen-to-square'>
                   {/* Edit Playlist Modal Here (Optional) */}
-                </button>
-                <button className="fa-regular fa-trash-can">
+                </div>
+                <div className="update-delte-music-buttons fa-regular fa-trash-can">
                   {/* Delete Playlist Modal Here */}
-                </button>
+                </div>
               </div>
               <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
                 <img src={playlist?.art} alt={playlist?.name} className="album-image" />

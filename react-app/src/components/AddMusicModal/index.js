@@ -45,7 +45,7 @@ function AddMusicModal({ album, type, song }) {
     <div className='add-music-container'>
       <form id="add-music-form"
         encType="multipart/form-data">
-        {type === 'create' ? <h2>Add some music to your album</h2> : <h2>Update your album's info</h2>}
+        {type === 'create' ? <h2>Add some music to your album</h2> : <h2>Update your song's info</h2>}
 
         <div className="song-field-container">
 

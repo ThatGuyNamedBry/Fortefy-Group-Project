@@ -1,8 +1,13 @@
-.delete-music-button {
+.profile-tile-buttons {
+  gap:2px
+}
+
+.update-delte-music-buttons {
     color: rgb(160, 160, 160);
+    gap:5px
   }
 
-.delete-music-button:hover {
+.update-delte-music-buttons:hover {
     cursor: pointer;
     color: white;
   }

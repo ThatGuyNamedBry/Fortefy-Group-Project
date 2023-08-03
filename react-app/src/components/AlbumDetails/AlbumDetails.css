@@ -94,6 +94,7 @@
 
 .add-music-button-container:hover {
     cursor: pointer;
+    transform: scale(0.95);
 }
 
 .album-play-button {
