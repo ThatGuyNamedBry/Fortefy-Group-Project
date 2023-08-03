@@ -3,8 +3,6 @@ import { login } from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import SignupFormModal from "../SignupFormModal";
-import OpenModalButton from "../OpenModalButton";
-
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -43,7 +41,6 @@ function LoginFormModal() {
       });
   };
 
-
   const openSignupModal = (e) => {
     e.preventDefault();
     setModalContent(<SignupFormModal />);
@@ -66,6 +63,7 @@ function LoginFormModal() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Email"
           />
         </label>
         <label>
@@ -75,9 +73,10 @@ function LoginFormModal() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Password"
           />
         </label>
-        <button type="submit">Log In</button>
+        <button className = 'login-button' type="submit">Log In</button>
       </form>
       <p className="sign-up-link">
         Don't have an account?{" "}
