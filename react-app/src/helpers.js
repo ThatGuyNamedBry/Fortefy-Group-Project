@@ -36,8 +36,11 @@ export const checkImageErrors = (url) => {
     } else if (!url.toLowerCase().endsWith('.png')
         && !url.toLowerCase().endsWith('.jpg')
         && !url.toLowerCase().endsWith('.jpeg')
+        && !url.toLowerCase().endsWith('.gif')
+        && !url.toLowerCase().endsWith('.bmp')
+        && !url.toLowerCase().endsWith('.svg')
     ) {
-        return 'Image URL must end in .png, .jpg, or .jpeg';
+        return 'Image URL must end in .jpg, .png, .gif, .bmp, .svg, or .jpeg';
     } else {
         return false;
     }
