@@ -13,8 +13,6 @@ const PlaylistForm = ({ playlist, formType }) => {
     const [description, setDescription] = useState('');
     const [errors, setErrors] = useState({});
 
-    console.log(formType);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors({});
@@ -33,8 +31,9 @@ const PlaylistForm = ({ playlist, formType }) => {
             }
 
             if (playlist?.errors) {
-                setErrors(playlist.errors)
+                setErrors({ ...playlist.errors, flag: true } );
             } else {
+                console.log('playlist : ', playlist);
                 history.push(`/playlists/${playlist.id}`);
             }
         }
@@ -91,7 +90,7 @@ const PlaylistForm = ({ playlist, formType }) => {
                     <button
                         id="submit-playlist-button"
                         type="submit"
-                    >{formType} Hi
+                    >{formType}
                     </button>
                 </div>
             </form>
