@@ -105,7 +105,7 @@ const AlbumDetails = () => {
                     <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
                     <i class="fa-regular fa-clock"></i>
                 </li>
-                {Object.values(songs).map((song, i) => (
+                {songsArray.map((song, i) => (
                     <button key={song.id} className='albums-songs-button'
                         onMouseEnter={(e) => showPlayButton(i)}
                         onMouseLeave={() => hidePlayButton()}
