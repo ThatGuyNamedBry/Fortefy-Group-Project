@@ -7,9 +7,28 @@
     flex-direction: column;
 }
 
-.section-container h2{
-    margin-bottom: -13px;
+.album-header {
+    display: flex;
+    align-items: center;
 }
+
+.create-album-button {
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6px;
+    margin-left: 15px;
+    color: #21cc06;
+}
+
+.create-album-button:hover {
+    color: rgb(34, 255, 0);
+}
+
+/* .section-container h2{
+    margin-bottom: -13px;
+} */
 
 .album-grid {
     display: flex;
@@ -23,9 +42,23 @@
 }
 
 .profile-tile-buttons {
-    display:flex;
+    /* display:flex;
     justify-content: flex-end;
-    margin-bottom: -15px;
+    gap: 10px;
+    margin-right: 5px;
+    margin-bottom: -15px; */
+    position: relative;
+    left: 140px;
+    top: 51px;
+}
+
+.profile-tile-buttons > * + * {
+    margin-left: 10px;
+}
+
+.update-delte-music-buttons fa-solid {
+    position: relative;
+    right: 34px;
 }
 
 .profile-tile-container {
