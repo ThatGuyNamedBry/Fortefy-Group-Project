@@ -10,6 +10,7 @@
 
 .discover-music-container {
     width: 75%;
+    margin-left: 10px;
 }
 
 .album-grid {
@@ -116,4 +117,35 @@
 .fa-solid.fa-angles-right:hover {
     color: white;
     font-weight: 900;
+}
+
+.library-container {
+    margin-right: 30px;
+}
+
+.playlist-tile {
+    display:flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    border-radius: 20px;
+    background-color: rgb(28, 28, 28);
+    margin-right: 10px;
+    transition: background-color 0.4s;
+}
+
+.playlist-tile:hover {
+    background-color: rgb(40, 40, 40);
+}
+
+.playlist-image {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    border-radius: 10px;
+}
+
+.playlist-tile h3 {
+    color: white;
 }

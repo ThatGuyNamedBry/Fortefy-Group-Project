@@ -76,8 +76,8 @@ const HomeLandingPage = () => {
                             {Object.values(allPlaylists)
                             .filter(playlist => playlist.user_id === user.id)
                             .map(playlist => (
-                                <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
-                                    <img src={playlist.art} alt={playlist.title} className="album-image" />
+                                <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
+                                    <img src={playlist.art} alt={playlist.title} className="playlist-image" />
                                     <h3>{playlist.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
                                 </Link>
                             ))}
@@ -137,7 +137,7 @@ const HomeLandingPage = () => {
                             return (
                                 <Link key={`${album?.id}-${song?.id}`} to={`/albums/${album?.id}`} className="album-tile link-as-text">
                                     <img src={album?.art} alt={album?.name} className="album-image" />
-                                    <h3>{song.name}</h3>
+                                    <h3>{song.name.length > 22 ? song.name.slice(0, 22) + '...' : song.name}</h3>
                                     <p>{album?.artist}</p>
                                 </Link>
                             );
