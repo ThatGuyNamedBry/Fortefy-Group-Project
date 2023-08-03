@@ -1,5 +1,6 @@
 .profile-container {
     margin-inline-start: 30px;
+    /* margin-top: 10px; */
 }
 
 .section-container {
@@ -7,9 +8,30 @@
     flex-direction: column;
 }
 
-.section-container h2{
-    margin-bottom: -13px;
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: -30px;
 }
+
+.create-album-button {
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6px;
+    margin-left: 15px;
+    color: #21cc06;
+    font-size: 21px;
+}
+
+.create-album-button:hover {
+    color: rgb(34, 255, 0);
+}
+
+/* .section-container h2{
+    margin-bottom: -13px;
+} */
 
 .album-grid {
     display: flex;
@@ -23,13 +45,46 @@
 }
 
 .profile-tile-buttons {
-    display:flex;
-    justify-content: flex-end;
-    margin-bottom: -15px;
+    position: relative;
+    left: 140px;
+    top: 51px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: visibility 0s, opacity 0.3s, transform 0.3s;
 }
+
+.profile-tile-container:hover .profile-tile-buttons {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.profile-tile-buttons > * + * {
+    margin-left: 10px;
+    color:rgb(208, 0, 0);
+}
+
+/* .update-delte-music-buttons fa-solid {
+    position: relative;
+    right: 34px;
+} */
 
 .profile-tile-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
     gap: 25px;
+}
+
+.create-playlist-button {
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6px;
+    margin-left: 15px;
+    color: #21cc06;
+    font-size: 21px;
+}
+
+.create-playlist-button:hover {
+    color: rgb(34, 255, 0);
 }

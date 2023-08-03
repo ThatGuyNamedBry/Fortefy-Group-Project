@@ -26,6 +26,12 @@
     background-color: rgb(28, 28, 28);
     margin-top: 0px;
     border-radius: 8px;
+    transition: background-color 0.4s, color 0.4s;
+}
+
+.album-tile:hover {
+    background-color: rgb(40, 40, 40);
+    text-decoration: none;
 }
 
 .album-tile Link {
@@ -83,9 +89,9 @@
     cursor: pointer;
 }
 
-.link-as-text:hover {
+/* .link-as-text:hover {
     text-decoration: underline;
-}
+} */
 
 /* .item-scroll div {
     gap: 50px;
