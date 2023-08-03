@@ -53,6 +53,7 @@
 }
 .nav-link-profile:hover {
   text-decoration: underline;
+  font-weight: 600;
 }
 
 #NavigationContainer {

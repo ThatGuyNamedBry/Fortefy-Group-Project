@@ -9,14 +9,15 @@ function DeleteMusicButton({
 }) {
   const { setModalContent, setOnModalClose } = useModal();
 
-  const onClick = () => {
+  const onClick = (e) => {
+    e.stopPropagation();
     if (onModalClose) setOnModalClose(onModalClose);
     setModalContent(modalComponent);
     if (onButtonClick) onButtonClick();
   };
 
   return (
-    <i onClick={onClick} className="delete-music-button fa-regular fa-trash-can"></i>
+    <i onClick={onClick} className="update-delte-music-buttons fa-regular fa-trash-can"></i>
   );
 }
 
