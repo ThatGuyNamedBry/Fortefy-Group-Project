@@ -5,13 +5,15 @@ import { createPlaylistThunk, updatePlaylistThunk } from "../../store/playlists"
 import { playlistValidation } from "../../helpers";
 import './PlaylistForm.css';
 
-const PlaylistForm = ({ formType, playlist }) => {
+const PlaylistForm = ({ playlist, formType }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
     const [art, setArt] = useState('');
     const [description, setDescription] = useState('');
     const [errors, setErrors] = useState({});
+
+    console.log(formType);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,7 +29,7 @@ const PlaylistForm = ({ formType, playlist }) => {
             if (formType === 'Create Playlist') {
                 playlist = await dispatch(createPlaylistThunk(formData));
             } else if (formType === 'Update Playlist') {
-                playlist = await dispatch(updatePlaylistThunk(playlist.id, formData));
+                // playlist = await dispatch(updatePlaylistThunk(playlist.id, formData));
             }
 
             if (playlist?.errors) {
@@ -89,7 +91,7 @@ const PlaylistForm = ({ formType, playlist }) => {
                     <button
                         id="submit-playlist-button"
                         type="submit"
-                    >{formType}
+                    >{formType} Hi
                     </button>
                 </div>
             </form>
