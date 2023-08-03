@@ -1,5 +1,6 @@
 .profile-container {
     margin-inline-start: 30px;
+    /* margin-top: 10px; */
 }
 
 .section-container {
@@ -7,9 +8,10 @@
     flex-direction: column;
 }
 
-.album-header {
+.header {
     display: flex;
     align-items: center;
+    margin-bottom: -30px;
 }
 
 .create-album-button {
@@ -50,16 +52,23 @@
     position: relative;
     left: 140px;
     top: 51px;
+    visibility: hidden;
+    /* transition: visibility 0.3s ease; */
+}
+
+.profile-tile-container:hover .profile-tile-buttons {
+    visibility: visible;
 }
 
 .profile-tile-buttons > * + * {
     margin-left: 10px;
+    color:rgb(208, 0, 0);
 }
 
-.update-delte-music-buttons fa-solid {
+/* .update-delte-music-buttons fa-solid {
     position: relative;
     right: 34px;
-}
+} */
 
 .profile-tile-container {
     display: grid;

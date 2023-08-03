@@ -37,7 +37,7 @@ const ProfilePage = () => {
     <div className="profile-container">
       <h1>{user?.name}</h1>
       <div className="section-container">
-        <div className="album-header">
+        <div className="header">
         <h2>Your Albums</h2>
         {user && (
 				<NavLink to="/albums/new" className="create-album-button">
@@ -61,9 +61,10 @@ const ProfilePage = () => {
           ))}
         </div>
       </div>
-
       <div className="section-container">
+      <div className="header">
         <h2>Your Songs</h2>
+      </div>
         <div className="album-grid">
           {userSongs.map((song) => {
             const album = userAlbumsObject[song.album_id]
@@ -85,7 +86,9 @@ const ProfilePage = () => {
       </div>
 
       <div className="section-container">
+        <div className='header'>
         <h2>Your Playlists</h2>
+        </div>
         <div className="album-grid">
         {userPlaylists.map((playlist) => (
             <div key={playlist?.id} className="profile-tile-container">
