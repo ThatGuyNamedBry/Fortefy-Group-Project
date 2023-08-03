@@ -8,16 +8,19 @@
   flex-direction: column;
   width: 300px;
   gap: 15px;
-  /* border: red solid 1px; */
   background-color: black;
   margin-top: 20px;
   border-radius: 7px;
-  padding: 20px 60px 30px 60px;
+  padding: 20px 75px 30px 75px;
 }
 
 h1 {
   text-align: center;
   margin: 5px;
+}
+
+label {
+  font-size: 15px;
 }
 
 .album-field {
@@ -41,7 +44,7 @@ input {
 }
 
 .errors {
-  font-size: .75rem;
+  font-size: .7rem;
   margin: 5px 0px;
 }
 
