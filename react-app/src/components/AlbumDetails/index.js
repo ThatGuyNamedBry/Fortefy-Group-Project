@@ -18,7 +18,8 @@ const AlbumDetails = () => {
     const dispatch = useDispatch();
     const { albumId } = useParams();
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
-    const songs = useSelector(state => state.songs.allSongs)
+    const songs = useSelector(state => state.songs.allSongs);
+    const songsArray = Object.values(songs);
     const user = useSelector(state => state.session.user)
     const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
     const [hoveredSong, setHoveredSong] = useState(-1);
@@ -47,7 +48,6 @@ const AlbumDetails = () => {
     }, [dispatch, singleAlbum, songs, user]);
 
 
-
     const editHandleClick = (e) => {
         e.stopPropagation();
     }
@@ -71,20 +71,21 @@ const AlbumDetails = () => {
         dispatch(setIsPlaying(true));
     };
 
-    if (!singleAlbum) {
-        return null;
-    }
+    if (!singleAlbum) return <h1>This album does not exist.</h1>
 
-    const albumTime = singleAlbum.songs.reduce((acc, song) => acc + song.duration, 0);
+    const albumTime = songsArray.reduce((acc, song) => acc + song.duration, 0);
 
     return (
         <div className='album-details-container'>
             <div className='album-header-container'>
-                <img className='album-details-art' src={singleAlbum.art} alt='No Album Art Available'></img>
+                <div id="album-art-container">
+                    <img className='album-details-art' src={singleAlbum.art} alt='No Album Art Available'></img>
+                </div>
                 <div className='album-info-container'>
                     <p>Album</p>
                     <h3 className='album-name-header'>{singleAlbum.name}</h3>
-                    <p>{singleAlbum.artist} · {singleAlbum.year} · {singleAlbum.songs.length} {singleAlbum.songs.length === 1 ? `song` : `songs`} songs, {secsToHrs(albumTime)}</p>
+                    <p id="album-info">{singleAlbum.artist} · {singleAlbum.year} · {singleAlbum.genre}</p>
+                    <p id="album-length">{songsArray.length} {songsArray.length === 1 ? `song` : `songs`}, {secsToHrs(albumTime)}</p>
                 </div>
             </div>
             <div className='album-buttons-container'>
@@ -104,7 +105,7 @@ const AlbumDetails = () => {
                     <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
                     <i class="fa-regular fa-clock"></i>
                 </li>
-                {Object.values(songs).map((song, i) => (
+                {songsArray.map((song, i) => (
                     <button key={song.id} className='albums-songs-button'
                         onMouseEnter={(e) => showPlayButton(i)}
                         onMouseLeave={() => hidePlayButton()}
@@ -126,7 +127,7 @@ const AlbumDetails = () => {
                                 />
                             </div>
                             {userOwned && hoveredSong === i && (
-                                <div style={{ display: "flex", alignItems: "center", gap: "3px"}}>
+                                <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
                                     <EditSongButton
                                         modalComponent={<AddMusicModal className="add-music-modal" song={song} album={singleAlbum} type="update" />}
                                     />

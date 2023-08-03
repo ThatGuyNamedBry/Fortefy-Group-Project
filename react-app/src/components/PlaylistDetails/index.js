@@ -47,9 +47,9 @@ const PlaylistDetails = () => {
             playlist.playlist_songs.forEach(playlistSong => {
                 time += playlistSong.song.duration;
 
-            // give each song unique id, so forEach Normalizer in reducer can hold duplicates
+                // give each song unique id, so forEach Normalizer in reducer can hold duplicates
                 playlistSong.song.playlistSongId = playlistSong.id;
-            // in return create usual songs object with keys of songId's, for the player to key into
+                // in return create usual songs object with keys of songId's, for the player to key into
                 normalizedPlayerSongs[playlistSong.song_id] = playlistSong.song;
 
                 songsArr.push(playlistSong.song);
@@ -62,8 +62,9 @@ const PlaylistDetails = () => {
     }, [dispatch, playlist]);
 
     useEffect(() => {
-        const artistsString = songs.reduce((acc, song) => acc + `, ${song.artist}`, '');
-        setArtistsText(artistsString.slice(2));
+        const filtererdArtists = []
+        songs.forEach(song => { if (!filtererdArtists.includes(song.artist)) filtererdArtists.push(song.artist) })
+        setArtistsText(filtererdArtists.join(", "))
     }, [dispatch, songsObject]);
 
     const handlePlayPlaylist = () => {
@@ -87,7 +88,6 @@ const PlaylistDetails = () => {
         dispatch(removePlaylistSongThunk(playlistId, removeSong.id));
     }
 
-    console.log(songs[0]);
     return (
         <div className='playlist-details-container'>
             <div className='playlist-header-container'>
@@ -97,8 +97,8 @@ const PlaylistDetails = () => {
                     <h3 className='playlist-name-header'>{playlist.title}</h3>
                     <div className='playlist-info-container'>
                         <p>{playlist?.description}</p>
-                        <p>Features artists including {artistsText}</p>
-                        <p>{songs?.length} &nbsp;songs, {secsToHrs(playlistDuration)}</p>
+                        {songs.length ? <p>Featuring artists including {artistsText}</p> : <p>Add some songs to your playlist!</p>}
+                        <p>{songs.length} {songs.length === 1 ? `song` : `songs`}, {secsToHrs(playlistDuration)}</p>
                     </div>
                 </div>
             </div>
@@ -109,36 +109,36 @@ const PlaylistDetails = () => {
             </div>
             <ul className='playlist-songs-container'>
                 <li className='playlist-songs-header'>
-                <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
+                    <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
                     <i className="fa-regular fa-clock"></i>
                 </li>
                 {songs.map((song, i) => (
-                <li key={song.playlistSongId} className='albums-songs-button'
-                    onMouseEnter={(e) => showPlayButton(i)}
-                    onMouseLeave={() => hidePlayButton()}
-                    onClick={() => handlePlaySong(song.id)}
-                >
-                    <div className='number-name-container'>
-                        <div className='song-track-number'>
-                            <div style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{i + 1}</div>
-                            <div style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
-                                <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
+                    <li key={song.playlistSongId} className='albums-songs-button'
+                        onMouseEnter={(e) => showPlayButton(i)}
+                        onMouseLeave={() => hidePlayButton()}
+                        onClick={() => handlePlaySong(song.id)}
+                    >
+                        <div className='number-name-container'>
+                            <div className='song-track-number'>
+                                <div style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{i + 1}</div>
+                                <div style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
+                                    <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
+                                </div>
                             </div>
+                            <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
                         </div>
-                        <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
-                    </div>
-                    <div className='heart-time-container'>
-                        <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
-                            <LikeButton
-                                songId={song.id}
-                            />
+                        <div className='heart-time-container'>
+                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
+                                <LikeButton
+                                    songId={song.id}
+                                />
+                            </div>
+                            <div className='playlist-songs-buttons'>
+                                <i className="fa-solid fa-circle-minus" onClick={(e) => removeSongClick(e, song?.id)}></i>
+                            </div>
+                            <p className='playlist-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
                         </div>
-                        <div className='playlist-songs-buttons'>
-                            <i className="fa-solid fa-circle-minus" onClick={ (e) => removeSongClick(e, song?.id)}></i>
-                        </div>
-                        <p className='playlist-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
-                    </div>
-                </li>
+                    </li>
                 ))}
             </ul>
         </div>

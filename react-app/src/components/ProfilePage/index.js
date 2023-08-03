@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, NavLink } from 'react-router-dom';
 import { getCurrentUserAllAlbumsThunk } from '../../store/albums';
 import { getCurrentUserAllSongsThunk } from '../../store/songs';
 import { getCurrentUserAllPlaylistsThunk } from '../../store/playlists';
@@ -36,15 +36,21 @@ const ProfilePage = () => {
   return (
     <div className="profile-container">
       <h1>{user?.name}</h1>
-
       <div className="section-container">
+        <div className="header">
         <h2>Your Albums</h2>
+        {user && (
+				<NavLink to="/albums/new" className="create-album-button">
+					<i class="fa-solid fa-circle-plus"></i>
+				</NavLink>
+			  )}
+        </div>
         <div className="album-grid">
           {userAlbums.map((album) => (
             <div key={album?.id} className="profile-tile-container">
               <div className="profile-tile-buttons">
                 <div onClick={() => handleUpdateAlbum(album)} className='update-delte-music-buttons fa-solid fa-pen-to-square'></div>
-                <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='album' id={album.id} />} />
+                <DeleteMusicButton className="delete-song-modal" modalComponent={<DeleteModal type='album' id={album.id} />} />
               </div>
               <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
                 <img src={album.art} alt={album.name} className="album-image" />
@@ -55,9 +61,10 @@ const ProfilePage = () => {
           ))}
         </div>
       </div>
-
       <div className="section-container">
+      <div className="header">
         <h2>Your Songs</h2>
+      </div>
         <div className="album-grid">
           {userSongs.map((song) => {
             const album = userAlbumsObject[song.album_id]
@@ -79,7 +86,12 @@ const ProfilePage = () => {
       </div>
 
       <div className="section-container">
-        <h2>Your Playlists</h2>
+        <div className='header'>
+          <h2>Your Playlists</h2>
+          <div className="create-playlist-button">
+            <i class="fa-solid fa-circle-plus"></i>
+          </div>
+        </div>
         <div className="album-grid">
         {userPlaylists.map((playlist) => (
             <div key={playlist?.id} className="profile-tile-container">

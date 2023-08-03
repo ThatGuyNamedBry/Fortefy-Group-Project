@@ -68,7 +68,7 @@ def create_new_album():
         new_album = Album (
             user_id = current_user.id,
             name = form.data['name'],
-            art = form.data['art'],
+            art = 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Compact_Disc.jpg' if form.data['art'] == '' else form.data['art'],
             artist = form.data['artist'],
             year = form.data['year'],
             genre = form.data['genre']
@@ -140,10 +140,13 @@ def edit_album(id):
             return { 'errors': 'Album not found'}, 404
 
         album.name = form.data['name']
-        album.art = form.data['art']
         album.artist = form.data['artist']
         album.year = form.data['year']
         album.genre = form.data['genre']
+        if form.data['art'] == '':
+            album.art = 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Compact_Disc.jpg'
+        else:
+            album.art = form.data['art']
 
         db.session.commit()
 
