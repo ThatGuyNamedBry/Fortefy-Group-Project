@@ -17,7 +17,7 @@ const PlaylistForm = ({ formType, playlist }) => {
         e.preventDefault();
         setErrors({});
 
-        //Error validation from helper
+        //Error validation from helpers.js
         const frontEndErrorsObject = playlistValidation(title, art, description);
         setErrors(frontEndErrorsObject);
 
@@ -42,21 +42,55 @@ const PlaylistForm = ({ formType, playlist }) => {
         <div className="playlist-form-container">
             <form id="playlist-form" onSubmit={handleSubmit}>
                 <h1>{formType}</h1>
+
                 <div className="playlist-field">
                     <div className="field-label">
-                        <label htmlFor="playlist-title">Playlist Name</label>
+                        <label htmlFor="playlist-title-input">Playlist Name*</label>
                         {errors.title ? <p className="errors">{errors.title}</p> : null}
                     </div>
                     <input
-                        id="playlist-title"
+                        id="playlist-title-input"
                         type="text"
                         placeholder="Playlist Name"
                         onChange={(e) => setTitle(e.target.value)}
                         value={title}
+                        required
                     />
                 </div>
-                <div className="album-field">
-                    <div className="field-label"></div>
+
+                <div className="playlist-field">
+                    <div className="field-label">
+                        <label htmlFor="playlist-art-input">Cover Art</label>
+                        {errors.art ? <p className="errors">{errors.art}</p> : null}
+                    </div>
+                    <input
+                        id="playlist-art-input"
+                        type="text"
+                        placeholder="(Optional) Cover Art URL"
+                        onChange={(e) => setArt(e.target.value)}
+                        value={art}
+                    />
+                </div>
+
+                <div className="playlist-field">
+                    <div className="field-label">
+                        <label htmlFor="playlist-description-input">Description</label>
+                        {errors.description ? <p className="errors">{errors.description}</p> : null}
+                    </div>
+                    <textarea
+                        id="playlist-description-input"
+                        placeholder="(Optional) Share some thoughts about the playlist"
+                        onChange={(e) => setDescription(e.target.value)}
+                        value={description}
+                    />
+                </div>
+
+                <div id="submit-playlist-container">
+                    <button
+                        id="submit-playlist-button"
+                        type="submit"
+                    >{formType}
+                    </button>
                 </div>
             </form>
         </div>
