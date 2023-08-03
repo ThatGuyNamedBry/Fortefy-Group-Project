@@ -88,9 +88,9 @@ const ProfilePage = () => {
       <div className="section-container">
         <div className='header'>
           <h2>Your Playlists</h2>
-          <div className="create-playlist-button">
+          <NavLink to="/playlists/new" className="create-playlist-button">
             <i class="fa-solid fa-circle-plus"></i>
-          </div>
+          </NavLink>
         </div>
         <div className="album-grid">
         {userPlaylists.map((playlist) => (

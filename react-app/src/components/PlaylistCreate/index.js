@@ -3,7 +3,7 @@ import PlaylistForm from "../PlaylistForm";
 
 const PlaylistCreate = () => {
     const user = useSelector(state => state.session.user);
-
+    
     if (user) {
         return (
             <PlaylistForm
