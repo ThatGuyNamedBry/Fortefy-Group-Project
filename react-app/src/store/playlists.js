@@ -82,7 +82,8 @@ export const createPlaylistThunk = (formData) => async (dispatch) => {
         if (!response.ok) {
             throw new Error(newPlaylist)
         }
-        return dispatch(receivePlaylistAction(newPlaylist));
+        dispatch(receivePlaylistAction(newPlaylist));
+        return newPlaylist;
     } catch (err) {
         return err
     }
