@@ -68,7 +68,7 @@ def create_new_album():
         new_album = Album (
             user_id = current_user.id,
             name = form.data['name'],
-            art = form.data['art'],
+            art = 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Compact_Disc.jpg' if form.data['art'] == '' else form.data['art'],
             artist = form.data['artist'],
             year = form.data['year'],
             genre = form.data['genre']

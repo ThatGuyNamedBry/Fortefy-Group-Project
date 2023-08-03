@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 
 class CreateAlbumForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
-    art = StringField("art", validators=[DataRequired()])
+    art = StringField("art")
     artist = StringField("artist", validators=[DataRequired()])
     year = IntegerField("year", validators=[DataRequired()])
     genre = StringField("genre", validators=[DataRequired()])
