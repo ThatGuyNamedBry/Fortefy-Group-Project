@@ -48,7 +48,6 @@ const AlbumDetails = () => {
     }, [dispatch, singleAlbum, songs, user]);
 
 
-
     const editHandleClick = (e) => {
         e.stopPropagation();
     }
@@ -72,20 +71,21 @@ const AlbumDetails = () => {
         dispatch(setIsPlaying(true));
     };
 
-    if (!singleAlbum) {
-        return null;
-    }
+    if (!singleAlbum) return <h1>This album does not exist.</h1>
 
     const albumTime = songsArray.reduce((acc, song) => acc + song.duration, 0);
 
     return (
         <div className='album-details-container'>
             <div className='album-header-container'>
-                <img className='album-details-art' src={singleAlbum.art} alt='No Album Art Available'></img>
+                <div id="album-art-container">
+                    <img className='album-details-art' src={singleAlbum.art} alt='No Album Art Available'></img>
+                </div>
                 <div className='album-info-container'>
                     <p>Album</p>
                     <h3 className='album-name-header'>{singleAlbum.name}</h3>
-                    <p>{singleAlbum.artist} · {singleAlbum.year} · {songsArray.length} {songsArray.length === 1 ? `song` : `songs`}, {secsToHrs(albumTime)}</p>
+                    <p id="album-info">{singleAlbum.artist} · {singleAlbum.year} · {singleAlbum.genre}</p>
+                    <p id="album-length">{songsArray.length} {songsArray.length === 1 ? `song` : `songs`}, {secsToHrs(albumTime)}</p>
                 </div>
             </div>
             <div className='album-buttons-container'>
@@ -127,7 +127,7 @@ const AlbumDetails = () => {
                                 />
                             </div>
                             {userOwned && hoveredSong === i && (
-                                <div style={{ display: "flex", alignItems: "center", gap: "3px"}}>
+                                <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
                                     <EditSongButton
                                         modalComponent={<AddMusicModal className="add-music-modal" song={song} album={singleAlbum} type="update" />}
                                     />

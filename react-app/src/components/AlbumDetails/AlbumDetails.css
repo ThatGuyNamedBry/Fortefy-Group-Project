@@ -16,8 +16,21 @@
     justify-content: flex-end;
 }
 
+#album-art-container {
+    width: 300px;
+}
+
 .album-details-art {
-    width: 20%;
+    width: 100%;
+}
+
+#album-info {
+    margin-bottom: 2.5px;
+}
+
+#album-length {
+    margin-top: 2.5px;
+    color: rgba(255, 255, 255, 0.701)
 }
 
 .album-name-header {
