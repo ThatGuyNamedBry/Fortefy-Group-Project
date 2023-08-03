@@ -140,10 +140,13 @@ def edit_album(id):
             return { 'errors': 'Album not found'}, 404
 
         album.name = form.data['name']
-        album.art = form.data['art']
         album.artist = form.data['artist']
         album.year = form.data['year']
         album.genre = form.data['genre']
+        if form.data['art'] == '':
+            album.art = 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Compact_Disc.jpg'
+        else:
+            album.art = form.data['art']
 
         db.session.commit()
 
