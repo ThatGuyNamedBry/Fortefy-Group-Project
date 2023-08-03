@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllAlbumsThunk } from '../../store/albums';
 import { getAllSongsThunk } from '../../store/songs';
+import { getAllPlaylistsThunk } from '../../store/playlists';
 import './HomeLandingPage.css';
 import { Link } from 'react-router-dom';
 
@@ -9,16 +10,19 @@ const HomeLandingPage = () => {
     const dispatch = useDispatch();
     const allAlbums = useSelector(state => state.albums.allAlbums);
     const allSongs = useSelector(state => state.songs.allSongs);
+    const allPlaylists = useSelector((state) => state.playlists.allPlaylists);
 
     const [sortedSongs, setSortedSongs] = useState([]);
     const [startIndexAlbums, setStartIndexAlbums] = useState(0);
     const [startIndexSongs, setStartIndexSongs] = useState(0);
+    const [startIndexPlaylists, setStartIndexPlaylists] = useState(0);
 
     const itemsPerPage = 4;
 
     useEffect(() => {
         dispatch(getAllAlbumsThunk());
         dispatch(getAllSongsThunk());
+        dispatch(getAllPlaylistsThunk());
     }, [dispatch]);
 
     useEffect(() => {
@@ -50,6 +54,18 @@ const HomeLandingPage = () => {
         }
     };
 
+    const handlePrevClickPlaylists = () => {
+        if (startIndexPlaylists - itemsPerPage >= 0) {
+            setStartIndexPlaylists(startIndexPlaylists - itemsPerPage);
+        }
+    };
+
+    const handleNextClickPlaylists = () => {
+        if (startIndexPlaylists + itemsPerPage < Object.values(allPlaylists).length) {
+            setStartIndexPlaylists(startIndexPlaylists + itemsPerPage);
+        }
+    };
+
     return (
         <div className="home-container">
             <div className="your-library-container">
@@ -59,8 +75,15 @@ const HomeLandingPage = () => {
                 <div className="album-grid-header">
                     <h2>All Albums</h2>
                     <div className="item-scroll">
-                        <button onClick={handlePrevClickAlbums} disabled={startIndexAlbums === 0}>&#8249;&#8249;</button>
-                        <button onClick={handleNextClickAlbums} disabled={startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length}>&#8250;&#8250;</button>
+                        <div
+                            className={`fa-solid fa-angles-left ${startIndexAlbums === 0 ? 'hidden' : ''}`}
+                            onClick={handlePrevClickAlbums}
+                        ></div>
+                        <div
+                            className={`fa-solid fa-angles-right ${startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length ? 'hidden' : ''
+                                }`}
+                            onClick={handleNextClickAlbums}
+                        ></div>
                     </div>
                 </div>
                 <div id='all-albums-container' className="album-grid">
@@ -77,8 +100,15 @@ const HomeLandingPage = () => {
                 <div className="album-grid-header">
                     <h2>Discover Songs</h2>
                     <div className="item-scroll">
-                        <button onClick={handlePrevClickSongs} disabled={startIndexSongs === 0}>&#8249;&#8249;</button>
-                        <button onClick={handleNextClickSongs} disabled={startIndexSongs + itemsPerPage >= sortedSongs.length}>&#8250;&#8250;</button>
+                        <div
+                            className={`fa-solid fa-angles-left ${startIndexSongs === 0 ? 'hidden' : ''}`}
+                            onClick={handlePrevClickSongs}
+                        ></div>
+                        <div
+                            className={`fa-solid fa-angles-right ${startIndexSongs + itemsPerPage >= Object.values(allSongs).length ? 'hidden' : ''
+                                }`}
+                            onClick={handleNextClickSongs}
+                        ></div>
                     </div>
                 </div>
                 <div id='all-songs-container' className="album-grid">
@@ -95,9 +125,48 @@ const HomeLandingPage = () => {
                             );
                         })}
                 </div>
+                <div className="album-grid-header">
+                    <h2>All Playlists</h2>
+                    <div className="item-scroll">
+                        <div
+                            className={`fa-solid fa-angles-left ${startIndexPlaylists === 0 ? 'hidden' : ''}`}
+                            onClick={handlePrevClickPlaylists}
+                        ></div>
+                        <div
+                            className={`fa-solid fa-angles-right ${startIndexPlaylists + itemsPerPage >= Object.values(allPlaylists).length ? 'hidden' : ''
+                                }`}
+                            onClick={handleNextClickPlaylists}
+                        ></div>
+                    </div>
+                </div>
+                <div id='all-playlists-container' className="album-grid">
+                    {Object.values(allPlaylists)
+                        .slice(startIndexPlaylists, startIndexPlaylists + itemsPerPage)
+                        .map(playlist => (
+                            <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
+                                <img src={playlist.art} alt={playlist.title} className="album-image" />
+                                <h3>{playlist.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
+                            </Link>
+                        ))}
+                </div>
             </div>
         </div>
     );
 };
 
 export default HomeLandingPage;
+
+{/* <div className="item-scroll">
+    <div className='fa-solid fa-angles-left' onClick={handlePrevClickAlbums} disabled={startIndexAlbums === 0}></div>
+    <div className='fa-solid fa-angles-right' onClick={handleNextClickAlbums} disabled={startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length}></div>
+</div> */}
+
+{/* <div className="item-scroll">
+<div className='fa-solid fa-angles-left' onClick={handlePrevClickSongs} disabled={startIndexSongs === 0}></div>
+<div className='fa-solid fa-angles-right' onClick={handleNextClickSongs} disabled={startIndexSongs + itemsPerPage >= sortedSongs.length}></div>
+</div> */}
+
+{/* <div className="item-scroll">
+    <div className='fa-solid fa-angles-left' onClick={handlePrevClickPlaylists} disabled={startIndexPlaylists === 0}></div>
+    <div className='fa-solid fa-angles-right' onClick={handleNextClickPlaylists} disabled={startIndexPlaylists + itemsPerPage >= Object.values(allPlaylists).length}></div>
+</div> */}
