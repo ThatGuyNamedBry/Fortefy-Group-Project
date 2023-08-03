@@ -88,10 +88,10 @@ export const createPlaylistThunk = (formData) => async (dispatch) => {
 };
 
 //Edit/Update an Playlist Thunk
-export const updatePlaylistThunk = (playlist, formData) => async (dispatch) => {
-    // console.log('Edit a playlist Thunk, this is playlist : ', playlist);
+export const updatePlaylistThunk = (playlistId, formData) => async (dispatch) => {
+    // console.log('Edit a playlist Thunk, this is playlistId : ', playlistId);
     try {
-        const response = await fetch(`/api/playlists/${playlist.id}/edit`, {
+        const response = await fetch(`/api/playlists/${playlistId}/edit`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),
