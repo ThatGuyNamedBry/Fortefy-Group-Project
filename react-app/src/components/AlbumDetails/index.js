@@ -128,7 +128,7 @@ const AlbumDetails = () => {
                             {userOwned && hoveredSong === i && (
                                 <div style={{ display: "flex", alignItems: "center", gap: "3px"}}>
                                     <EditSongButton
-                                        modalComponent={<AddMusicModal className="add-music-modal" song={song} type="update" />}
+                                        modalComponent={<AddMusicModal className="add-music-modal" song={song} album={singleAlbum} type="update" />}
                                     />
                                     <DeleteMusicButton
                                         modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />}
