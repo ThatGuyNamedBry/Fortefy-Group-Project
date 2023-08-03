@@ -28,6 +28,10 @@
     border-radius: 8px;
 }
 
+.album-tile:hover {
+    background-color: rgb(28,28,28);
+}
+
 .album-tile Link {
     text-decoration: none;
 }
