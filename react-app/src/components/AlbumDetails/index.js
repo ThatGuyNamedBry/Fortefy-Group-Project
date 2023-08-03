@@ -18,7 +18,6 @@ const AlbumDetails = () => {
     const { albumId } = useParams();
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
     const songs = useSelector(state => state.songs.allSongs)
-    const singleSong = useSelector(state => state.songs.singleSong)
     const user = useSelector(state => state.session.user)
     const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
     const [hoveredSong, setHoveredSong] = useState(-1);
