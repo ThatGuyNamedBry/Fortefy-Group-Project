@@ -70,6 +70,7 @@ export const getPlaylistByIdThunk = (playlistId) => async (dispatch) => {
 //Create a Playlist Thunk
 export const createPlaylistThunk = (formData) => async (dispatch) => {
     // console.log('Create playlist thunk running, this is formData : ', formData)
+    formData.art = formData.art ? formData.art : 'https://i0.wp.com/olumuse.org/wp-content/uploads/2020/09/unnamed.jpg';
     try {
         const response = await fetch('/api/playlists/new', {
             method: 'POST',

@@ -33,7 +33,7 @@ const PlaylistForm = ({ playlist, formType }) => {
             }
 
             if (playlist?.errors) {
-                setErrors(playlist.errors)
+                setErrors({ ...playlist.errors, flag: true } );
             } else {
                 history.push(`/playlists/${playlist.id}`);
             }

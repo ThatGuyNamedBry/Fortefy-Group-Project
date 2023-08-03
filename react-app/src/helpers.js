@@ -61,9 +61,9 @@ export const playlistValidation = (title, artUrl, description) => {
         errors.art = checkImageErrors(artUrl);
     }
 
-    if (description.length > 300) {
+    if (description.length > 254) {
         errors.flag = true;
-        errors.description = 'Description must be less than 300 characters'
+        errors.description = 'Description cannot exceed 255 characters'
     }
 
     return errors;
