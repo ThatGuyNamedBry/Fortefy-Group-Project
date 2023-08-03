@@ -1,4 +1,7 @@
 /* TODO Add site wide styles */
+* {
+    font-family: 'Lato', sans-serif;
+}
 
 html {
     /* background-color: rgb(19, 19, 19); */
