@@ -129,7 +129,7 @@ const AlbumForm = ({ album, formType }) => {
           >{formType}
           </button>
         </div>
-        {errors.empty ? <p className="errors">{errors.empty}</p> : null}
+        {errors.empty ? <p className="errors empty-error">{errors.empty}</p> : null}
       </form>
     </div>
   )
