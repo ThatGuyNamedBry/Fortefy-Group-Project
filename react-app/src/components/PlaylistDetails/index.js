@@ -87,7 +87,6 @@ const PlaylistDetails = () => {
         dispatch(removePlaylistSongThunk(playlistId, removeSong.id));
     }
 
-    console.log(songs[0]);
     return (
         <div className='playlist-details-container'>
             <div className='playlist-header-container'>
