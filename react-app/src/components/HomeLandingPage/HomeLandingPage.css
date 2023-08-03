@@ -5,11 +5,19 @@
 }
 
 .your-library-container {
-    width: 18%;
+    width: 25%;
+    background-color: rgb(13, 13, 13);
+    border-radius: 20px;
+    /* margin-right:100px; */
+}
+
+.your-library-container h2 {
+    margin-left: 12px;
 }
 
 .discover-music-container {
-    width: 82%;
+    width: 75%;
+    margin-left: 40px;
 }
 
 .album-grid {
@@ -118,4 +126,36 @@
 .fa-solid.fa-angles-right:hover {
     color: white;
     font-weight: 900;
+}
+
+.library-container {
+    margin-right: 20px;
+    margin-left: 10px;
+}
+
+.playlist-tile {
+    display:flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    border-radius: 20px;
+    background-color: rgb(28, 28, 28);
+    /* margin-right: 10px; */
+    transition: background-color 0.4s;
+}
+
+.playlist-tile:hover {
+    background-color: rgb(40, 40, 40);
+}
+
+.playlist-image {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    border-radius: 10px;
+}
+
+.playlist-tile h3 {
+    color: white;
 }
