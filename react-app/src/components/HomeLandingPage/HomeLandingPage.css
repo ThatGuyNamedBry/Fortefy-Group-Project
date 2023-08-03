@@ -6,11 +6,18 @@
 
 .your-library-container {
     width: 25%;
+    background-color: rgb(13, 13, 13);
+    border-radius: 20px;
+    /* margin-right:100px; */
+}
+
+.your-library-container h2 {
+    margin-left: 12px;
 }
 
 .discover-music-container {
     width: 75%;
-    margin-left: 10px;
+    margin-left: 40px;
 }
 
 .album-grid {
@@ -120,7 +127,8 @@
 }
 
 .library-container {
-    margin-right: 30px;
+    margin-right: 20px;
+    margin-left: 10px;
 }
 
 .playlist-tile {
@@ -131,7 +139,7 @@
     text-decoration: none;
     border-radius: 20px;
     background-color: rgb(28, 28, 28);
-    margin-right: 10px;
+    /* margin-right: 10px; */
     transition: background-color 0.4s;
 }
 
