@@ -22,7 +22,7 @@
     margin-top: 6px;
     margin-left: 15px;
     color: #21cc06;
-    font-size: 20px;
+    font-size: 21px;
 }
 
 .create-album-button:hover {
@@ -48,14 +48,14 @@
     position: relative;
     left: 140px;
     top: 51px;
-    visibility: hidden;
-    opacity: 0; 
+    /* visibility: hidden; */
+    opacity: 0;
     transform: translateY(20px);
-    transition: visibility 0s, opacity 0.5s, transform 0.5s;
+    transition: visibility 0s, opacity 0.3s, transform 0.3s;
 }
 
 .profile-tile-container:hover .profile-tile-buttons {
-    visibility: visible;
+    /* visibility: visible; */
     opacity: 1;
     transform: translateY(0);
 }
@@ -74,4 +74,19 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
     gap: 25px;
+}
+
+.create-playlist-button {
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6px;
+    margin-left: 15px;
+    color: #21cc06;
+    font-size: 21px;
+}
+
+.create-playlist-button:hover {
+    color: rgb(34, 255, 0);
 }
