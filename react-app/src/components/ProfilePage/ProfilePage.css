@@ -45,20 +45,19 @@
 }
 
 .profile-tile-buttons {
-    /* display:flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-right: 5px;
-    margin-bottom: -15px; */
     position: relative;
     left: 140px;
     top: 51px;
     visibility: hidden;
-    /* transition: visibility 0.3s ease; */
+    opacity: 0; 
+    transform: translateY(20px);
+    transition: visibility 0s, opacity 0.5s, transform 0.5s;
 }
 
 .profile-tile-container:hover .profile-tile-buttons {
     visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .profile-tile-buttons > * + * {
