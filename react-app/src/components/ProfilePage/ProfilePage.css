@@ -48,14 +48,12 @@
     position: relative;
     left: 140px;
     top: 51px;
-    /* visibility: hidden; */
     opacity: 0;
     transform: translateY(20px);
     transition: visibility 0s, opacity 0.3s, transform 0.3s;
 }
 
 .profile-tile-container:hover .profile-tile-buttons {
-    /* visibility: visible; */
     opacity: 1;
     transform: translateY(0);
 }
