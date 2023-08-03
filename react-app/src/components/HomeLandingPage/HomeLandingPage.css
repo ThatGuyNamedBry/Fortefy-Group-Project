@@ -5,17 +5,17 @@
 }
 
 .your-library-container {
-    width: 25%;
+    width: 18%;
 }
 
 .discover-music-container {
-    width: 75%;
+    width: 82%;
 }
 
 .album-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
-    gap: 25px;
+    gap: 17px;
 }
 
 .album-tile {
@@ -55,6 +55,8 @@
     border-radius: 8px;
     margin-top: 10px;
     margin-bottom: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 #all-albums-container {
