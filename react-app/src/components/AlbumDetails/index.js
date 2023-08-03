@@ -12,6 +12,7 @@ import './AlbumDetails.css';
 import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 import DeleteMusicButton from '../DeleteMusicButton/DeleteMusicButton';
 import EditSongButton from '../EditSongButton';
+import AddPLSongButton from '../AddPLSongButton';
 
 const AlbumDetails = () => {
 
@@ -137,7 +138,12 @@ const AlbumDetails = () => {
                                     />
                                 </div>
                             )}
-                            <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
+                            <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)} &nbsp; &nbsp; &nbsp; &nbsp; </p>
+                            <div className='add-plsong-button-container'>
+                                <AddPLSongButton
+                                    songId={song.id}
+                                />
+                            </div>
                         </div>
                     </button>
                 ))}
