@@ -46,6 +46,7 @@ input {
 .errors {
   font-size: .7rem;
   margin: 5px 0px;
+  color: rgb(255, 59, 59);
 }
 
 #submit-button {
