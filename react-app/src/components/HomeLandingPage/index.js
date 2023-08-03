@@ -137,7 +137,7 @@ const HomeLandingPage = () => {
                             return (
                                 <Link key={`${album?.id}-${song?.id}`} to={`/albums/${album?.id}`} className="album-tile link-as-text">
                                     <img src={album?.art} alt={album?.name} className="album-image" />
-                                    <h3>{song.name}</h3>
+                                    <h3>{song.name.length > 22 ? song.name.slice(0, 22) + '...' : song.name}</h3>
                                     <p>{album?.artist}</p>
                                 </Link>
                             );
