@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getPlaylistByIdThunk, removePlaylistSongThunk, loadPlaylistSongsAction } from '../../store/playlists';
-import { getAllSongsAction } from '../../store/songs';
 import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 import LikeButton from '../LikeButton';
 import './PlaylistDetails.css';
@@ -48,7 +47,7 @@ const PlaylistDetails = () => {
             playlist.playlist_songs.forEach(playlistSong => {
                 time += playlistSong.song.duration;
 
-            // give each song unique id, so forEach in reducer can hold duplicates
+            // give each song unique id, so forEach Normalizer in reducer can hold duplicates
                 playlistSong.song.playlistSongId = playlistSong.id;
             // in return create usual songs object with keys of songId's, for the player to key into
                 normalizedPlayerSongs[playlistSong.song_id] = playlistSong.song;
@@ -103,7 +102,9 @@ const PlaylistDetails = () => {
                 </div>
             </div>
             <div className='playlist-buttons-container'>
-
+                <button className='album-play-button' onClick={handlePlayPlaylist}>
+                    <i class="fa-sharp fa-solid fa-circle-play"></i>
+                </button>
             </div>
             <ul className='playlist-songs-container'>
                 <li className='playlist-songs-header'>
