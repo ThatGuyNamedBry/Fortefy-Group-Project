@@ -136,3 +136,7 @@
 .fa-solid.fa-pen-to-square:hover {
     color: white;
 }
+
+.song-name-text {
+    text-overflow: ellipsis;
+}

@@ -96,7 +96,7 @@ const AlbumDetails = () => {
             </div>
             <ul className='album-songs-container'>
                 <li className='album-songs-header'>
-                    <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
+                    <p className="song-name-text" style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
                     <i className="fa-regular fa-clock"></i>
                 </li>
                 {songsArray.map((song, i) => (
