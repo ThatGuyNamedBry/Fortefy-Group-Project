@@ -1,0 +1,29 @@
+#footer-container {
+  padding-left: 10px;
+  display: flex;
+  gap: 60px;
+  border-top: solid rgba(255, 255, 255, 0.237) 1px;
+  padding-top: 15px;
+  margin-left: 40px;
+  margin-top: 35px;
+  margin-bottom: 50px;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-header {
+  margin-bottom: 5px;
+}
+
+a, span {
+  color: rgba(255, 255, 255, 0.465);
+  text-decoration: none
+}
+
+#creators>a:hover {
+  color: white;
+  cursor: pointer;
+}
