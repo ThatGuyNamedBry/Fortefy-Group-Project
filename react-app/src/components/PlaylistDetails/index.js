@@ -139,7 +139,7 @@ const PlaylistDetails = () => {
                             {song?.user_id !== user.id && <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
                                 <LikeButton
                                     songId={song.id}
-                                />{song?.id}
+                                />
                             </div>}
                             <div className='playlist-songs-buttons'>
                                 <i className="fa-solid fa-circle-minus" onClick={(e) => removeSongClick(e, song?.id)}></i>
