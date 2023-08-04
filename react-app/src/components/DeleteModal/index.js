@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useModal } from '../../context/Modal';
 import { deleteAlbumThunk } from "../../store/albums";
-import { deleteSongThunk } from "../../store/songs";
+import { deleteSongThunk, getCurrentUserAllSongsThunk } from "../../store/songs";
 import { deletePlaylistThunk } from "../../store/playlists";
 import './DeleteModal.css';
 
@@ -10,9 +10,10 @@ function DeleteModal({ type, id }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (type === 'album') {
-      dispatch(deleteAlbumThunk(id));
+      await dispatch(deleteAlbumThunk(id));
+      await dispatch(getCurrentUserAllSongsThunk());
     } else if (type === 'song') {
       dispatch(deleteSongThunk(id));
     } else if (type === 'playlist') {

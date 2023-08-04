@@ -73,7 +73,7 @@ const PlaylistForm = ({ playlist, formType }) => {
                     />
                 </div>
 
-                <div className="playlist-field">
+                <div className="playlist-field" id="playlist-description-field">
                     <div className="field-label">
                         <label htmlFor="playlist-description-input">Description</label>
                         {errors.description ? <p className="errors">{errors.description}</p> : null}
@@ -86,9 +86,9 @@ const PlaylistForm = ({ playlist, formType }) => {
                     />
                 </div>
 
-                <div id="submit-playlist-container">
+                <div id="submit-container">
                     <button
-                        id="submit-playlist-button"
+                        id="submit-button"
                         type="submit"
                     >{formType}
                     </button>
