@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getPlaylistByIdThunk, removePlaylistSongThunk, loadPlaylistSongsAction } from '../../store/playlists';
+import { getAllSongsAction } from '../../store/songs';
 import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 import LikeButton from '../LikeButton';
 import './PlaylistDetails.css';
@@ -12,7 +13,7 @@ const PlaylistDetails = () => {
     const { playlistId } = useParams();
 
     // const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
-
+    const user = useSelector(state => state.session.user);
     const playlist = useSelector((state) => state.playlists.singlePlaylist);
     const songsObject = useSelector((state) => state.playlists.playlistSongs);
     const songs = Object.values(songsObject);
@@ -37,12 +38,13 @@ const PlaylistDetails = () => {
         dispatch(getPlaylistByIdThunk(playlistId));
     }, [dispatch, playlistId]);
 
-    useEffect(() => {
+    useEffect(async () => {
         if (playlist?.id) {
             let time = 0;
             setPlaylistDuration(0);
             const normalizedPlayerSongs = {};
-            const songsArr = [];
+            const allSongsStoreArray = [];
+            const songsArray = [];
             playlist.playlist_songs.forEach(playlistSong => {
                 time += playlistSong.song.duration;
 
@@ -51,12 +53,19 @@ const PlaylistDetails = () => {
                 // in return create usual songs object with keys of songId's, for the player to key into
                 normalizedPlayerSongs[playlistSong.song_id] = playlistSong.song;
 
-                songsArr.push(playlistSong.song);
+                // array of songs(duplicates, included) for the Playlist Store
+                songsArray.push(playlistSong.song);
+                // array of Unique songs for the Songs Store
+                allSongsStoreArray.push(playlistSong.song);
             });
 
             setPlaylistDuration(time);
             setPlayerSongsObject(normalizedPlayerSongs);
-            dispatch(loadPlaylistSongsAction(songsArr));
+
+            // Load Playlist songs to display the correct number of each song from Playlists Store
+            await dispatch(loadPlaylistSongsAction(songsArray));
+            // getAllSongsAction to populate All Songs in Songs store for like functionality purposes after refresh
+            await dispatch(getAllSongsAction(allSongsStoreArray));
         }
     }, [dispatch, playlist]);
 
@@ -127,11 +136,11 @@ const PlaylistDetails = () => {
                             <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
                         </div>
                         <div className='heart-time-container'>
-                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
+                            {song?.user_id !== user.id && <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
                                 <LikeButton
                                     songId={song.id}
-                                />
-                            </div>
+                                />{song?.id}
+                            </div>}
                             <div className='playlist-songs-buttons'>
                                 <i className="fa-solid fa-circle-minus" onClick={(e) => removeSongClick(e, song?.id)}></i>
                             </div>
