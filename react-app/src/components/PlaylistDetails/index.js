@@ -103,10 +103,10 @@ const PlaylistDetails = () => {
                 <div className='playlist-info-container'>
                     <p>Playlist</p>
                     <h3 className='playlist-name-header'>{playlist.title}</h3>
-                    <div className='playlist-info-container'>
-                        <p>{playlist?.description}</p>
-                        {songs.length ? <p>Featuring artists including {artistsText}</p> : <p>Add some songs to your playlist!</p>}
-                        <p>{songs.length} {songs.length === 1 ? `song` : `songs`}, {secsToHrs(playlistDuration)}</p>
+                    <div className='playlist-info-wrapper'>
+                        <p id="playlist-description">{playlist?.description}</p>
+                        <p id="playlist-artists">{songs.length ? `Featuring artists including ${artistsText}` : 'No tracks yet.'}</p>
+                        <p id="playlist-duration">{user.username} · {songs.length} {songs.length === 1 ? `song` : `songs`}, {secsToHrs(playlistDuration)}</p>
                     </div>
                 </div>
             </div>
