@@ -74,13 +74,13 @@ const HomeLandingPage = () => {
                     {user ? (
                         <div className='library-container'>
                             {Object.values(allPlaylists)
-                            .filter(playlist => playlist.user_id === user.id)
-                            .map(playlist => (
-                                <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
-                                    <img src={playlist.art} alt={playlist.title} className="playlist-image" />
-                                    <h3>{playlist.title}</h3>
-                                </Link>
-                            ))}
+                                .filter(playlist => playlist.user_id === user.id)
+                                .map(playlist => (
+                                    <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
+                                        <img src={playlist.art} alt={playlist.title} className="playlist-image" />
+                                        <h3>{playlist.title}</h3>
+                                    </Link>
+                                ))}
                             {Object.values(allPlaylists).every(playlist => playlist.user_id !== user.id) && (
                                 <div>
                                     <h2>You don't have any playlists</h2>
@@ -116,7 +116,7 @@ const HomeLandingPage = () => {
                             <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
                                 <img src={album.art} alt={album.name} className="album-image" />
                                 <h3>{album.name}</h3>
-                                <p>{album.artist}</p>
+                                <p className='owner-text'>{album.artist}</p>
                             </Link>
                         ))}
                 </div>
@@ -143,7 +143,7 @@ const HomeLandingPage = () => {
                                 <Link key={`${album?.id}-${song?.id}`} to={`/albums/${album?.id}`} className="album-tile link-as-text">
                                     <img src={album?.art} alt={album?.name} className="album-image" />
                                     <h3>{song.name}</h3>
-                                    <p>{album?.artist}</p>
+                                    <p className='owner-text'>{album?.artist}</p>
                                 </Link>
                             );
                         })}
@@ -169,7 +169,7 @@ const HomeLandingPage = () => {
                             <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
                                 <img src={playlist.art} alt={playlist.title} className="album-image" />
                                 <h3>{playlist.title}</h3>
-                                <h3>{playlist.user.username}</h3>
+                                <p className='owner-text'>{playlist.user.username}</p>
                             </Link>
                         ))}
                 </div>

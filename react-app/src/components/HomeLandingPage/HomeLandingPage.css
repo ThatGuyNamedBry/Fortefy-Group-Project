@@ -66,6 +66,10 @@
     white-space: nowrap;
 }
 
+.owner-text {
+    color: rgba(255, 255, 255, 0.506);
+}
+
 .album-image {
     width: 165px;
     height: 165px;
