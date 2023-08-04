@@ -53,7 +53,7 @@ export const playlistValidation = (title, artUrl, description) => {
         errors.title = 'Playlist Name is required';
     } else if (title.length > 60) {
         errors.flag = true;
-        errors.title = 'Save the essay for the description, Shakespeare. Name cannot exceed 60 characters';
+        errors.title = 'Name cannot exceed 60 characters';
     }
 
     if (artUrl && checkImageErrors(artUrl)) {

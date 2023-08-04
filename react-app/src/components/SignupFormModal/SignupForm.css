@@ -21,7 +21,7 @@
     margin-bottom: 20px;
     width: 50%;
     position: relative;
-    gap: 5px
+    gap: 5px;
 }
 
 .signup-form::before,
@@ -109,6 +109,7 @@
 }
 
 .signup-form li {
+    margin-top: 1px;
     color:red;
     font-size:small;
 }

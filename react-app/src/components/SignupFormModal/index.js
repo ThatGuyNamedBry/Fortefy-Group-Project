@@ -67,7 +67,7 @@ function SignupFormModal() {
 				</ul>
 				<label>
 					Email
-					{validationObject.email && <span className="signup-error">{validationObject.email}</span>}
+					{/* {validationObject.email && <span className="signup-error">{validationObject.email}</span>} */}
 					<input
 						type="text"
 						value={email}
@@ -77,7 +77,7 @@ function SignupFormModal() {
 				</label>
 				<label>
 					Username
-					{validationObject.username && <span className="signup-error">{validationObject.username}</span>}
+					{/* {validationObject.username && <span className="signup-error">{validationObject.username}</span>} */}
 					<input
 						type="text"
 						value={username}
@@ -87,7 +87,7 @@ function SignupFormModal() {
 				</label>
 				<label>
 					Password
-					{validationObject.password && <span className="signup-error">{validationObject.password}</span>}
+					{/* {validationObject.password && <span className="signup-error">{validationObject.password}</span>} */}
 					<input
 						type="password"
 						value={password}
@@ -97,9 +97,9 @@ function SignupFormModal() {
 				</label>
 				<label>
 					Confirm Password
-					{validationObject.confirmPassword && (
+					{/* {validationObject.confirmPassword && (
 						<span className="signup-error">{validationObject.confirmPassword}</span>
-					)}
+					)} */}
 					<input
 						type="password"
 						value={confirmPassword}

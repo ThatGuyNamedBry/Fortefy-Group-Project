@@ -38,9 +38,10 @@ input {
   color: white;
 }
 
-#submit-container {
+#button-container {
   display: flex;
   justify-content: center;
+  gap: 17px;
 }
 
 .errors {
@@ -61,13 +62,34 @@ input {
   background-color: rgb(33, 204, 6);
   color: white;
   cursor: pointer;
-  width: 97%;
+  width: 46%;
   border-radius: 20px;
+  transition: background-color 0.5s, color 0.5s;
 }
 
 #submit-button:hover {
-  width: 105%;
+  /* width: 105%;
   height: 85%;
   position: relative;
-  bottom: 1.5px;
+  bottom: 1.5px; */
+  background-color: rgb(233, 233, 233);
+  color: rgb(12, 147, 0);
+}
+
+#cancel-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: rgb(112, 112, 112);
+  color: white;
+  cursor: pointer;
+  width: 46%;
+  border-radius: 20px;
+  transition: background-color 0.5s, color 0.5s
+}
+
+#cancel-button:hover {
+  color: black;
+  background-color: white;
 }

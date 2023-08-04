@@ -19,10 +19,13 @@ function AddMusicModal({ album, type, song }) {
     setErrors({})
     const frontEndErrors = {}
 
-    if (!songName || !trackNumber || !file1) frontEndErrors.empty = "Fields with * are required."
+    if (!songName || !trackNumber || (type === 'create' && !file1)) frontEndErrors.empty = "Fields with * are required."
     if (songName && songName.length > 255) frontEndErrors.songName = "Track name must not exceed 255 characters."
     if (trackNumber && (trackNumber < 1 || !Number.isInteger(Number(trackNumber)))) frontEndErrors.trackNumber = "Please enter a valid track number."
-    if (file1 && !file1.name.endsWith('.mp3')) frontEndErrors.file1 = "File must be .mp3."
+    if (type === 'create') {
+      if (file1 && !file1.name.endsWith('.mp3')) frontEndErrors.file1 = "File must be .mp3."
+    }
+
 
     if (Object.keys(frontEndErrors).length === 0) {
 
