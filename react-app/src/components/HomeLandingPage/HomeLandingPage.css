@@ -163,3 +163,59 @@
 .playlist-tile h3 {
     color: white;
 }
+
+.create-playlist-link {
+    background-color: rgb(33, 204, 6);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    margin-top: 20px;
+    height: 50px;
+    transition: background-color 0.4s, color 0.4s;
+}
+
+.create-playlist-link:hover {
+    background-color: rgb(233, 233, 233);
+    color: rgb(12, 147, 0);
+}
+
+/* .loginbuttonlibrary {
+    background-color: rgb(33, 204, 6);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    margin-top: 20px;
+    height: 50px;
+    transition: background-color 0.4s, color 0.4s;
+} */
+
+.loginbuttonlibrary button {
+    background-color: rgb(33, 204, 6);
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    margin-top: 20px;
+    height: 50px;
+    transition: background-color 0.4s, color 0.4s;
+    width: 92%;
+    margin-left: 20px;
+}
+
+.loginbuttonlibrary button:hover {
+    background-color: rgb(233, 233, 233);
+    color: rgb(12, 147, 0);
+}

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllAlbumsThunk } from '../../store/albums';
 import { getAllSongsThunk } from '../../store/songs';
 import { getAllPlaylistsThunk } from '../../store/playlists';
 import './HomeLandingPage.css';
 import { Link } from 'react-router-dom';
+import OpenModalButton from "../OpenModalButton";
+import LoginFormModal from "../LoginFormModal";
 
 const HomeLandingPage = () => {
     const dispatch = useDispatch();
@@ -16,6 +18,8 @@ const HomeLandingPage = () => {
     const [startIndexAlbums, setStartIndexAlbums] = useState(0);
     const [startIndexSongs, setStartIndexSongs] = useState(0);
     const [startIndexPlaylists, setStartIndexPlaylists] = useState(0);
+    const [showMenu, setShowMenu] = useState(false);
+    const ulRef = useRef();
 
     const itemsPerPage = 4;
 
@@ -28,6 +32,22 @@ const HomeLandingPage = () => {
     useEffect(() => {
         setSortedSongs(Object.values(allSongs).sort(() => Math.random() - 0.5));
     }, [allSongs]);
+
+    useEffect(() => {
+        if (!showMenu) return;
+
+        const closeMenu = (e) => {
+          if (!ulRef.current.contains(e.target)) {
+            setShowMenu(false);
+          }
+        };
+
+        document.addEventListener("click", closeMenu);
+
+        return () => document.removeEventListener("click", closeMenu);
+    }, [showMenu]);
+
+    const closeMenu = () => setShowMenu(false);
 
 
     const handleNextClickAlbums = () => {
@@ -82,14 +102,21 @@ const HomeLandingPage = () => {
                                 </Link>
                             ))}
                             {Object.values(allPlaylists).every(playlist => playlist.user_id !== user.id) && (
-                                <div>
-                                    <h2>You don't have any playlists</h2>
-                                </div>
+                                <Link to="/playlists/new" className="create-playlist-link">
+                                    Create Your First Playlist!
+                                </Link>
                             )}
                         </div>
                     ) : (
-                        <div>
-                            <h2>Please log in to see your playlists</h2>
+                        // <div>
+                        //     <h2>Please log in to see your playlists</h2>
+                        // </div>
+                        <div className='loginbuttonlibrary'>
+                            {<OpenModalButton
+                                buttonText="Log in to see your playlists!"
+                                onItemClick={closeMenu}
+                                modalComponent={<LoginFormModal />}
+                            />}
                         </div>
                     )}
                 </div>
