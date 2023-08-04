@@ -13,6 +13,7 @@ import AlbumUpdate from "./components/AlbumUpdate";
 import ProfilePage from "./components/ProfilePage";
 import PlaylistDetails from "./components/PlaylistDetails";
 import PlaylistCreate from "./components/PlaylistCreate";
+import Footer from "./components/Footer";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ function App() {
           <Route path="/playlists/:playlistId" component={PlaylistDetails} />
         </Switch>
       )}
+      <Footer />
       <AudioPlayerComponent />
     </>
   );
