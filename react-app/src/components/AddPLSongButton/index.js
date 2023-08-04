@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUserAllPlaylistsThunk, addPlaylistSongThunk } from '../../store/playlists';
@@ -8,12 +8,10 @@ const AddPLSongButton = ({ songId }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const user = useSelector(state => state.session.user);
     const playlistsObject = useSelector(state => state.playlists.allPlaylists);
     const playlists = Object.values(playlistsObject);
 
     const [showOptions, setShowOptions] = useState('none');
-
 
     useEffect(() => {
         dispatch(getCurrentUserAllPlaylistsThunk());
@@ -27,10 +25,10 @@ const AddPLSongButton = ({ songId }) => {
     const onPlaylistSelect = (e) => {
         e.stopPropagation();
         setShowOptions('none');
+
         if (e.target.value === "Create Playlist") {
             history.push('/playlists/new');
         } else {
-            console.log('helllloooo', e.target.value, showOptions);
             dispatch(addPlaylistSongThunk(e.target.value, songId));
         }
     }
@@ -54,13 +52,13 @@ const AddPLSongButton = ({ songId }) => {
                         value="Create Playlist"
                     >Create Playlist
                     </option>
-                    {playlists.length ? playlists.map(playlist => (
+                    {playlists.map(playlist => (
                         <option
                             key={playlist.id}
                             className='playlist-options'
                             value={playlist.id}
                         >{playlist.title}</option>
-                    )) : null}
+                    ))}
                 </select>
             </div>
         </div>
