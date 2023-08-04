@@ -26,7 +26,6 @@ function AddMusicModal({ album, type, song }) {
       if (file1 && !file1.name.endsWith('.mp3')) frontEndErrors.file1 = "File must be .mp3."
     }
 
-    console.log(file1)
 
     if (Object.keys(frontEndErrors).length === 0) {
 
