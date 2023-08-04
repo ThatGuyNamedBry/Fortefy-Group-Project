@@ -162,7 +162,7 @@ def seed_songs():
         user_id=5,
         album_id=10,
         duration=290,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Cannonball+Adderley/Somethin'+Else/Autumn+Leaves.mp3",
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Whitney+Houston/Whitney/I+Wanna+Dance+With+Somebody+(Who+Loves+Me).mp3",
         track_number=1
     )
     song20 = Song(
