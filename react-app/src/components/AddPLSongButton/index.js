@@ -37,7 +37,7 @@ const AddPLSongButton = ({ songId }) => {
         <div id='open-playlist-select-button'>
             <i
                 id='plus-playlist-song'
-                class="fa-solid fa-circle-plus"
+                className="fa-solid fa-circle-plus"
                 onClick={onPlusClick}
             ></i>
             <div className='custom-select playlist-options-container' style={{display : showOptions }}>

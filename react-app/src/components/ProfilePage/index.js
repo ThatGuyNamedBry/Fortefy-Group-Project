@@ -33,6 +33,11 @@ const ProfilePage = () => {
     history.push(`/albums/${album.id}/edit`);
   };
 
+  const editPlaylistClick = (e) => {
+    e.stopPropagation();
+    alert('Edit Playlist Feature Coming Soon!');
+  };
+
   return (
     <div className="profile-container">
       <h1>{user?.name}</h1>
@@ -41,7 +46,7 @@ const ProfilePage = () => {
         <h2>Your Albums</h2>
         {user && (
 				<NavLink to="/albums/new" className="create-album-button">
-					<i class="fa-solid fa-circle-plus"></i>
+					<i className="fa-solid fa-circle-plus"></i>
 				</NavLink>
 			  )}
         </div>
@@ -89,19 +94,17 @@ const ProfilePage = () => {
         <div className='header'>
           <h2>Your Playlists</h2>
           <NavLink to="/playlists/new" className="create-playlist-button">
-            <i class="fa-solid fa-circle-plus"></i>
+            <i className="fa-solid fa-circle-plus"></i>
           </NavLink>
         </div>
         <div className="album-grid">
         {userPlaylists.map((playlist) => (
             <div key={playlist?.id} className="profile-tile-container">
               <div className="profile-tile-buttons">
-                <div className='update-delte-music-buttons fa-solid fa-pen-to-square'>
+                <div className='update-delte-music-buttons fa-solid fa-pen-to-square' onClick={editPlaylistClick}>
                   {/* Edit Playlist Modal Here (Optional) */}
                 </div>
-                <div className="update-delte-music-buttons fa-regular fa-trash-can">
-                  {/* Delete Playlist Modal Here */}
-                </div>
+                <DeleteMusicButton className="delete-song-modal" modalComponent={<DeleteModal type='playlist' id={playlist.id} />} />
               </div>
               <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
                 <img src={playlist?.art} alt={playlist?.name} className="album-image" />

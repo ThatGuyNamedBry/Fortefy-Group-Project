@@ -27,7 +27,7 @@ const PlaylistForm = ({ playlist, formType }) => {
             if (formType === 'Create Playlist') {
                 playlist = await dispatch(createPlaylistThunk(formData));
             } else if (formType === 'Update Playlist') {
-                // playlist = await dispatch(updatePlaylistThunk(playlist.id, formData));
+                playlist = await dispatch(updatePlaylistThunk(playlist.id, formData));
             }
 
             if (playlist?.errors) {
