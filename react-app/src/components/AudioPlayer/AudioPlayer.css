@@ -1,5 +1,9 @@
 .rhap_container {
+    position: fixed;
     background-color: rgb(0, 0, 0);
+    right: 15px;
+    bottom: 75px;
+    width: 98%
 }
 
 .rhap_ header {
