@@ -108,3 +108,7 @@
     font-size: smaller;
 }
 
+.signup-form li {
+    color:red;
+    font-size:small;
+}
