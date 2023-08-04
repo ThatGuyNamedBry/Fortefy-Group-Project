@@ -33,7 +33,7 @@ const AudioPlayerComponent = () => {
   };
 
   return (
-    <>
+    <div id="audio-player-container">
       {currentPlaylist && currentPlaylist.length > 0 && (
         <AudioPlayer
           layout='stacked-reverse'
@@ -58,9 +58,8 @@ const AudioPlayerComponent = () => {
           playing={isPlaying}
         />
       )}
-    </>
+    </div>
   );
 };
 
 export default AudioPlayerComponent;
-
