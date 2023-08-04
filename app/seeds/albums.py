@@ -43,9 +43,56 @@ def seed_albums():
         year=2005,
         genre='Pop Punk'
     )
+    album6 = Album(
+        name="Stranger in the Alps",
+        user_id=3,
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Phoebe+Bridgers/Stranger+in+the+Alps/Stranger+in+the+Alps.jpg",
+        artist='Phoebe Bridgers',
+        year=2017,
+        genre='Indie Folk'
+    )
+    album7 = Album(
+        name="Rumours",
+        user_id=4,
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Fleetwood+Mac/Rumours/Rumours.jpg",
+        artist='Fleetwood Mac',
+        year=1977,
+        genre='Pop Rock'
+    )
+    album8 = Album(
+        name="Renaissance",
+        user_id=4,
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Beyonc%C3%A9/Renaissance/Renaissance.jpg",
+        artist='Beyoncé',
+        year=2022,
+        genre='Alternative R&B'
+    )
+    album9 = Album(
+        name="Somethin' Else",
+        user_id=5,
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Cannonball+Adderley/Somethin'+Else/Somethin'+Else.jpg",
+        artist='Cannonball Adderley',
+        year=1958,
+        genre='Hard Bop'
+    )
+    album10 = Album(
+        name="Whitney",
+        user_id=5,
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Whitney+Houston/Whitney/Whitney.jpg",
+        artist='Whitney Houston',
+        year=1987,
+        genre='Dance Pop'
+    )
+    album11 = Album(
+        name="Selected Ambient Works 85-92",
+        user_id=5,
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Aphex+Twin/Selected+Ambient+Works+85-92/Selected+Ambient+Works+85-92.jpg",
+        artist='Aphex Twin',
+        year=1992,
+        genre='IDM'
+    )
 
-
-    db.session.add_all([album1, album2, album3, album4, album5])
+    db.session.add_all([album1, album2, album3, album4, album5, album6, album7, album8, album9, album10, album11])
     db.session.commit()
 
 def undo_albums():
