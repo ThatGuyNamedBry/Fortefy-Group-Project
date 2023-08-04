@@ -15,6 +15,13 @@
     margin-left: 12px;
 }
 
+.your-library-container h3 {
+    padding-right: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .discover-music-container {
     width: 75%;
     margin-left: 40px;
@@ -50,14 +57,13 @@
     text-decoration: none;
 }
 
-.album-tile h3 {
+.album-tile h3, .album-tile p  {
     margin: 0px;
     font-size: medium;
-}
-
-.album-tile p {
-    margin: 0px;
-    font-size: medium;
+    padding: 0px 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .album-image {
