@@ -48,6 +48,15 @@ const AlbumForm = ({ album, formType }) => {
     }
   }
 
+  const handleCancelClick = (e) => {
+      if (formType === 'Update Album') {
+        history.push(`/profile`);
+      }
+      else {
+        history.goBack();
+      }
+  }
+
   return (
     <div className="album-form-container">
       <form id="album-form" onSubmit={handleSubmit}>
@@ -122,11 +131,16 @@ const AlbumForm = ({ album, formType }) => {
           />
         </div>
 
-        <div id="submit-container">
+        <div id="button-container">
           <button
             id="submit-button"
             type="submit"
           >{formType}
+          </button>
+          <button
+            id="cancel-button"
+            onClick={handleCancelClick}>
+            Cancel
           </button>
         </div>
         {errors.empty ? <p className="errors empty-error">{errors.empty}</p> : null}

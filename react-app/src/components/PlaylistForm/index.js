@@ -86,11 +86,16 @@ const PlaylistForm = ({ playlist, formType }) => {
                     />
                 </div>
 
-                <div id="submit-container">
+                <div id="button-container">
                     <button
-                        id="submit-button"
-                        type="submit"
-                    >{formType}
+                    id="submit-button"
+                    type="submit"
+                        >{formType}
+                    </button>
+                    <button
+                    id="cancel-button"
+                    onClick={() => history.goBack()}>
+                        Cancel
                     </button>
                 </div>
             </form>
