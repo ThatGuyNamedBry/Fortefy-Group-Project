@@ -11,7 +11,7 @@ const HomeLandingPage = () => {
     const allAlbums = useSelector(state => state.albums.allAlbums);
     const allSongs = useSelector(state => state.songs.allSongs);
     const allPlaylists = useSelector((state) => state.playlists.allPlaylists);
-
+    const user = useSelector(state => state.session.user)
     const [sortedSongs, setSortedSongs] = useState([]);
     const [startIndexAlbums, setStartIndexAlbums] = useState(0);
     const [startIndexSongs, setStartIndexSongs] = useState(0);
@@ -70,6 +70,24 @@ const HomeLandingPage = () => {
         <div className="home-container">
             <div className="your-library-container">
                 <h2>Your Library</h2>
+                <div>
+                    {user ? (
+                        <div className='library-container'>
+                            {Object.values(allPlaylists)
+                            .filter(playlist => playlist.user_id === user.id)
+                            .map(playlist => (
+                                <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
+                                    <img src={playlist.art} alt={playlist.title} className="playlist-image" />
+                                    <h3>{playlist.title}</h3>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : (
+                        <div>
+                            <h2>Please log in to see your playlists</h2>
+                        </div>
+                    )}
+                </div>
             </div>
             <div className="discover-music-container">
                 <div className="album-grid-header">
@@ -92,7 +110,7 @@ const HomeLandingPage = () => {
                         .map(album => (
                             <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
                                 <img src={album.art} alt={album.name} className="album-image" />
-                                <h3>{album.name.length > 22 ? album.name.slice(0, 22) + '...' : album.name}</h3>
+                                <h3>{album.name}</h3>
                                 <p>{album.artist}</p>
                             </Link>
                         ))}
@@ -145,7 +163,7 @@ const HomeLandingPage = () => {
                         .map(playlist => (
                             <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
                                 <img src={playlist.art} alt={playlist.title} className="album-image" />
-                                <h3>{playlist.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
+                                <h3>{playlist.title}</h3>
                             </Link>
                         ))}
                 </div>

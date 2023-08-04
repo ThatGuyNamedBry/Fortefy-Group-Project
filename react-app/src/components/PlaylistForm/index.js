@@ -5,7 +5,7 @@ import { createPlaylistThunk, updatePlaylistThunk } from "../../store/playlists"
 import { playlistValidation } from "../../helpers";
 import './PlaylistForm.css';
 
-const PlaylistForm = ({ formType, playlist }) => {
+const PlaylistForm = ({ playlist, formType }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
@@ -27,12 +27,13 @@ const PlaylistForm = ({ formType, playlist }) => {
             if (formType === 'Create Playlist') {
                 playlist = await dispatch(createPlaylistThunk(formData));
             } else if (formType === 'Update Playlist') {
-                playlist = await dispatch(updatePlaylistThunk(playlist.id, formData));
+                // playlist = await dispatch(updatePlaylistThunk(playlist.id, formData));
             }
 
             if (playlist?.errors) {
-                setErrors(playlist.errors)
+                setErrors({ ...playlist.errors, flag: true } );
             } else {
+                console.log('playlist : ', playlist);
                 history.push(`/playlists/${playlist.id}`);
             }
         }

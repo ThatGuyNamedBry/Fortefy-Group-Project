@@ -16,29 +16,40 @@ function AddMusicModal({ album, type, song }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setErrors({})
+    const frontEndErrors = {}
 
-    if (type === 'create') {
-      const formData = new FormData()
-      formData.append('name', songName)
-      formData.append('track_number', trackNumber)
-      formData.append('song', file1)
+    if (!songName || !trackNumber || !file1) frontEndErrors.empty = "Fields with * are required."
+    if (songName && songName.length > 255) frontEndErrors.songName = "Track name must not exceed 255 characters."
+    if (trackNumber && (trackNumber < 1 || !Number.isInteger(Number(trackNumber)))) frontEndErrors.trackNumber = "Please enter a valid track number."
+    if (file1 && !file1.name.endsWith('.mp3')) frontEndErrors.file1 = "File must be .mp3."
 
-      setDisableButton(true)
+    if (Object.keys(frontEndErrors).length === 0) {
 
-      await dispatch(createSongThunk(album, formData))
-      await dispatch(getAlbumByIdThunk(album?.id))
+      if (type === 'create') {
+        const formData = new FormData()
+        formData.append('name', songName)
+        formData.append('track_number', trackNumber)
+        formData.append('song', file1)
 
-    } else if (type === 'update') {
+        setDisableButton(true)
 
-      const formData = new FormData()
-      formData.append('name', songName)
-      formData.append('track_number', trackNumber)
+        await dispatch(createSongThunk(album, formData))
+        await dispatch(getAlbumByIdThunk(album?.id))
 
-      await dispatch(updateSongThunk(song, formData))
+      } else if (type === 'update') {
 
+        const formData = new FormData()
+        formData.append('name', songName)
+        formData.append('track_number', trackNumber)
+
+        await dispatch(updateSongThunk(song, formData))
+
+      }
+      closeModal();
+    } else {
+      setErrors(frontEndErrors)
     }
-
-    closeModal();
   }
 
   return (
@@ -51,8 +62,8 @@ function AddMusicModal({ album, type, song }) {
 
           <div className="song-field">
             <div className="field-label">
-              <label htmlFor="song-name">Track Name:</label>
-              {errors.name ? <p className="errors">{errors.name}</p> : null}
+              <label htmlFor="song-name">Track Name*</label>
+              {errors.songName ? <p className="errors">{errors.songName}</p> : null}
             </div>
             <input
               id="song-name"
@@ -65,8 +76,8 @@ function AddMusicModal({ album, type, song }) {
 
           <div className="song-field">
             <div className="field-label">
-              <label htmlFor="track-number">Track Number:</label>
-              {errors.track_number ? <p className="errors">{errors.track_number}</p> : null}
+              <label htmlFor="track-number">Track Number*</label>
+              {errors.trackNumber ? <p className="errors">{errors.trackNumber}</p> : null}
             </div>
             <input
               id="track-number"
@@ -80,8 +91,8 @@ function AddMusicModal({ album, type, song }) {
           {type === 'create' ?
             <div className="song-field">
               <div className="field-label">
-                <label htmlFor="track-number">Upload:</label>
-                {errors.track_number ? <p className="errors">{errors.track_number}</p> : null}
+                <label htmlFor="track-number">Upload*</label>
+                {errors.file1 ? <p className="errors">{errors.file1}</p> : null}
               </div>
               <input
                 id="file1"
@@ -95,7 +106,7 @@ function AddMusicModal({ album, type, song }) {
         </div>
 
         <button id="submit-song-button" onClick={handleSubmit} disabled={disableButton}> {type === 'create' ? 'Add Song' : 'Update'} </button>
-
+        {errors.empty ? <p className="errors">{errors.empty}</p> : null}
       </form>
     </div>
   )

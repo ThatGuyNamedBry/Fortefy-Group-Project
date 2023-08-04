@@ -18,28 +18,22 @@
 .song-field-container {
     display: flex;
     flex-direction: column;
-    margin-left: 71px;
-    gap:30px;
+    gap: 30px;
 }
 
 .song-field {
     display: flex;
-    gap: 2px;
+    flex-direction: column;
+    gap: 4px;
 }
 
-#song-name {
-    margin-left: 25px;
-    background-color: rgb(68, 66, 66);
-    border: none;
-    color: white;
-    border-radius: 20px;
-    text-indent: 8px;
-    padding-top: 4px;
-    padding-bottom: 4px;
+.field-label {
+    display: flex;
+    flex-direction: column;
 }
 
+#song-name,
 #track-number {
-    margin-left: 9px;
     background-color: rgb(68, 66, 66);
     border: none;
     color: white;
@@ -55,22 +49,23 @@
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none; /* Hide default arrows */
-  /* Add custom styles for arrows */
-  width: 16px;
-  height: 16px;
-  background-color: #f0f0f0;
-  border: none;
-  border-radius: 50%;
-  color: #333; /* Arrow color */
-  display: none;
+    -webkit-appearance: none;
+    /* Hide default arrows */
+    /* Add custom styles for arrows */
+    width: 16px;
+    height: 16px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 50%;
+    color: #333;
+    /* Arrow color */
+    display: none;
 }
 
 #file1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 57px;
 }
 
 #submit-song-button {

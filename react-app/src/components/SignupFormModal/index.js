@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
@@ -10,73 +10,106 @@ function SignupFormModal() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const [errors, setErrors] = useState([]);
+	const [errors, setErrors] = useState({});
 	const { closeModal } = useModal();
+	const [validationObject, setValidationObject] = useState({});
+
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (password === confirmPassword) {
-			const data = await dispatch(signUp(username, email, password));
-			if (data) {
-				setErrors(data);
-			} else {
-				closeModal();
-			}
+		const errorsObject = {};
+		setErrors({});
+
+		if (!email) {
+			errorsObject.email = "Email is required";
+		} else if (!/\S+@\S+\.\S+/.test(email)) {
+			errorsObject.email = "Invalid email format";
+		}
+
+		if (!username) {
+			errorsObject.username = "Username is required";
+		} else if (username.length < 4) {
+			errorsObject.username = "Username must be at least 4 characters";
+		}
+
+		if (!password) {
+			errorsObject.password = "Password is required";
+		} else if (password.length < 6) {
+			errorsObject.password = "Password must be at least 6 characters";
+		}
+
+		if (!confirmPassword) {
+			errorsObject.confirmPassword = "Please confirm your password";
+		} else if (password !== confirmPassword) {
+			errorsObject.confirmPassword = "Passwords do not match";
+		}
+		setValidationObject(errorsObject);
+
+		if (Object.keys(errorsObject).length > 0) {
+			return;
+		}
+		const data = await dispatch(signUp(username, email, password));
+		if (data) {
+			setValidationObject(data);
 		} else {
-			setErrors([
-				"Confirm Password field must be the same as the Password field",
-			]);
+			closeModal();
 		}
 	};
 
 	return (
-		<>
-			<h1>Sign Up</h1>
-			<form onSubmit={handleSubmit}>
-				<ul>
-					{errors.map((error, idx) => (
+		<div className="signup-form-modal-container">
+			<h1>Sign up for ƒorteƒy!</h1>
+			<form onSubmit={handleSubmit} className="signup-form">
+				<ul id='signup-errors'>
+					{Object.values(validationObject).map((error, idx) => (
 						<li key={idx}>{error}</li>
 					))}
 				</ul>
 				<label>
 					Email
+					{validationObject.email && <span className="signup-error">{validationObject.email}</span>}
 					<input
 						type="text"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-						required
+						placeholder="Email"
 					/>
 				</label>
 				<label>
 					Username
+					{validationObject.username && <span className="signup-error">{validationObject.username}</span>}
 					<input
 						type="text"
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
-						required
+						placeholder="Username"
 					/>
 				</label>
 				<label>
 					Password
+					{validationObject.password && <span className="signup-error">{validationObject.password}</span>}
 					<input
 						type="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
-						required
+						placeholder="Password"
 					/>
 				</label>
 				<label>
 					Confirm Password
+					{validationObject.confirmPassword && (
+						<span className="signup-error">{validationObject.confirmPassword}</span>
+					)}
 					<input
 						type="password"
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}
-						required
+						placeholder="Confirm Password"
 					/>
 				</label>
-				<button type="submit">Sign Up</button>
+				<button className="signup-button" type="submit">Sign Up</button>
 			</form>
-		</>
+		</div>
 	);
 }
 
