@@ -43,34 +43,34 @@ const AlbumDetails = () => {
     }, [dispatch, singleAlbum, user]);
 
     const deleteHandleClick = async () => {
-        await dispatch(getAlbumByIdThunk(singleAlbum?.id))
+        await dispatch(getAlbumByIdThunk(singleAlbum?.id));
+    };
+
+    const handlePlayAlbum = () => {
+        const albumSongIds = singleAlbum.songs.map((song) => song.id);
+        const albumSongs = albumSongIds.map((songId) => songs[songId]);
+        dispatch(setCurrentPlaylist(albumSongs));
+        dispatch(setCurrentSongIndex(0));
+        dispatch(setIsPlaying(true));
+    };
+    const handlePlaySong = (songId) => {
+        const selectedSong = songs[songId];
+        dispatch(setCurrentPlaylist([selectedSong]));
+        dispatch(setCurrentSongIndex(0));
+        dispatch(setIsPlaying(true));
+    };
+
+    const showPlayButton = (i) => {
+        setHoveredSong(i);
+    }
+    const hidePlayButton = () => {
+        setHoveredSong(-1);
     }
 
-        const handlePlayAlbum = () => {
-            const albumSongIds = singleAlbum.songs.map((song) => song.id);
-            const albumSongs = albumSongIds.map((songId) => songs[songId]);
-            dispatch(setCurrentPlaylist(albumSongs));
-            dispatch(setCurrentSongIndex(0));
-            dispatch(setIsPlaying(true));
-        };
-        const handlePlaySong = (songId) => {
-            const selectedSong = songs[songId];
-            dispatch(setCurrentPlaylist([selectedSong]));
-            dispatch(setCurrentSongIndex(0));
-            dispatch(setIsPlaying(true));
-        };
+    if (!singleAlbum ) return <h1>This album does not exist.</h1>
 
-        const showPlayButton = (i) => {
-            setHoveredSong(i);
-        }
-        const hidePlayButton = () => {
-            setHoveredSong(-1)
-        }
-
-        if (!singleAlbum ) return <h1>This album does not exist.</h1>
-
-        return (
-            <div className='album-details-container'>
+    return (
+        <div className='album-details-container'>
             <div className='album-header-container'>
                 <div id="album-art-container">
                     <img className='album-details-art' src={singleAlbum.art} alt='No Album Art Available'></img>
