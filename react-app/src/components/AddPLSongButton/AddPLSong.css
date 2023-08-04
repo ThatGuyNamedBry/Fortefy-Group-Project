@@ -1,0 +1,34 @@
+#plus-playlist-song {
+    background-color: rgb(160, 160, 160);
+    border: 2px solid rgb(160, 160, 160);
+    border-radius: 30px;
+    /* text-shadow: rgb(150, 240, 150) 1px -1px; */
+    /* width: 12px; */
+}
+
+#plus-playlist-song:hover {
+    background-color: white;
+    border: 2px solid white;
+}
+
+.playlist-options-container {
+    width: 1%;
+}
+
+#open-playlist-select-button {
+    background: none;
+    color: rgb(19 19 19);
+    border: 0px;
+    /* border: medium solid green; */
+}
+
+.playlist-options {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.user-playlists-select {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /* width: 20%; */
+}

@@ -124,7 +124,6 @@ export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
 
 //Add a Song to a Playlist Thunk
     // Arguments = playlist Id, **SONG ID**
-        // Distinction: songId from below thunk
 export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => {
     const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${songId}/new`, {
         method: 'POST',
@@ -133,16 +132,12 @@ export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => 
     if (response.ok) {
         const updatedPlaylist = await response.json();
         dispatch(receivePlaylistAction(updatedPlaylist));
-        // IF FAILS, comment OUT above line, comment IN below line
-        // await dispatch(getPlaylistByIdThunk(playlistId));
         return updatedPlaylist;
-
     }
 }
 
 //Remove a Song from a Playlist Thunk
     // Arguments = playlist Id, **PLAYLISTSONG ID**
-        // Distinction: playlistSongId from above thunk
 export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (dispatch) => {
     const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${playlistSongId}/delete`, {
         method: 'DELETE'
@@ -151,8 +146,6 @@ export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (di
     if (response.ok) {
         const updatedPlaylist = await response.json();
         dispatch(receivePlaylistAction(updatedPlaylist));
-        // IF FAILS, comment OUT above line, comment IN below line
-        // await dispatch(getPlaylistByIdThunk(playlistId));
         return updatedPlaylist;
     }
 }
