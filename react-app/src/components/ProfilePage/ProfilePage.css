@@ -1,5 +1,5 @@
 .profile-container {
-    margin-inline-start: 30px;
+    margin-inline-start: 60px;
     /* margin-top: 10px; */
 }
 
@@ -8,10 +8,16 @@
     flex-direction: column;
 }
 
-.header {
+.profile-container .header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: -30px;
+    margin-right: 30px;
+}
+.item-scroll {
+    justify-content: center;
+    margin-right: 5px;
 }
 
 .create-album-button {
@@ -88,3 +94,19 @@
 .create-playlist-button:hover {
     color: rgb(34, 255, 0);
 }
+
+.profile-container .item-scroll {
+    display: flex;
+    align-items: flex-end;
+}
+
+.profile-container .inner-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-scroll .fa-solid.disabled {
+    color: #444444;
+  }
