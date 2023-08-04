@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllAlbumsThunk } from '../../store/albums';
 import { getAllSongsThunk } from '../../store/songs';
 import { getAllPlaylistsThunk } from '../../store/playlists';
 import './HomeLandingPage.css';
 import { Link } from 'react-router-dom';
+import OpenModalButton from "../OpenModalButton";
+import LoginFormModal from "../LoginFormModal";
 
 const HomeLandingPage = () => {
     const dispatch = useDispatch();
@@ -16,6 +18,8 @@ const HomeLandingPage = () => {
     const [startIndexAlbums, setStartIndexAlbums] = useState(0);
     const [startIndexSongs, setStartIndexSongs] = useState(0);
     const [startIndexPlaylists, setStartIndexPlaylists] = useState(0);
+    const [showMenu, setShowMenu] = useState(false);
+    const ulRef = useRef();
 
     const itemsPerPage = 4;
 
@@ -28,6 +32,22 @@ const HomeLandingPage = () => {
     useEffect(() => {
         setSortedSongs(Object.values(allSongs).sort(() => Math.random() - 0.5));
     }, [allSongs]);
+
+    useEffect(() => {
+        if (!showMenu) return;
+
+        const closeMenu = (e) => {
+          if (!ulRef.current.contains(e.target)) {
+            setShowMenu(false);
+          }
+        };
+
+        document.addEventListener("click", closeMenu);
+
+        return () => document.removeEventListener("click", closeMenu);
+    }, [showMenu]);
+
+    const closeMenu = () => setShowMenu(false);
 
 
     const handleNextClickAlbums = () => {
@@ -74,17 +94,29 @@ const HomeLandingPage = () => {
                     {user ? (
                         <div className='library-container'>
                             {Object.values(allPlaylists)
-                            .filter(playlist => playlist.user_id === user.id)
-                            .map(playlist => (
-                                <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
-                                    <img src={playlist.art} alt={playlist.title} className="playlist-image" />
-                                    <h3>{playlist.title}</h3>
+                                .filter(playlist => playlist.user_id === user.id)
+                                .map(playlist => (
+                                    <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
+                                        <img src={playlist.art} alt={playlist.title} className="playlist-image" />
+                                        <h3>{playlist.title}</h3>
+                                    </Link>
+                                ))}
+                            {Object.values(allPlaylists).every(playlist => playlist.user_id !== user.id) && (
+                                <Link to="/playlists/new" className="create-playlist-link">
+                                    Create Your First Playlist!
                                 </Link>
-                            ))}
+                            )}
                         </div>
                     ) : (
-                        <div>
-                            <h2>Please log in to see your playlists</h2>
+                        // <div>
+                        //     <h2>Please log in to see your playlists</h2>
+                        // </div>
+                        <div className='loginbuttonlibrary'>
+                            {<OpenModalButton
+                                buttonText="Log in to see your playlists!"
+                                onItemClick={closeMenu}
+                                modalComponent={<LoginFormModal />}
+                            />}
                         </div>
                     )}
                 </div>
@@ -94,11 +126,11 @@ const HomeLandingPage = () => {
                     <h2>All Albums</h2>
                     <div className="item-scroll">
                         <div
-                            className={`fa-solid fa-angles-left ${startIndexAlbums === 0 ? 'hidden' : ''}`}
+                            className={`fa-solid fa-angles-left ${startIndexAlbums === 0 ? 'disabled' : ''}`}
                             onClick={handlePrevClickAlbums}
                         ></div>
                         <div
-                            className={`fa-solid fa-angles-right ${startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length ? 'hidden' : ''
+                            className={`fa-solid fa-angles-right ${startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length ? 'disabled' : ''
                                 }`}
                             onClick={handleNextClickAlbums}
                         ></div>
@@ -111,7 +143,7 @@ const HomeLandingPage = () => {
                             <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
                                 <img src={album.art} alt={album.name} className="album-image" />
                                 <h3>{album.name}</h3>
-                                <p>{album.artist}</p>
+                                <p className='owner-text'>{album.artist}</p>
                             </Link>
                         ))}
                 </div>
@@ -119,11 +151,11 @@ const HomeLandingPage = () => {
                     <h2>Discover Songs</h2>
                     <div className="item-scroll">
                         <div
-                            className={`fa-solid fa-angles-left ${startIndexSongs === 0 ? 'hidden' : ''}`}
+                            className={`fa-solid fa-angles-left ${startIndexSongs === 0 ? 'disabled' : ''}`}
                             onClick={handlePrevClickSongs}
                         ></div>
                         <div
-                            className={`fa-solid fa-angles-right ${startIndexSongs + itemsPerPage >= Object.values(allSongs).length ? 'hidden' : ''
+                            className={`fa-solid fa-angles-right ${startIndexSongs + itemsPerPage >= Object.values(allSongs).length ? 'disabled' : ''
                                 }`}
                             onClick={handleNextClickSongs}
                         ></div>
@@ -138,7 +170,7 @@ const HomeLandingPage = () => {
                                 <Link key={`${album?.id}-${song?.id}`} to={`/albums/${album?.id}`} className="album-tile link-as-text">
                                     <img src={album?.art} alt={album?.name} className="album-image" />
                                     <h3>{song.name}</h3>
-                                    <p>{album?.artist}</p>
+                                    <p className='owner-text'>{album?.artist}</p>
                                 </Link>
                             );
                         })}
@@ -147,11 +179,11 @@ const HomeLandingPage = () => {
                     <h2>All Playlists</h2>
                     <div className="item-scroll">
                         <div
-                            className={`fa-solid fa-angles-left ${startIndexPlaylists === 0 ? 'hidden' : ''}`}
+                            className={`fa-solid fa-angles-left ${startIndexPlaylists === 0 ? 'disabled' : ''}`}
                             onClick={handlePrevClickPlaylists}
                         ></div>
                         <div
-                            className={`fa-solid fa-angles-right ${startIndexPlaylists + itemsPerPage >= Object.values(allPlaylists).length ? 'hidden' : ''
+                            className={`fa-solid fa-angles-right ${startIndexPlaylists + itemsPerPage >= Object.values(allPlaylists).length ? 'disabled' : ''
                                 }`}
                             onClick={handleNextClickPlaylists}
                         ></div>
@@ -164,6 +196,7 @@ const HomeLandingPage = () => {
                             <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
                                 <img src={playlist.art} alt={playlist.title} className="album-image" />
                                 <h3>{playlist.title}</h3>
+                                <p className='owner-text'>{playlist.user.username}</p>
                             </Link>
                         ))}
                 </div>

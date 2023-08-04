@@ -101,8 +101,80 @@ def seed_songs():
         song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/blink-182/Greatest+Hits/I+Miss+You.mp3',
         track_number=13
     )
+    song12 = Song(
+        name="Smoke Signals",
+        user_id=3,
+        album_id=6,
+        duration=325,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Phoebe+Bridgers/Stranger+in+the+Alps/Smoke+Signals.mp3",
+        track_number=1
+    )
+    song13 = Song(
+        name="Motion Sickness",
+        user_id=3,
+        album_id=6,
+        duration=230,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Phoebe+Bridgers/Stranger+in+the+Alps/Motion+Sickness.mp3",
+        track_number=2
+    )
+    song14 = Song(
+        name="Funeral",
+        user_id=3,
+        album_id=6,
+        duration=232,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Phoebe+Bridgers/Stranger+in+the+Alps/Funeral.mp3",
+        track_number=3
+    )
+    song15 = Song(
+        name="Dreams",
+        user_id=4,
+        album_id=7,
+        duration=254,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Fleetwood+Mac/Rumours/Dreams.mp3",
+        track_number=2
+    )
+    song16 = Song(
+        name="The Chain",
+        user_id=4,
+        album_id=7,
+        duration=268,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Fleetwood+Mac/Rumours/The+Chain.mp3",
+        track_number=7
+    )
+    song17 = Song(
+        name="Break My Soul",
+        user_id=4,
+        album_id=8,
+        duration=278,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Beyonc%C3%A9/Renaissance/BREAK+MY+SOUL.mp3",
+        track_number=6
+    )
+    song18 = Song(
+        name="Autumn Leaves",
+        user_id=5,
+        album_id=9,
+        duration=661,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Cannonball+Adderley/Somethin'+Else/Autumn+Leaves.mp3",
+        track_number=1
+    )
+    song19 = Song(
+        name="I Wanna Dance With Somebody (Who Loves Me)",
+        user_id=5,
+        album_id=10,
+        duration=290,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Cannonball+Adderley/Somethin'+Else/Autumn+Leaves.mp3",
+        track_number=1
+    )
+    song20 = Song(
+        name="Xtal",
+        user_id=5,
+        album_id=11,
+        duration=294,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Aphex+Twin/Selected+Ambient+Works+85-92/Xtal.mp3",
+        track_number=1
+    )
 
-    db.session.add_all([song1, song2, song3, song4, song5, song6, song7, song8, song9, song10, song11])
+    db.session.add_all([song1, song2, song3, song4, song5, song6, song7, song8, song9, song10, song11, song12, song13, song14, song15, song16, song17, song18, song19, song20])
     db.session.commit()
 
 def undo_songs():

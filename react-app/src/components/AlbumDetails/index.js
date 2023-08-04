@@ -67,14 +67,12 @@ const AlbumDetails = () => {
         setHoveredSong(-1);
     }
 
-    if (!singleAlbum ) return <h1>This album does not exist.</h1>
+    if (!singleAlbum) return <h1>This album does not exist.</h1>
 
     return (
         <div className='album-details-container'>
             <div className='album-header-container'>
-                <div id="album-art-container">
-                    <img className='album-details-art' src={singleAlbum.art} alt='No Album Art Available'></img>
-                </div>
+                <img className='album-details-art' src={singleAlbum.art} alt='No Album Art Available'></img>
                 <div className='album-info-container'>
                     <p>Album</p>
                     <h3 className='album-name-header'>{singleAlbum.name}</h3>
@@ -115,7 +113,7 @@ const AlbumDetails = () => {
                             <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
                         </div>
                         <div className='heart-time-container'>
-                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
+                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { backgroundColor: "transparent" }}>
                                 <LikeButton
                                     songId={song.id}
                                 />

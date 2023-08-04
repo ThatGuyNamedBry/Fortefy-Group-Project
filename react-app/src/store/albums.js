@@ -61,9 +61,11 @@ export const getAllAlbumsThunk = () => async (dispatch) => {
 //Get All Albums by Current User Thunk
 export const getCurrentUserAllAlbumsThunk = () => async (dispatch) => {
   const response = await fetch('/api/albums/current');
-  const albums = await response.json();
-  dispatch(getAllAlbumsAction(albums));
-  return response;
+  if (response.ok) {
+    const albums = await response.json();
+    dispatch(getAllAlbumsAction(albums));
+    return albums;
+  }
 };
 
 //Get Album by ID Thunk
