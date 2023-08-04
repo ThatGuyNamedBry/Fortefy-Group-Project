@@ -50,11 +50,6 @@ function LoginFormModal() {
     <div className="login-modal-container">
       <h1 className="Log-in-text">Log in to ƒorteƒy</h1>
       <form onSubmit={handleSubmit} className="login-form">
-        <ul>
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
-        </ul>
         <button className="demoUserLink" onClick={demoUserLogin}>Continue with Demo User</button>
         <label>
           Email
@@ -62,7 +57,6 @@ function LoginFormModal() {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
             placeholder="Email"
           />
         </label>
@@ -72,11 +66,15 @@ function LoginFormModal() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
             placeholder="Password"
           />
         </label>
         <button className = 'login-button' type="submit">Log In</button>
+            <ul>
+              {errors.map((error, idx) => (
+                <li key={idx}>{error}</li>
+              ))}
+            </ul>
       </form>
       <p className="sign-up-link">
         Don't have an account?{" "}
