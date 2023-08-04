@@ -81,6 +81,11 @@ const HomeLandingPage = () => {
                                     <h3>{playlist.title}</h3>
                                 </Link>
                             ))}
+                            {Object.values(allPlaylists).every(playlist => playlist.user_id !== user.id) && (
+                                <div>
+                                    <h2>You don't have any playlists</h2>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <div>
@@ -164,6 +169,7 @@ const HomeLandingPage = () => {
                             <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
                                 <img src={playlist.art} alt={playlist.title} className="album-image" />
                                 <h3>{playlist.title}</h3>
+                                <h3>{playlist.user.username}</h3>
                             </Link>
                         ))}
                 </div>
