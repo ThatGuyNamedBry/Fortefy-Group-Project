@@ -108,3 +108,8 @@
 .sign-up-link a:hover {
     color: rgb(33, 204, 6)
 }
+
+.errors-ul {
+    color:red;
+    font-size:small;
+}

@@ -51,6 +51,11 @@ function LoginFormModal() {
       <h1 className="Log-in-text">Log in to ƒorteƒy</h1>
       <form onSubmit={handleSubmit} className="login-form">
         <button className="demoUserLink" onClick={demoUserLogin}>Continue with Demo User</button>
+            <ul className="errors-ul">
+              {errors.map((error, idx) => (
+                <li key={idx}>{error}</li>
+              ))}
+            </ul>
         <label>
           Email
           <input
@@ -70,11 +75,6 @@ function LoginFormModal() {
           />
         </label>
         <button className = 'login-button' type="submit">Log In</button>
-            <ul>
-              {errors.map((error, idx) => (
-                <li key={idx}>{error}</li>
-              ))}
-            </ul>
       </form>
       <p className="sign-up-link">
         Don't have an account?{" "}
