@@ -16,16 +16,32 @@
     justify-content: flex-end;
 }
 
+#playlist-description {
+    font-style: italic;
+}
+
 .playlist-details-art {
     width: 270px;
     height: 270px;
     object-fit: cover;
 }
 
+#playlist-duration {
+    color: rgba(255, 255, 255, 0.701)
+}
+
 .playlist-name-header {
     font-size: 400%;
     margin-top: 0%;
     margin-bottom: 0%;
+}
+
+#playlist-artists {
+    margin-bottom: 2.5px;
+}
+
+#playlist-duration {
+    margin-top: 2.5px;
 }
 
 .playlist-songs-container {
