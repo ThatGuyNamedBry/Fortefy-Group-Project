@@ -88,11 +88,6 @@
     padding: 0;
 }
 
-.signup-form li {
-    color: red;
-    margin-bottom: 10px;
-}
-
 .sign-up-link {
     margin-top: 50px;
 }
@@ -106,3 +101,10 @@
 .sign-up-link a:hover {
     color: rgb(33, 204, 6);
 }
+
+.signup-error {
+    margin-left: 5px;
+    color:red;
+    font-size: smaller;
+}
+
