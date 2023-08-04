@@ -45,6 +45,7 @@ const AddPLSongButton = ({ songId }) => {
                     className="user-playlists-select"
                     style={{visibility : showOptions }}
                     onChange={onPlaylistSelect}
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <option
                         className="playlist-options"

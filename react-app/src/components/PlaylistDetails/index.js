@@ -31,14 +31,14 @@ const PlaylistDetails = () => {
     }
 
     const hidePlayButton = () => {
-        setHoveredSong(-1)
+        setHoveredSong(-1);
     }
 
     useEffect(() => {
         dispatch(getPlaylistByIdThunk(playlistId));
     }, [dispatch, playlistId]);
 
-    useEffect(async () => {
+    useEffect(() => {
         if (playlist?.id) {
             let time = 0;
             setPlaylistDuration(0);
@@ -63,9 +63,9 @@ const PlaylistDetails = () => {
             setPlayerSongsObject(normalizedPlayerSongs);
 
             // Load Playlist songs to display the correct number of each song from Playlists Store
-            await dispatch(loadPlaylistSongsAction(songsArray));
+            dispatch(loadPlaylistSongsAction(songsArray));
             // getAllSongsAction to populate All Songs in Songs store for like functionality purposes after refresh
-            await dispatch(getAllSongsAction(allSongsStoreArray));
+            dispatch(getAllSongsAction(allSongsStoreArray));
         }
     }, [dispatch, playlist]);
 
@@ -84,7 +84,7 @@ const PlaylistDetails = () => {
     };
 
     const handlePlaySong = (songId) => {
-        const selectedSong = playerSongsObject[songId]
+        const selectedSong = playerSongsObject[songId];
         dispatch(setCurrentPlaylist([selectedSong]));
         dispatch(setCurrentSongIndex(0));
         dispatch(setIsPlaying(true));
@@ -136,13 +136,13 @@ const PlaylistDetails = () => {
                             <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
                         </div>
                         <div className='heart-time-container'>
-                            {song?.user_id !== user.id && <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
+                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
                                 <LikeButton
                                     songId={song.id}
                                 />
-                            </div>}
+                            </div>
                             <div className='playlist-songs-buttons'>
-                                <i className="fa-solid fa-circle-minus" onClick={(e) => removeSongClick(e, song?.id)}></i>
+                                {user && user?.id === playlist?.user_id && <i className="fa-solid fa-circle-minus" onClick={(e) => removeSongClick(e, song?.id)}></i>}
                             </div>
                             <p className='playlist-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
                         </div>

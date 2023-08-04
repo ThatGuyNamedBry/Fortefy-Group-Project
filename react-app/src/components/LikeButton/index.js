@@ -5,12 +5,13 @@ import './LikeButton.css'
 
 const LikeButton = ({ songId }) => {
     const dispatch = useDispatch();
-    const song = useSelector(state => state.songs.allSongs[songId]);
+    const songs = useSelector(state => state.songs.allSongs);
+    const song = songs[songId];
     const user = useSelector(state => state.session.user);
-    const [userLike, setUserLike] = useState(false)
+    const [userLike, setUserLike] = useState(false);
 
     useEffect(() => {
-        if (user && song) {
+        if (user?.id && song?.id) {
             setUserLike(song.likes.find(like => like.user_id === user.id));
         }
     }, [song, user, userLike])
