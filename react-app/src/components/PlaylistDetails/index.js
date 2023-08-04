@@ -11,9 +11,8 @@ const PlaylistDetails = () => {
     const dispatch = useDispatch();
     const { playlistId } = useParams();
 
-    const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
+    // const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
 
-    const user = useSelector((state) => state.session.user);
     const playlist = useSelector((state) => state.playlists.singlePlaylist);
     const songsObject = useSelector((state) => state.playlists.playlistSongs);
     const songs = Object.values(songsObject);
@@ -21,7 +20,7 @@ const PlaylistDetails = () => {
     const [artistsText, setArtistsText] = useState('');
     const [playlistDuration, setPlaylistDuration] = useState(0);
     const [hoveredSong, setHoveredSong] = useState(-1);
-    const [userOwned, setUserOwned] = useState(false);
+    // const [userOwned, setUserOwned] = useState(false);
 
     //for audio player use only
     const [playerSongsObject, setPlayerSongsObject] = useState({});
@@ -64,7 +63,7 @@ const PlaylistDetails = () => {
     useEffect(() => {
         const filtererdArtists = []
         songs.forEach(song => { if (!filtererdArtists.includes(song.artist)) filtererdArtists.push(song.artist) })
-        setArtistsText(filtererdArtists.join(", "))
+        setArtistsText(filtererdArtists.join(", ")) // eslint-disable-next-line
     }, [dispatch, songsObject]);
 
     const handlePlayPlaylist = () => {

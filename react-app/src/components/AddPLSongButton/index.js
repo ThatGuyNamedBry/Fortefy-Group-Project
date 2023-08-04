@@ -1,31 +1,67 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUserAllPlaylistsThunk, addPlaylistSongThunk } from '../../store/playlists';
 import './AddPLSong.css';
 
 const AddPLSongButton = ({ songId }) => {
     const dispatch = useDispatch();
+    const history = useHistory();
 
-    const user = useSelector(state => state.session.user);
     const playlistsObject = useSelector(state => state.playlists.allPlaylists);
     const playlists = Object.values(playlistsObject);
 
-    const [showPlaylists, setShowPlaylists] = useState(false);
-
-
+    const [showOptions, setShowOptions] = useState('none');
 
     useEffect(() => {
         dispatch(getCurrentUserAllPlaylistsThunk());
     }, [dispatch]);
 
-    const selectPlaylistClick = (e, playlistId) => {
+    const onPlusClick = (e) => {
         e.stopPropagation();
-        dispatch(addPlaylistSongThunk(playlistId, songId));
+        setShowOptions(showOptions === 'none' ? 'block' : 'none');
+    };
+
+    const onPlaylistSelect = (e) => {
+        e.stopPropagation();
+        setShowOptions('none');
+
+        if (e.target.value === "Create Playlist") {
+            history.push('/playlists/new');
+        } else {
+            dispatch(addPlaylistSongThunk(e.target.value, songId));
+        }
     }
+
     return (
-        <button>
-            Add
-        </button>
+        <div id='open-playlist-select-button'>
+            <i
+                id='plus-playlist-song'
+                className="fa-solid fa-circle-plus"
+                onClick={onPlusClick}
+            ></i>
+            <div className='custom-select playlist-options-container' style={{display : showOptions }}>
+                <select
+                    className="user-playlists-select"
+                    style={{visibility : showOptions }}
+                    onChange={onPlaylistSelect}
+                >
+                    <option
+                        className="playlist-options"
+                        id="create-playlist-option"
+                        value="Create Playlist"
+                    >Create Playlist
+                    </option>
+                    {playlists.map(playlist => (
+                        <option
+                            key={playlist.id}
+                            className='playlist-options'
+                            value={playlist.id}
+                        >{playlist.title}</option>
+                    ))}
+                </select>
+            </div>
+        </div>
     )
 };
 

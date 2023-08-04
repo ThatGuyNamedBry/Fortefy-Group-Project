@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
@@ -18,44 +18,33 @@ const AlbumDetails = () => {
 
     const dispatch = useDispatch();
     const { albumId } = useParams();
+
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
-    const songs = useSelector(state => state.songs.allSongs);
-    const songsArray = Object.values(songs);
     const user = useSelector(state => state.session.user)
-    const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
+    const songs = useSelector(state => state.songs.allSongs);
+
+    const songsArray = Object.values(songs).sort((song1, song2) => song1.track_number - song2.track_number);
+    const albumTime = songsArray.reduce((acc, song) => acc + song.duration, 0);
+
+    // const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
     const [hoveredSong, setHoveredSong] = useState(-1);
     const [userOwned, setUserOwned] = useState(false);
-
-    const showPlayButton = (i) => {
-        setHoveredSong(i);
-    }
-
-    const hidePlayButton = () => {
-        setHoveredSong(-1)
-    }
 
     useEffect(() => {
         dispatch(getAlbumByIdThunk(albumId));
     }, [dispatch, albumId]);
 
     useEffect(() => {
-        const albumSongs = singleAlbum ? singleAlbum.songs.sort((song1, song2) => song1.track_number - song2.track_number) : [];
-        dispatch(getAllSongsAction(albumSongs));
+        dispatch(getAllSongsAction(singleAlbum ? singleAlbum.songs : []));
     }, [dispatch, singleAlbum])
-
 
     useEffect(() => {
         setUserOwned(singleAlbum?.user?.id === user?.id);
-    }, [dispatch, singleAlbum, songs, user]);
-
-
-    const editHandleClick = (e) => {
-        e.stopPropagation();
-    }
+    }, [dispatch, singleAlbum, user]);
 
     const deleteHandleClick = async () => {
-        await dispatch(getAlbumByIdThunk(singleAlbum?.id))
-    }
+        await dispatch(getAlbumByIdThunk(singleAlbum?.id));
+    };
 
     const handlePlayAlbum = () => {
         const albumSongIds = singleAlbum.songs.map((song) => song.id);
@@ -64,7 +53,6 @@ const AlbumDetails = () => {
         dispatch(setCurrentSongIndex(0));
         dispatch(setIsPlaying(true));
     };
-
     const handlePlaySong = (songId) => {
         const selectedSong = songs[songId];
         dispatch(setCurrentPlaylist([selectedSong]));
@@ -72,9 +60,14 @@ const AlbumDetails = () => {
         dispatch(setIsPlaying(true));
     };
 
-    if (!singleAlbum) return <h1>This album does not exist.</h1>
+    const showPlayButton = (i) => {
+        setHoveredSong(i);
+    }
+    const hidePlayButton = () => {
+        setHoveredSong(-1);
+    }
 
-    const albumTime = songsArray.reduce((acc, song) => acc + song.duration, 0);
+    if (!singleAlbum ) return <h1>This album does not exist.</h1>
 
     return (
         <div className='album-details-container'>
@@ -91,7 +84,7 @@ const AlbumDetails = () => {
             </div>
             <div className='album-buttons-container'>
                 <button className='album-play-button' onClick={handlePlayAlbum}>
-                    <i class="fa-sharp fa-solid fa-circle-play"></i>
+                    <i className="fa-sharp fa-solid fa-circle-play"></i>
                 </button>
                 <div className="add-music-button-container">
 
@@ -104,7 +97,7 @@ const AlbumDetails = () => {
             <ul className='album-songs-container'>
                 <li className='album-songs-header'>
                     <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
-                    <i class="fa-regular fa-clock"></i>
+                    <i className="fa-regular fa-clock"></i>
                 </li>
                 {songsArray.map((song, i) => (
                     <button key={song.id} className='albums-songs-button'
