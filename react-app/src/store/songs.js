@@ -199,10 +199,10 @@ const initialState = {
         delete newSongs[action.payload];
         return { ...state, allSongs: newSongs };
       case ADD_LIKE:
-        const songLikesAdded = [...state.allSongs[action.songId].likes, action.like];
+        const songLikesAdded = [...state.allSongs[action.songId]?.likes, action.like];
         return { ...state, allSongs: { ...state.allSongs, [action.songId]: { ...state.allSongs[action.songId], likes: [...songLikesAdded] } } }
       case REMOVE_LIKE:
-        const currentLikes = [...state.allSongs[action.songId].likes];
+        const currentLikes = [...state.allSongs[action.songId]?.likes];
         const deleteLike = currentLikes.find(like => like.id === action.likeId);
         const ind = currentLikes.indexOf(deleteLike);
         const removedLikes = [...currentLikes.slice(0, ind), ...currentLikes.slice(ind + 1)];
