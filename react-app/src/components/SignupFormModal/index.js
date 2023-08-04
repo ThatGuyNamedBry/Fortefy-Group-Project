@@ -10,7 +10,7 @@ function SignupFormModal() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const [errors, setErrors] = useState({});
+	// const [errors, setErrors] = useState({});
 	const { closeModal } = useModal();
 	const [validationObject, setValidationObject] = useState({});
 
@@ -18,7 +18,7 @@ function SignupFormModal() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const errorsObject = {};
-		setErrors({});
+		// setErrors({});
 
 		if (!email) {
 			errorsObject.email = "Email is required";
