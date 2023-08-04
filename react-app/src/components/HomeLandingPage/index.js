@@ -78,7 +78,7 @@ const HomeLandingPage = () => {
                             .map(playlist => (
                                 <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
                                     <img src={playlist.art} alt={playlist.title} className="playlist-image" />
-                                    <h3>{playlist.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
+                                    <h3>{playlist.title}</h3>
                                 </Link>
                             ))}
                         </div>
@@ -110,7 +110,7 @@ const HomeLandingPage = () => {
                         .map(album => (
                             <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
                                 <img src={album.art} alt={album.name} className="album-image" />
-                                <h3>{album.name.length > 22 ? album.name.slice(0, 22) + '...' : album.name}</h3>
+                                <h3>{album.name}</h3>
                                 <p>{album.artist}</p>
                             </Link>
                         ))}
@@ -137,7 +137,7 @@ const HomeLandingPage = () => {
                             return (
                                 <Link key={`${album?.id}-${song?.id}`} to={`/albums/${album?.id}`} className="album-tile link-as-text">
                                     <img src={album?.art} alt={album?.name} className="album-image" />
-                                    <h3>{song.name.length > 22 ? song.name.slice(0, 22) + '...' : song.name}</h3>
+                                    <h3>{song.name}</h3>
                                     <p>{album?.artist}</p>
                                 </Link>
                             );
@@ -163,7 +163,7 @@ const HomeLandingPage = () => {
                         .map(playlist => (
                             <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
                                 <img src={playlist.art} alt={playlist.title} className="album-image" />
-                                <h3>{playlist.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
+                                <h3>{playlist.title}</h3>
                             </Link>
                         ))}
                 </div>
