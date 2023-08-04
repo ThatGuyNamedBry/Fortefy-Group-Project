@@ -1,0 +1,33 @@
+.playlist-form-container {
+    display: flex;
+    justify-content: center;
+}
+#playlist-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    gap: 12px;
+    background-color: black;
+    margin-top: 20px;
+    border-radius: 7px;
+    padding: 20px 75px 30px 75px;
+}
+.playlist-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px
+}
+
+#playlist-description-input {
+    border: 1px solid white;
+    border-radius: 4px;
+    background-color: rgb(45, 43, 43);
+    color: white;
+    height: 100px;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+#playlist-description-field {
+    /* height: 50px; */
+}
