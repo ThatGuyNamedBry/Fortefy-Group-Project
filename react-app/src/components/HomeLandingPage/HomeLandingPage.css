@@ -137,8 +137,8 @@
 }
 
 .library-container {
-    margin-right: 20px;
-    margin-left: 10px;
+    margin-right: 17px;
+    margin-left: 11px;
 }
 
 .playlist-tile {
@@ -173,11 +173,14 @@
     color: white;
     text-decoration: none;
     font-weight: bold;
+    font-size: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 30px;
+    width: 100%;
     margin-top: 20px;
+    margin-left: 2px;
     height: 50px;
     transition: background-color 0.4s, color 0.4s;
 }
@@ -215,8 +218,8 @@
     margin-top: 20px;
     height: 50px;
     transition: background-color 0.4s, color 0.4s;
-    width: 92%;
-    margin-left: 20px;
+    width: 93%;
+    margin-left: 15px;
 }
 
 .loginbuttonlibrary button:hover {
