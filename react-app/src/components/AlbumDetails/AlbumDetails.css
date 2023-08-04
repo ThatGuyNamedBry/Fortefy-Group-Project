@@ -64,7 +64,7 @@
 }
 
 .albums-songs-button {
-    background-color: rgb(19, 19, 19);
+    background-color: transparent;
     color: rgb(160, 160, 160);
     border: 0px;
     box-shadow: 0px;
@@ -76,10 +76,10 @@
     margin-top: 17px;
 }
 
-/* .albums-songs-button:hover {
-    background-color: #616161;
+.albums-songs-button:hover {
+    background-color: rgb(45, 45, 45);
     border-radius: 10px;
-} */
+}
 
 .number-name-container {
     display: flex;
@@ -92,7 +92,7 @@
 }
 
 .song-track-number {
-    background-color: rgb(19, 19, 19);
+    background-color: transparent;
     color: rgb(160, 160, 160);
     border: 0px;
     box-shadow: 0px;
@@ -111,7 +111,7 @@
 }
 
 .album-play-button {
-    background-color: rgb(19, 19, 19);
+    background-color: transparent;
     color: rgb(33, 204, 6);
     border: 0px;
     box-shadow: 0px;
@@ -136,3 +136,4 @@
 .fa-solid.fa-pen-to-square:hover {
     color: white;
 }
+
