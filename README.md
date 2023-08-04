@@ -1,7 +1,7 @@
 # ƒorteƒy Music PLayer
 
 # Description
-ƒorteƒy is a full-stack web application that allows users to explore and enjoy their favorite music. The application offers a user-friendly interface with login and signup functionality, enabling users to create their personalized accounts and access exclusive features. The site is modeled off of Spotify's design.
+ƒorteƒy is a full-stack web application that allows users to explore and enjoy their favorite music. The application offers a user-friendly interface with login and signup functionality, enabling users to create their personalized accounts and access exclusive features. The site is modelled off of Spotify's design.
 - Project-URL https://fortefy.onrender.com/
 # Technologies Used
 - Frontend:
