@@ -16,12 +16,10 @@
     justify-content: flex-end;
 }
 
-#album-art-container {
-    width: 300px;
-}
-
 .album-details-art {
-    width: 100%;
+    width: 270px;
+    height: 270px;
+    object-fit: cover;
 }
 
 #album-info {
@@ -136,4 +134,3 @@
 .fa-solid.fa-pen-to-square:hover {
     color: white;
 }
-
