@@ -22,7 +22,7 @@ const ProfilePage = () => {
   const [startIndexSongs, setStartIndexSongs] = useState(0);
   const [startIndexPlaylists, setStartIndexPlaylists] = useState(0);
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 5;
 
   useEffect(() => {
     dispatch(getCurrentUserAllAlbumsThunk());
