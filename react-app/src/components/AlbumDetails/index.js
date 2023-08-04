@@ -115,7 +115,7 @@ const AlbumDetails = () => {
                             <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
                         </div>
                         <div className='heart-time-container'>
-                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
+                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { backgroundColor: "transparent" }}>
                                 <LikeButton
                                     songId={song.id}
                                 />
