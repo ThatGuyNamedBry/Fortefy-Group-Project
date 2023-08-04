@@ -75,8 +75,9 @@
     height: 165px;
     object-fit: cover;
     border-radius: 8px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    /* margin-top: 10px;
+    margin-bottom: 10px; */
+    margin: 10px
 }
 
 #all-albums-container {
@@ -102,7 +103,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: baseline;
-    margin-right: 50px;
+    margin-right: 20px;
 }
 
 .link-as-text {

@@ -126,11 +126,11 @@ const HomeLandingPage = () => {
                     <h2>All Albums</h2>
                     <div className="item-scroll">
                         <div
-                            className={`fa-solid fa-angles-left ${startIndexAlbums === 0 ? 'hidden' : ''}`}
+                            className={`fa-solid fa-angles-left ${startIndexAlbums === 0 ? 'disabled' : ''}`}
                             onClick={handlePrevClickAlbums}
                         ></div>
                         <div
-                            className={`fa-solid fa-angles-right ${startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length ? 'hidden' : ''
+                            className={`fa-solid fa-angles-right ${startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length ? 'disabled' : ''
                                 }`}
                             onClick={handleNextClickAlbums}
                         ></div>
@@ -151,11 +151,11 @@ const HomeLandingPage = () => {
                     <h2>Discover Songs</h2>
                     <div className="item-scroll">
                         <div
-                            className={`fa-solid fa-angles-left ${startIndexSongs === 0 ? 'hidden' : ''}`}
+                            className={`fa-solid fa-angles-left ${startIndexSongs === 0 ? 'disabled' : ''}`}
                             onClick={handlePrevClickSongs}
                         ></div>
                         <div
-                            className={`fa-solid fa-angles-right ${startIndexSongs + itemsPerPage >= Object.values(allSongs).length ? 'hidden' : ''
+                            className={`fa-solid fa-angles-right ${startIndexSongs + itemsPerPage >= Object.values(allSongs).length ? 'disabled' : ''
                                 }`}
                             onClick={handleNextClickSongs}
                         ></div>
@@ -179,11 +179,11 @@ const HomeLandingPage = () => {
                     <h2>All Playlists</h2>
                     <div className="item-scroll">
                         <div
-                            className={`fa-solid fa-angles-left ${startIndexPlaylists === 0 ? 'hidden' : ''}`}
+                            className={`fa-solid fa-angles-left ${startIndexPlaylists === 0 ? 'disabled' : ''}`}
                             onClick={handlePrevClickPlaylists}
                         ></div>
                         <div
-                            className={`fa-solid fa-angles-right ${startIndexPlaylists + itemsPerPage >= Object.values(allPlaylists).length ? 'hidden' : ''
+                            className={`fa-solid fa-angles-right ${startIndexPlaylists + itemsPerPage >= Object.values(allPlaylists).length ? 'disabled' : ''
                                 }`}
                             onClick={handleNextClickPlaylists}
                         ></div>
