@@ -16,8 +16,12 @@
     justify-content: flex-end;
 }
 
+#album-art-container {
+    width: 300px;
+}
+
 .playlist-details-art {
-    width: 20%;
+    width: 100%;
 }
 
 .playlist-name-header {

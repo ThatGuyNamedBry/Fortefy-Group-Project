@@ -90,7 +90,9 @@ const PlaylistDetails = () => {
     return (
         <div className='playlist-details-container'>
             <div className='playlist-header-container'>
-                <img className='playlist-details-art' src={playlist?.art ? playlist.art : 'https://i0.wp.com/olumuse.org/wp-content/uploads/2020/09/unnamed.jpg'} alt='Playlist Art Available'></img>
+                <div id="playlist-art-container">
+                    <img className='playlist-details-art' src={playlist?.art ? playlist.art : 'https://i0.wp.com/olumuse.org/wp-content/uploads/2020/09/unnamed.jpg'} alt='Playlist Art Available'></img>
+                </div>
                 <div className='playlist-info-container'>
                     <p>Playlist</p>
                     <h3 className='playlist-name-header'>{playlist.title}</h3>
