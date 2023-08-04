@@ -7,6 +7,7 @@
 - Frontend:
     - React
     - Redux
+    - Javascript
     - HTML
     - CSS
 
