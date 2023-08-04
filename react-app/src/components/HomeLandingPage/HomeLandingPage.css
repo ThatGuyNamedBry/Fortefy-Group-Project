@@ -166,6 +166,7 @@
     height: 40px;
     margin-left: 10px;
     border-radius: 10px;
+    object-fit: cover;
 }
 
 .playlist-tile h3 {
@@ -230,7 +231,7 @@
 
 @media (min-width: 1201px) {
     .album-grid {
-        justify-content: center;
+        /* justify-content: center; */
     }
 }
 
