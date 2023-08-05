@@ -16,12 +16,29 @@ const HomeLandingPage = () => {
     const user = useSelector(state => state.session.user)
     const [sortedSongs, setSortedSongs] = useState([]);
     const [startIndexAlbums, setStartIndexAlbums] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(4);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [startIndexSongs, setStartIndexSongs] = useState(0);
     const [startIndexPlaylists, setStartIndexPlaylists] = useState(0);
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
 
-    const itemsPerPage = 4;
+    // Controlling how many tiles to display based on window size
+    useEffect(() => {
+        window.addEventListener('resize', () => setWindowWidth(window.innerWidth));
+        return () => {
+            window.removeEventListener('resize', () => setWindowWidth(window.innerWidth));
+        };
+    }, []);
+
+    useEffect(() => {
+        if (windowWidth > 1200) {
+            setItemsPerPage(5);
+        } else {
+            setItemsPerPage(4)
+        }
+    }, [windowWidth])
+
 
     useEffect(() => {
         dispatch(getAllAlbumsThunk());
@@ -37,9 +54,9 @@ const HomeLandingPage = () => {
         if (!showMenu) return;
 
         const closeMenu = (e) => {
-          if (!ulRef.current.contains(e.target)) {
-            setShowMenu(false);
-          }
+            if (!ulRef.current.contains(e.target)) {
+                setShowMenu(false);
+            }
         };
 
         document.addEventListener("click", closeMenu);
@@ -85,6 +102,8 @@ const HomeLandingPage = () => {
             setStartIndexPlaylists(startIndexPlaylists + itemsPerPage);
         }
     };
+
+
 
     return (
         <div className="home-container">
