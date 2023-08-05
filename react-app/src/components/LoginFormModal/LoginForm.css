@@ -99,13 +99,13 @@
 
     margin-top: 50px;
 }
-.sign-up-link a {
+.sign-up-link p {
     text-decoration: underline;
     color: inherit;
     font-weight: bold;
 }
 
-.sign-up-link a:hover {
+.sign-up-link p:hover {
     color: rgb(33, 204, 6)
 }
 

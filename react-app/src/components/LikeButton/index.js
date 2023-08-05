@@ -12,16 +12,17 @@ const LikeButton = ({ songId }) => {
 
     useEffect(() => {
         if (user?.id && song?.id) {
-            setUserLike(song.likes.find(like => like.user_id === user.id));
+            const index = song.likes.findIndex(like => like.user_id === user.id)
+            setUserLike(index > -1 ? { ...song.likes[index], likeIndex : index } : false );
         }
-    }, [song, user, userLike])
+    }, [song, user]);
 
     const likeClick = (e) => {
         e.stopPropagation();
         if (!userLike) {
-            dispatch(addLikeThunk(songId));
+            dispatch(addLikeThunk(song));
         } else {
-            dispatch(removeLikeThunk(songId, userLike.id));
+            dispatch(removeLikeThunk(song, userLike.id, userLike.likeIndex));
         }
     };
 

@@ -92,16 +92,6 @@
     margin-top: 50px;
 }
 
-.sign-up-link a {
-    text-decoration: underline;
-    color: inherit;
-    font-weight: bold;
-}
-
-.sign-up-link a:hover {
-    color: rgb(33, 204, 6);
-}
-
 .signup-error {
     margin-left: 5px;
     color:red;

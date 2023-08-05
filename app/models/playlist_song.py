@@ -1,7 +1,4 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from .user import User
-from .song import Song
-from .playlist import Playlist
 from datetime import datetime
 
 class PlaylistSong(db.Model):

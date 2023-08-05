@@ -1,45 +1,24 @@
-//                                           Action Types
+/*****************  ACTION TYPES   ****************/
+
 const LOAD_SONGS = 'songs/LOAD_SONGS';
-const LOAD_SONG = 'songs/LOAD_SONG';
-const CREATE_SONG = 'songs/CREATE_SONG';
-const UPDATE_SONG = 'songs/UPDATE_SONG';
+const RECEIVE_SONG = 'songs/RECEIVE_SONG'
 const DELETE_SONG = 'songs/DELETE_SONG';
-const ADD_LIKE = 'songs/ADD_LIKE';
-const REMOVE_LIKE = 'songs/REMOVE_LIKE';
 
+/*****************  ACTION CREATORS   ****************/
 
-//                                         Action Creators
-
-//Get All Songs Action
-export const getAllSongsAction = (songs) => {
+//Load ALL Songs Action
+export const loadSongsAction = (songs) => {
   return {
     type: LOAD_SONGS,
-    payload: songs,
+    songs
   };
 };
 
-//Get Song by ID Action
-export const getSongByIdAction = (song) => {
+//Receive ONE Action
+export const receiveSongAction = (song) => {
   return {
-    type: LOAD_SONG,
-    payload: song,
-  };
-};
-
-//Create Song Action
-export const createSongAction = (song) => {
-  return {
-    type: CREATE_SONG,
-    payload: song,
-  };
-};
-
-
-// Edit/Update a Song Action
-export const updateSongAction = (song) => {
-  return {
-    type: UPDATE_SONG,
-    payload: song,
+    type: RECEIVE_SONG,
+    song
   };
 };
 
@@ -47,54 +26,46 @@ export const updateSongAction = (song) => {
 export const deleteSongAction = (songId) => {
   return {
     type: DELETE_SONG,
-    payload: songId,
+    songId
   };
 };
 
-//Add a Like Action
-export const addLikeAction = (songId, like) => {
-  return {
-    type: ADD_LIKE,
-    songId,
-    like
-  }
-}
+/*****************  THUNKS   ****************/
 
-//Remove a Like Action
-export const removeLikeAction = (songId, likeId) => {
-  return {
-    type: REMOVE_LIKE,
-    songId,
-    likeId
-  }
-}
 
-//                                             Thunks
 //Get All Songs Thunk
 export const getAllSongsThunk = () => async (dispatch) => {
   const response = await fetch('/api/songs');
   const songs = await response.json();
-  dispatch(getAllSongsAction(songs));
-  return response;
+  dispatch(loadSongsAction(songs));
+  return songs;
 };
+
+
 
 //Get All Songs by Current User Thunk
 export const getCurrentUserAllSongsThunk = () => async (dispatch) => {
   const response = await fetch('/api/songs/current');
   if (response.ok) {
     const songs = await response.json();
-    dispatch(getAllSongsAction(songs));
+    dispatch(loadSongsAction(songs));
     return songs;
   }
 };
 
+
+
 //Get Song by ID Thunk
 export const getSongByIdThunk = (songId) => async (dispatch) => {
   const response = await fetch(`/api/songs/${songId}`);
-  const song = await response.json();
-  dispatch(getSongByIdAction(song));
-  return response;
+  if (response.ok) {
+    const song = await response.json();
+    dispatch(receiveSongAction(song));
+    return song;
+  }
 };
+
+
 
 //Create a Song Thunk
 export const createSongThunk = (album, formData) => async (dispatch) => {
@@ -107,13 +78,15 @@ export const createSongThunk = (album, formData) => async (dispatch) => {
   if (response.ok) {
     const song = await response.json();
     // console.log('If response is okay running, this is song', song)
-    dispatch(createSongAction(song))
+    dispatch(receiveSongAction(song))
     return song;
   } else {
     const errorData = await response.json();
     return errorData;
   }
 };
+
+
 
 //Edit/Update a song Thunk
 export const updateSongThunk = (song, formData) => async (dispatch) => {
@@ -125,13 +98,15 @@ export const updateSongThunk = (song, formData) => async (dispatch) => {
 
   if (response.ok) {
     const song = await response.json();
-    dispatch(updateSongAction(song));
+    dispatch(receiveSongAction(song));
     return song;
   } else {
     const errorData = await response.json();
     return errorData;
   }
 };
+
+
 
 //Delete a Song Thunk
 export const deleteSongThunk = (songId) => async (dispatch) => {
@@ -141,14 +116,16 @@ export const deleteSongThunk = (songId) => async (dispatch) => {
 
   if (response.ok) {
     dispatch(deleteSongAction(songId));
-    return response;
+    return response.json();
   }
 };
 
+
+
 //Add a Like Thunk
-export const addLikeThunk = (songId) => async (dispatch) => {
-    const response = await fetch(`/api/songs/${songId}/add-like`, {
-      method: 'POST',
+export const addLikeThunk = (song) => async (dispatch) => {
+    const response = await fetch(`/api/songs/${song.id}/add-like`, {
+      method: 'PUT',
       headers: {
         "Content-Type": "application/json"
       }
@@ -156,24 +133,33 @@ export const addLikeThunk = (songId) => async (dispatch) => {
 
     if (response.ok) {
       const newLike = await response.json();
-      dispatch(addLikeAction(songId, newLike));
+      const updatedSong = { ...song };
+      updatedSong.likes.push(newLike);
+      dispatch(receiveSongAction(updatedSong));
       return newLike;
     }
 };
 
+
+
 //Remove a Like Thunk
-export const removeLikeThunk = (songId, likeId) => async (dispatch) => {
-  const response = await fetch(`/api/songs/${songId}/remove-like`, {
-    method: 'DELETE'
+export const removeLikeThunk = (song, likeId, index) => async (dispatch) => {
+  const response = await fetch(`/api/songs/${likeId}/remove-like`, {
+    method: 'PUT'
   });
 
   if (response.ok) {
-    dispatch(removeLikeAction(songId, likeId))
+    const updatedSong = { ...song };
+    updatedSong.likes.splice(index, 1);
+    dispatch(receiveSongAction(updatedSong));
+    return updatedSong;
   }
 }
 
 
-//Reducer function
+/*****************  REDUCER FUNCTION   ****************/
+
+
 const initialState = {
     allSongs: {},
     singleSong: {}
@@ -182,31 +168,17 @@ const initialState = {
   const songReducer = (state = initialState, action) => {
     switch (action.type) {
       case LOAD_SONGS:
-        // console.log(action.payload);
         const allSongsObject = {};
-        action.payload.forEach((song) => {
+        action.songs.forEach((song) => {
           allSongsObject[song.id] = song;
         });
         return { ...state, allSongs: allSongsObject };
-      case LOAD_SONG:
-        return { ...state, singleSong: {[action.payload.id]: action.payload}};
-      case CREATE_SONG:
-        return {...state, allSongs: {  ...state.allSongs, [action.payload.id]: action.payload }};
-      case UPDATE_SONG:
-        return { ...state, allSongs: { ...state.allSongs, [action.payload.id]: action.payload }, singleSong: { [action.payload.id]: action.payload} }
+      case RECEIVE_SONG:
+        return { ...state, allSongs: { ...state.allSongs, [action.song.id] : action.song }, singleSong: { [action.song.id]: action.song } };
       case DELETE_SONG:
         const newSongs = { ...state.allSongs };
-        delete newSongs[action.payload];
+        delete newSongs[action.songId];
         return { ...state, allSongs: newSongs };
-      case ADD_LIKE:
-        const songLikesAdded = [...state.allSongs[action.songId].likes, action.like];
-        return { ...state, allSongs: { ...state.allSongs, [action.songId]: { ...state.allSongs[action.songId], likes: [...songLikesAdded] } } }
-      case REMOVE_LIKE:
-        const currentLikes = [...state.allSongs[action.songId].likes];
-        const deleteLike = currentLikes.find(like => like.id === action.likeId);
-        const ind = currentLikes.indexOf(deleteLike);
-        const removedLikes = [...currentLikes.slice(0, ind), ...currentLikes.slice(ind + 1)];
-        return { ...state, allSongs: { ...state.allSongs, [action.songId]: { ...state.allSongs[action.songId], likes: [...removedLikes] } } }
       default:
         return state;
         }

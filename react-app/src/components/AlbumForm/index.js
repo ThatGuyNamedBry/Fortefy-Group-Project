@@ -39,7 +39,7 @@ const AlbumForm = ({ album, formType }) => {
       if (album.errors) {
         setErrors(album.errors)
       } else {
-        history.push(`/albums/${album.payload.id}`);
+        history.push(`/albums/${album.id}`);
       }
 
     } else {

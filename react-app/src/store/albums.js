@@ -1,82 +1,73 @@
-//                                           Action Types
+/*****************  ACTION TYPES   ****************/
+
 const LOAD_ALBUMS = 'albums/LOAD_ALBUMS';
-const LOAD_ALBUM = 'albums/LOAD_ALBUM';
-const CREATE_ALBUM = 'albums/CREATE_ALBUM';
-const UPDATE_ALBUM = 'albums/UPDATE_ALBUM';
+const RECEIVE_ALBUM = 'albums/RECEIVE_ALBUM';
 const DELETE_ALBUM = 'albums/DELETE_ALBUM';
 
+/*****************  ACTION CREATORS   ****************/
 
-//                                         Action Creators
 
-//Get All Album Action
-export const getAllAlbumsAction = (albums) => {
+// Load ALL Albums Action
+export const loadAlbumsAction = (albums) => {
   return {
     type: LOAD_ALBUMS,
-    payload: albums,
+    albums
   };
-};
+}
 
-//Get Album by ID Action
-export const getAlbumByIdAction = (album) => {
+//Receive ONE Album Action
+export const receiveAlbumAction = (album) => {
   return {
-    type: LOAD_ALBUM,
-    payload: album,
-  };
-};
-
-//Create Album Action
-export const createAlbumAction = (album) => {
-  return {
-    type: CREATE_ALBUM,
-    payload: album,
-  };
-};
-
-
-// Edit/Update a Album Action
-export const updateAlbumAction = (album) => {
-  return {
-    type: UPDATE_ALBUM,
-    payload: album,
-  };
-};
+    type: RECEIVE_ALBUM,
+    album
+  }
+}
 
 //Delete a Album Action
 export const deleteAlbumAction = (albumId) => {
   return {
     type: DELETE_ALBUM,
-    payload: albumId,
+    albumId,
   };
 };
 
-//                                             Thunks
+
+/*****************  THUNKS   ****************/
+
+
 //Get All Albums Thunk
 export const getAllAlbumsThunk = () => async (dispatch) => {
   const response = await fetch('/api/albums');
   const albums = await response.json();
-  dispatch(getAllAlbumsAction(albums));
-  return response;
+  dispatch(loadAlbumsAction(albums));
+  return albums;
 };
+
+
 
 //Get All Albums by Current User Thunk
 export const getCurrentUserAllAlbumsThunk = () => async (dispatch) => {
   const response = await fetch('/api/albums/current');
   if (response.ok) {
     const albums = await response.json();
-    dispatch(getAllAlbumsAction(albums));
+    dispatch(loadAlbumsAction(albums));
     return albums;
   }
 };
+
+
 
 //Get Album by ID Thunk
 export const getAlbumByIdThunk = (albumId) => async (dispatch) => {
   const response = await fetch(`/api/albums/${albumId}`);
   if (response.ok) {
     const album = await response.json();
-    dispatch(getAlbumByIdAction(album));
+    dispatch(receiveAlbumAction(album));
     return album;
   }
 };
+
+
 
 //Create an Album Thunk
 export const createAlbumThunk = (formData) => async (dispatch) => {
@@ -92,11 +83,15 @@ export const createAlbumThunk = (formData) => async (dispatch) => {
     if (!response.ok) {
       throw new Error(newAlbum)
     }
-    return dispatch(createAlbumAction(newAlbum))
+
+    dispatch(receiveAlbumAction(newAlbum));
+    return newAlbum;
   } catch (err) {
     return err
   }
 };
+
+
 
 //Edit/Update an Album Thunk
 export const updateAlbumThunk = (album, formData) => async (dispatch) => {
@@ -112,11 +107,15 @@ export const updateAlbumThunk = (album, formData) => async (dispatch) => {
     if (!response.ok) {
       throw new Error(updatedAlbum)
     }
-    return dispatch(updateAlbumAction(updatedAlbum))
+    
+    dispatch(receiveAlbumAction(updatedAlbum))
+    return updatedAlbum;
   } catch (err) {
     return err
   }
 }
+
+
 
 //Delete an Album Thunk
 export const deleteAlbumThunk = (albumId) => async (dispatch) => {
@@ -131,7 +130,9 @@ export const deleteAlbumThunk = (albumId) => async (dispatch) => {
 };
 
 
-//Reducer function
+
+/*****************  REDUCER FUNCTION   ****************/
+
 const initialState = {
   allAlbums: {},
   singleAlbum: {}
@@ -140,21 +141,16 @@ const initialState = {
 const albumReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_ALBUMS:
-      // console.log(action.payload);
       const allAlbumsObject = {};
-      action.payload.forEach((album) => {
+      action.albums.forEach((album) => {
         allAlbumsObject[album.id] = album;
       });
       return { ...state, allAlbums: allAlbumsObject };
-    case LOAD_ALBUM:
-      return { ...state, singleAlbum: { [action.payload.id]: action.payload } };
-    case CREATE_ALBUM:
-      return { ...state, allAlbums: { ...state.allAlbums, [action.payload.id]: action.payload } };
-    case UPDATE_ALBUM:
-      return { ...state, singleAlbum: { [action.payload.id]: action.payload } };
+    case RECEIVE_ALBUM:
+      return { ...state, allAlbums: { ...state.allAlbums, [action.album.id] : action.album }, singleAlbum: {[action.album.id] : action.album} };
     case DELETE_ALBUM:
       const newAlbums = { ...state.allAlbums };
-      delete newAlbums[action.payload];
+      delete newAlbums[action.albumId];
       return { ...state, allAlbums: newAlbums };
     default:
       return state;

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getPlaylistByIdThunk, removePlaylistSongThunk, loadPlaylistSongsAction } from '../../store/playlists';
-import { getAllSongsAction } from '../../store/songs';
+import { loadSongsAction } from '../../store/songs';
 import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 import LikeButton from '../LikeButton';
 import './PlaylistDetails.css';
@@ -14,7 +14,7 @@ const PlaylistDetails = () => {
 
     // const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
     const user = useSelector(state => state.session.user);
-    const playlist = useSelector((state) => state.playlists.singlePlaylist);
+    const playlist = useSelector((state) => state.playlists.singlePlaylist[playlistId]);
     const songsObject = useSelector((state) => state.playlists.playlistSongs);
     const songs = Object.values(songsObject);
 
@@ -63,8 +63,8 @@ const PlaylistDetails = () => {
 
             // Load Playlist songs to display the correct number of each song from Playlists Store
             dispatch(loadPlaylistSongsAction(songsArray));
-            // getAllSongsAction to populate All Songs in Songs store for like functionality purposes after refresh
-            dispatch(getAllSongsAction(allSongsStoreArray));
+            // loadSongsAction to populate All Songs in Songs store for like functionality purposes after refresh
+            dispatch(loadSongsAction(allSongsStoreArray));
         }
     }, [dispatch, playlist]);
 

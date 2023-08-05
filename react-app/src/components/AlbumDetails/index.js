@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getAlbumByIdThunk } from '../../store/albums';
-import { getAllSongsAction } from '../../store/songs';
+import { loadSongsAction } from '../../store/songs';
 import AddMusicButton from '../AddMusicButton';
 import LikeButton from '../LikeButton';
 import AddMusicModal from '../AddMusicModal'
@@ -20,7 +20,7 @@ const AlbumDetails = () => {
     const { albumId } = useParams();
 
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
-    const user = useSelector(state => state.session.user)
+    const user = useSelector(state => state.session.user);
     const songs = useSelector(state => state.songs.allSongs);
 
     const songsArray = Object.values(songs).sort((song1, song2) => song1.track_number - song2.track_number);
@@ -35,7 +35,7 @@ const AlbumDetails = () => {
     }, [dispatch, albumId]);
 
     useEffect(() => {
-        dispatch(getAllSongsAction(singleAlbum ? singleAlbum.songs : []));
+        dispatch(loadSongsAction(singleAlbum ? singleAlbum.songs : []));
     }, [dispatch, singleAlbum])
 
     useEffect(() => {

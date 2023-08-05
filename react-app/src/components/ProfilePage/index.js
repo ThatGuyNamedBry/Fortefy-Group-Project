@@ -25,10 +25,12 @@ const ProfilePage = () => {
   const itemsPerPage = 5;
 
   useEffect(() => {
-    dispatch(getCurrentUserAllAlbumsThunk());
-    dispatch(getCurrentUserAllSongsThunk());
-    dispatch(getCurrentUserAllPlaylistsThunk());
-  }, [dispatch]);
+    if (user?.id) {
+      dispatch(getCurrentUserAllAlbumsThunk());
+      dispatch(getCurrentUserAllSongsThunk());
+      dispatch(getCurrentUserAllPlaylistsThunk());
+    }
+  }, [dispatch, user]);
 
   const userAlbums = Object.values(userAlbumsObject);
   const userSongs = Object.values(userSongsObject);

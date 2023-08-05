@@ -78,7 +78,7 @@ function LoginFormModal() {
       </form>
       <p className="sign-up-link">
         Don't have an account?{" "}
-        <a href="" onClick={openSignupModal}>Sign up for ƒorteƒy</a>
+        <p href="" onClick={openSignupModal}>Sign up for ƒorteƒy</p>
       </p>
     </div>
   );

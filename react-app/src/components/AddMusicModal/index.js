@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import { createSongThunk, getAllSongsAction, getAllSongsThunk, updateSongThunk } from '../../store/songs';
+import { createSongThunk, loadSongsAction, getAllSongsThunk, updateSongThunk } from '../../store/songs';
 import "./AddMusicModal.css"
 import { getAlbumByIdThunk } from '../../store/albums';
 
