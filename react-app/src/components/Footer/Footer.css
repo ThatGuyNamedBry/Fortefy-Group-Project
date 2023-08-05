@@ -18,12 +18,39 @@
   margin-bottom: 5px;
 }
 
-a, span {
+span,
+#for>a {
   color: rgba(255, 255, 255, 0.465);
   text-decoration: none
 }
 
-#creators>a:hover {
+a {
   color: white;
-  cursor: pointer;
+  text-decoration: none;
+}
+
+.creator-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 7px;
+  margin-left: 2px;
+}
+
+.creator-link-icon {
+  display: none;
+  color: rgba(255, 255, 255, 0.465);
+}
+
+.creator-link-icon:hover,
+#for>a:hover {
+  color: white;
+}
+
+.creator-text:hover {
+  color: white;
+  cursor: default
+}
+
+.linkedin-image {
+  color: white;
 }
