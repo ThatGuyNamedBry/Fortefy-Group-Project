@@ -230,9 +230,7 @@
 }
 
 @media (min-width: 1201px) {
-    .album-grid {
-        /* justify-content: center; */
-    }
+   
 }
 
 @media (max-width: 1200px) {
