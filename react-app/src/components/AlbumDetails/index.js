@@ -36,7 +36,7 @@ const AlbumDetails = () => {
 
     useEffect(() => {
         dispatch(loadSongsAction(singleAlbum ? singleAlbum.songs : []));
-    }, [dispatch, singleAlbum])
+    }, [dispatch, singleAlbum]);
 
     useEffect(() => {
         setUserOwned(singleAlbum?.user?.id === user?.id);
