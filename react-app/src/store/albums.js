@@ -71,9 +71,11 @@ export const getCurrentUserAllAlbumsThunk = () => async (dispatch) => {
 //Get Album by ID Thunk
 export const getAlbumByIdThunk = (albumId) => async (dispatch) => {
   const response = await fetch(`/api/albums/${albumId}`);
-  const album = await response.json();
-  dispatch(getAlbumByIdAction(album));
-  return response;
+  if (response.ok) {
+    const album = await response.json();
+    dispatch(getAlbumByIdAction(album));
+    return album;
+  }
 };
 
 //Create an Album Thunk

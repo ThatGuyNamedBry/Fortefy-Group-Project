@@ -4,7 +4,7 @@ function Footer() {
   return (
     <div id="footer-container">
       <div className="footer-col" id="creators">
-        <i class="fa-solid fa-users footer-header"></i>
+        <i className="fa-solid fa-users footer-header"></i>
 
         <a href="https://www.linkedin.com/in/alexjbasso/">Alex Basso</a>
         <a href="https://www.linkedin.com/in/angad-bhatia/">Angad Bhatia</a>
@@ -13,7 +13,7 @@ function Footer() {
 
       </div>
       <div className="footer-col" id="languages">
-        <i class="fa-solid fa-code footer-header"></i>
+        <i className="fa-solid fa-code footer-header"></i>
         <span>JavaScript</span>
         <span>React</span>
         <span>Redux</span>
@@ -21,7 +21,7 @@ function Footer() {
         <span>Flask</span>
       </div>
       <div className="footer-col" id="for">
-        <i class="fa-solid fa-school footer-header"></i>
+        <i className="fa-solid fa-school footer-header"></i>
         <span>App Academy</span>
         <span>August 2023</span>
       </div>

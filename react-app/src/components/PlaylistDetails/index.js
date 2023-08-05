@@ -21,7 +21,6 @@ const PlaylistDetails = () => {
     const [artistsText, setArtistsText] = useState('');
     const [playlistDuration, setPlaylistDuration] = useState(0);
     const [hoveredSong, setHoveredSong] = useState(-1);
-    // const [userOwned, setUserOwned] = useState(false);
 
     //for audio player use only
     const [playerSongsObject, setPlayerSongsObject] = useState({});
@@ -95,18 +94,21 @@ const PlaylistDetails = () => {
         const removeSong = playlist.playlist_songs.find(song => song.song_id === songId);
         dispatch(removePlaylistSongThunk(playlistId, removeSong.id));
     }
+    if(!playlist?.id) {
+        return <h1>This playlist does not exist.</h1>
+    }
 
     return (
         <div className='playlist-details-container'>
             <div className='playlist-header-container'>
-                <img className='playlist-details-art' src={playlist?.art ? playlist.art : 'https://i0.wp.com/olumuse.org/wp-content/uploads/2020/09/unnamed.jpg'} alt='Playlist Art Available'></img>
+                <img className='playlist-details-art' src={playlist?.art ? playlist.art : 'https://i0.wp.com/olumuse.org/wp-content/uploads/2020/09/unnamed.jpg'} alt='Playlist Cover'></img>
                 <div className='playlist-info-container'>
                     <p>Playlist</p>
                     <h3 className='playlist-name-header'>{playlist.title}</h3>
                     <div className='playlist-info-wrapper'>
                         <p id="playlist-description">{playlist?.description}</p>
                         <p id="playlist-artists">{songs.length ? `Featuring artists including ${artistsText}` : 'No tracks yet.'}</p>
-                        <p id="playlist-duration">{user.username} · {songs.length} {songs.length === 1 ? `song` : `songs`}, {secsToHrs(playlistDuration)}</p>
+                        <p id="playlist-duration">{playlist?.user?.username} · {songs.length} {songs.length === 1 ? `song` : `songs`}, {secsToHrs(playlistDuration)}</p>
                     </div>
                 </div>
             </div>
