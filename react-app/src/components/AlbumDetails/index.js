@@ -72,7 +72,7 @@ const AlbumDetails = () => {
     return (
         <div className='album-details-container'>
             <div className='album-header-container'>
-                <img className='album-details-art' src={singleAlbum.art} alt='No Album Art Available'></img>
+                <img className='album-details-art' src={singleAlbum.art} alt='Album Cover'></img>
                 <div className='album-info-container'>
                     <p>Album</p>
                     <h3 className='album-name-header'>{singleAlbum.name}</h3>
