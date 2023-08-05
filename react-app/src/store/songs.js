@@ -162,7 +162,8 @@ export const removeLikeThunk = (song, likeId, index) => async (dispatch) => {
 
 const initialState = {
     allSongs: {},
-    singleSong: {}
+    singleSong: {},
+    queuedSongs: {}
   }
 
   const songReducer = (state = initialState, action) => {
