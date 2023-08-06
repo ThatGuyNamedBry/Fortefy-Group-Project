@@ -7,6 +7,7 @@ import './HomeLandingPage.css';
 import { Link } from 'react-router-dom';
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
+import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 
 const HomeLandingPage = () => {
     const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const HomeLandingPage = () => {
     const [startIndexPlaylists, setStartIndexPlaylists] = useState(0);
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
+    const [hoveredSong, setHoveredSong] = useState(-1);
 
     const itemsPerPage = 4;
 
@@ -37,9 +39,9 @@ const HomeLandingPage = () => {
         if (!showMenu) return;
 
         const closeMenu = (e) => {
-          if (!ulRef.current.contains(e.target)) {
-            setShowMenu(false);
-          }
+            if (!ulRef.current.contains(e.target)) {
+                setShowMenu(false);
+            }
         };
 
         document.addEventListener("click", closeMenu);
@@ -84,6 +86,22 @@ const HomeLandingPage = () => {
         if (startIndexPlaylists + itemsPerPage < Object.values(allPlaylists).length) {
             setStartIndexPlaylists(startIndexPlaylists + itemsPerPage);
         }
+    };
+
+    const handlePlaySong = (songId, e) => {
+        e.stopPropagation();
+        const selectedSong = allSongs[songId];
+        dispatch(setCurrentPlaylist([selectedSong]));
+        dispatch(setCurrentSongIndex(0));
+        dispatch(setIsPlaying(true));
+    };
+
+    const showPlayButton = (i) => {
+        setHoveredSong(i);
+    };
+
+    const hidePlayButton = () => {
+        setHoveredSong(-1);
     };
 
     return (
@@ -161,19 +179,26 @@ const HomeLandingPage = () => {
                         ></div>
                     </div>
                 </div>
-                <div id='all-songs-container' className="album-grid">
-                    {sortedSongs
-                        .slice(startIndexSongs, startIndexSongs + itemsPerPage)
-                        .map(song => {
-                            const album = allAlbums[song.album_id];
-                            return (
-                                <Link key={`${album?.id}-${song?.id}`} to={`/albums/${album?.id}`} className="album-tile link-as-text">
-                                    <img src={album?.art} alt={album?.name} className="album-image" />
-                                    <h3>{song.name}</h3>
-                                    <p className='owner-text'>{album?.artist}</p>
-                                </Link>
-                            );
-                        })}
+                <div id="all-songs-container" className="album-grid">
+                    {sortedSongs.slice(startIndexSongs, startIndexSongs + itemsPerPage).map((song, i) => (
+                        <div
+                            key={`${song.album_id}-${song.id}`}
+                            className="album-tile link-as-text"
+                            onMouseEnter={() => showPlayButton(i)}
+                            onMouseLeave={hidePlayButton}
+                        >
+                            <Link to={`/albums/${song.album_id}`} className="song-link">
+                                <img src={song.album_art} alt={song.album_name} className="album-image" />
+                                <h3>{song.name}</h3>
+                                <p className="owner-text">{song.album_artist}</p>
+                            </Link>
+                            {hoveredSong === i && (
+                                <div className="play-button" onClick={(e) => handlePlaySong(song.id, e)}>
+                                    <i className="fa-sharp fa-solid fa-circle-play" />
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
                 <div className="album-grid-header">
                     <h2>All Playlists</h2>

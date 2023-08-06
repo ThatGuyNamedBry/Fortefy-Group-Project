@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUserAllPlaylistsThunk, addPlaylistSongThunk } from '../../store/playlists';
 import './AddPLSong.css';
 
-const AddPLSongButton = ({ songId }) => {
+const AddPLSongButton = ({ songId, userId }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -31,6 +31,10 @@ const AddPLSongButton = ({ songId }) => {
         } else {
             dispatch(addPlaylistSongThunk(e.target.value, songId));
         }
+    }
+
+    if (!userId) {
+        return null;
     }
 
     return (

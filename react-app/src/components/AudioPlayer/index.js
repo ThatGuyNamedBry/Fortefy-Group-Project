@@ -25,6 +25,7 @@ const AudioPlayerComponent = () => {
     } else {
       dispatch(setIsPlaying(false));
       dispatch(setCurrentPlaylist({}));
+      dispatch(setCurrentSongIndex(0));
     }
   };
 
@@ -55,6 +56,7 @@ const AudioPlayerComponent = () => {
           onClickPrevious={handleNextSong}
           onClickPlay={handlePlayPause}
           onClickPause={handlePlayPause}
+          onEnded={handleNextSong}
           playing={isPlaying}
         />
       )}

@@ -8,7 +8,6 @@
     width: 25%;
     background-color: rgb(13, 13, 13);
     border-radius: 20px;
-    /* margin-right:100px; */
 }
 
 .your-library-container h2 {
@@ -42,6 +41,7 @@
     margin-top: 0px;
     border-radius: 8px;
     transition: background-color 0.4s, color 0.4s;
+    position: relative;
 }
 
 .album-tile:hover {
@@ -73,8 +73,6 @@
     height: 165px;
     object-fit: cover;
     border-radius: 8px;
-    /* margin-top: 10px;
-    margin-bottom: 10px; */
     margin: 10px
 }
 
@@ -229,10 +227,22 @@
     color: rgb(12, 147, 0);
 }
 
-@media (min-width: 1201px) {
-    .album-grid {
-        /* justify-content: center; */
-    }
+.play-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: transparent;
+    padding: 2px;
+    transition: 0.1s;
+    color: rgb(33, 204, 6);
+}
+
+.play-button:hover {
+    transform: scale(1.45)
+}
+
+.play-button:active {
+    transform: scale(1.30)
 }
 
 @media (max-width: 1200px) {
