@@ -57,6 +57,12 @@
     border-bottom: .5px solid rgb(74, 74, 74);
 }
 
+#playlist-clock-icon {
+    /* margin-right: -2.5%; */
+    padding-right: 0;
+    margin-right: 0.5%;
+}
+
 .fa-solid.fa-circle-minus:hover {
     color: rgb(255, 50, 50);
 }

@@ -120,7 +120,7 @@ const PlaylistDetails = () => {
             <ul className='playlist-songs-container'>
                 <li className='playlist-songs-header'>
                     <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
-                    <i className="fa-regular fa-clock"></i>
+                    <i className="fa-regular fa-clock" id="playlist-clock-icon"></i>
                 </li>
                 {songs.map((song, i) => (
                     <li key={song.playlistSongId} className='albums-songs-button'

@@ -95,7 +95,7 @@ const AlbumDetails = () => {
             <ul className='album-songs-container'>
                 <li className='album-songs-header'>
                     <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
-                    <i className="fa-regular fa-clock"></i>
+                    <i className="fa-regular fa-clock" id="album-clock-icon"></i>
                 </li>
                 {songsArray.map((song, i) => (
                     <button key={song.id} className='albums-songs-button'
@@ -130,11 +130,12 @@ const AlbumDetails = () => {
                                 </div>
                             )}
                             <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)} &nbsp; &nbsp; &nbsp; &nbsp; </p>
-                            <div className='add-plsong-button-container'>
+                            {user?.id && <div className='add-plsong-button-container'>
                                 <AddPLSongButton
                                     songId={song.id}
+                                    userId={user.id}
                                 />
-                            </div>
+                            </div>}
                         </div>
                     </button>
                 ))}
