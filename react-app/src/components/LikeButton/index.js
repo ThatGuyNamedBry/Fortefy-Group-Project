@@ -26,7 +26,7 @@ const LikeButton = ({ songId }) => {
         }
     };
 
-    if (!user || (song && song.user_id === user.id)) {
+    if (!user?.id || user.id === song?.user_id) {
         return null;
     }
 

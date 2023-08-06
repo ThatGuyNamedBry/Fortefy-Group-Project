@@ -130,11 +130,12 @@ const AlbumDetails = () => {
                                 </div>
                             )}
                             <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)} &nbsp; &nbsp; &nbsp; &nbsp; </p>
-                            <div className='add-plsong-button-container'>
+                            {user?.id && <div className='add-plsong-button-container'>
                                 <AddPLSongButton
                                     songId={song.id}
+                                    userId={user.id}
                                 />
-                            </div>
+                            </div>}
                         </div>
                     </button>
                 ))}
