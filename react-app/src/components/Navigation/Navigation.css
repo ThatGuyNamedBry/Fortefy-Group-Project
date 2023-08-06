@@ -12,6 +12,7 @@
   width: 120px;
   height: fit-content;
   gap: 8px;
+  z-index: 99;
 }
 
 .profile-dropdown li button {

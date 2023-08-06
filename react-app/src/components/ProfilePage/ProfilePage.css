@@ -58,6 +58,7 @@
     opacity: 0;
     transform: translateY(20px);
     transition: visibility 0s, opacity 0.3s, transform 0.3s;
+    z-index: 99;
 }
 
 .profile-tile-container:hover .profile-tile-buttons {
