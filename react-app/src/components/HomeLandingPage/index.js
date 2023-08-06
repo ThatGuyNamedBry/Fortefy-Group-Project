@@ -4,7 +4,7 @@ import { getAllAlbumsThunk } from '../../store/albums';
 import { getAllSongsThunk } from '../../store/songs';
 import { getAllPlaylistsThunk } from '../../store/playlists';
 import './HomeLandingPage.css';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 
@@ -37,9 +37,9 @@ const HomeLandingPage = () => {
         if (!showMenu) return;
 
         const closeMenu = (e) => {
-          if (!ulRef.current.contains(e.target)) {
+            if (!ulRef.current.contains(e.target)) {
             setShowMenu(false);
-          }
+            }
         };
 
         document.addEventListener("click", closeMenu);
@@ -89,7 +89,11 @@ const HomeLandingPage = () => {
     return (
         <div className="home-container">
             <div className="your-library-container">
-                <h2>Your Library</h2>
+                {user?.id ? (
+                    <NavLink to="/profile">
+                        <h2>Your Library</h2>
+                    </NavLink>
+                ) : (<h2>Your Library</h2>)}
                 <div>
                     {user ? (
                         <div className='library-container'>

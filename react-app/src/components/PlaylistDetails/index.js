@@ -117,19 +117,19 @@ const PlaylistDetails = () => {
                     <i className="fa-sharp fa-solid fa-circle-play"></i>
                 </button>
             </div>
-            <ul className='playlist-songs-container'>
-                <li className='playlist-songs-header'>
+            <ul className='details-songs-container'>
+                <li className='details-songs-header'>
                     <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
                     <i className="fa-regular fa-clock"></i>
                 </li>
                 {songs.map((song, i) => (
-                    <li key={song.playlistSongId} className='albums-songs-button'
+                    <li key={song.playlistSongId} className='details-songs-play-button'
                         onMouseEnter={(e) => showPlayButton(i)}
                         onMouseLeave={() => hidePlayButton()}
                         onClick={() => handlePlaySong(song.id)}
                     >
                         <div className='number-name-container'>
-                            <div className='song-track-number'>
+                            <div className='track-number-cells'>
                                 <div style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{i + 1}</div>
                                 <div style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
                                     <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
@@ -137,7 +137,7 @@ const PlaylistDetails = () => {
                             </div>
                             <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
                         </div>
-                        <div className='heart-time-container'>
+                        <div className='change-to-how-album-details-index-has-it'>
                             <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
                                 <LikeButton
                                     songId={song.id}

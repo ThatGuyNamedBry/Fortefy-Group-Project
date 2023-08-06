@@ -44,24 +44,10 @@
     margin-top: 2.5px;
 }
 
-.playlist-songs-container {
-    padding-left: 0%;
-    margin-top: 1%;
-}
-
-.playlist-songs-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: fit-content;
-    border-bottom: .5px solid rgb(74, 74, 74);
-}
-
 .fa-solid.fa-circle-minus:hover {
     color: rgb(255, 50, 50);
 }
 
 .playlist-song-time {
     color: rgb(160, 160, 160);
-
 }

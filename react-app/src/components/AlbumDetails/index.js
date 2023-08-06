@@ -92,54 +92,58 @@ const AlbumDetails = () => {
                 </div>
 
             </div>
-            <ul className='album-songs-container'>
-                <li className='album-songs-header'>
-                    <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
-                    <i className="fa-regular fa-clock"></i>
-                </li>
+            <table className='details-songs-container'>
+                <tr className='details-songs-header'>
+                    <th className='track-number-cells'>#</th>
+                    <th className='song-name-cells'>Title</th>
+                    <th className='song-header-clock' colSpan={3}>
+                        <i className="fa-regular fa-clock"></i>
+                    </th>
+                </tr>
                 {songsArray.map((song, i) => (
-                    <button key={song.id} className='albums-songs-button'
+                    <tr key={song.id} className='details-songs-play-button'
                         onMouseEnter={(e) => showPlayButton(i)}
                         onMouseLeave={() => hidePlayButton()}
                         onClick={() => handlePlaySong(song.id)}
                     >
-                        <div className='number-name-container'>
-                            <div className='song-track-number'>
-                                <div style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{song.track_number}</div>
-                                <div style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
-                                    <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
-                                </div>
-                            </div>
-                            <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
-                        </div>
-                        <div className='heart-time-container'>
-                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { backgroundColor: "transparent" }}>
-                                <LikeButton
-                                    songId={song.id}
+                        <td className='track-number-cells'>
+                            <span style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{song.track_number}</span>
+                            <span style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
+                                <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
+                            </span>
+                        </td>
+                        <td className='song-name-cells'>
+                            <p style={{ color: "white" }}>{song.name}</p>
+                        </td>
+                        <td className='song-heart-cells' style={hoveredSong === i ? { display: "block" } : { backgroundColor: "transparent" }}>
+                            <LikeButton
+                                songId={song.id}
+                            />
+                        </td>
+                        <td className='songs-time-cells'>
+                            <p className='album-song-time'>{secsToMins(song.duration)}</p>
+                        </td>
+                        {userOwned && hoveredSong === i && (
+                            <td style={{ display: "flex", alignItems: "center", gap: "3px" }}>
+                                <EditSongButton
+                                    modalComponent={<AddMusicModal className="add-music-modal" song={song} album={singleAlbum} type="update" />}
                                 />
-                            </div>
-                            {userOwned && hoveredSong === i && (
-                                <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
-                                    <EditSongButton
-                                        modalComponent={<AddMusicModal className="add-music-modal" song={song} album={singleAlbum} type="update" />}
-                                    />
-                                    <DeleteMusicButton
-                                        modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />}
-                                        onClick={deleteHandleClick}
-                                    />
-                                </div>
-                            )}
-                            <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)} &nbsp; &nbsp; &nbsp; &nbsp; </p>
-                            {user?.id && <div className='add-plsong-button-container'>
+                                <DeleteMusicButton
+                                    modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />}
+                                    onClick={deleteHandleClick}
+                                />
+                            </td>
+                        )}
+                        {user?.id &&
+                            (<td className='edit-plsong-button-container'>
                                 <AddPLSongButton
                                     songId={song.id}
                                     userId={user.id}
                                 />
-                            </div>}
-                        </div>
-                    </button>
+                            </td>)}
+                    </tr>
                 ))}
-            </ul>
+            </table>
         </div>
     );
 };

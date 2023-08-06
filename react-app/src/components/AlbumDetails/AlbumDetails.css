@@ -1,5 +1,9 @@
 .album-details-container {
     padding-left: 3%;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+
 }
 
 .album-header-container {
@@ -37,21 +41,65 @@
     margin-bottom: 0%;
 }
 
-.album-songs-container {
+table.details-songs-container {
+    width: 100%;
     padding-left: 0%;
     margin-top: 1%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill), 1fr;
+    grid-template-areas:
+        "track-header name-header . clock-header 1 2 "
+        "track name song-heart song-time song-manage-buttons plsong-buttons";
+    border: red 2px solid;
+
 }
 
-.album-songs-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: fit-content;
+tr.details-songs-header {
+    /* display: flex; */
+    width: 100%;
+    margin: 0;
+    padding-top: 0;
+    /* justify-content: space-between; */
+    /* align-items: center; */
+    /* height: fit-content; */
     border-bottom: .5px solid rgb(74, 74, 74);
-    margin-bottom: 25px;
+    color: rgb(160, 160, 160);
+    /* margin-bottom: 25px; */
+}
+
+th.track-number-cells {
+    grid-area: track-header;
+    background-color: transparent;
+    color: rgb(160, 160, 160);
+    border: 0px;
+    box-shadow: 0px;
+    width: 7%;
+    text-align: left;
+}
+
+td.track-number-cells {
+    grid-area: track;
+    background-color: transparent;
+    color: rgb(160, 160, 160);
+    border: 0px;
+    box-shadow: 0px;
+    width: 7%;
+    text-align: left;
+}
+
+.song-name-cells {
+    grid-area: name;
+    width: 100%;
+    text-align: left;
+    /* margin-left: 2%; */
+}
+
+.song-time-cells {
+    grid-area: song-time;
 }
 
 .fa-regular.fa-clock {
+    grid-area: clock-header;
     color: rgb(160, 160, 160);
     padding-right: 5%;
 }
@@ -61,7 +109,7 @@
 
 }
 
-.albums-songs-button {
+.details-songs-play-button {
     background-color: transparent;
     color: rgb(160, 160, 160);
     border: 0px;
@@ -74,7 +122,7 @@
     margin-top: 17px;
 }
 
-.albums-songs-button:hover {
+.details-songs-play-button:hover {
     background-color: rgb(45, 45, 45);
     border-radius: 10px;
 }
@@ -84,17 +132,12 @@
     align-items: center;
 }
 
-.heart-time-container {
+.change-to-how-album-details-index-has-it {
     display: flex;
     align-items: center;
 }
 
-.song-track-number {
-    background-color: transparent;
-    color: rgb(160, 160, 160);
-    border: 0px;
-    box-shadow: 0px;
-}
+
 
 .album-buttons-container {
     display: flex;
