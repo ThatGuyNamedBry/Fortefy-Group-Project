@@ -117,7 +117,7 @@ const ProfilePage = () => {
                 <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
                   <img src={album.art} alt={album.name} className="album-image" />
                   <h3>{album.name.length > 22 ? album.name.slice(0, 22) + '...' : album.name}</h3>
-                  <p>{album.artist}</p>
+                  <p className="owner-text">{album.artist}</p>
                 </Link>
               </div>
             ))}
@@ -154,7 +154,7 @@ const ProfilePage = () => {
                   <Link to={`/albums/${album?.id}`} className="album-tile link-as-text">
                     <img src={album?.art} alt={album?.name} className="album-image" />
                     <h3>{song.name}</h3>
-                    <p>{album?.artist}</p>
+                    <p className="owner-text">{album?.artist}</p>
                   </Link>
                 </div>
               );
@@ -196,6 +196,7 @@ const ProfilePage = () => {
                 <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
                   <img src={playlist?.art} alt={playlist?.name} className="album-image" />
                   <h3>{playlist?.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
+                  <p className='owner-text'>{playlist.user.username}</p>
                 </Link>
               </div>
             ))}

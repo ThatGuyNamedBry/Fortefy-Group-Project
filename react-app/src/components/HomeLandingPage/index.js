@@ -104,6 +104,8 @@ const HomeLandingPage = () => {
         setHoveredSong(-1);
     };
 
+    // console.log(allSongs[1])
+
     return (
         <div className="home-container">
             <div className="your-library-container">
@@ -190,7 +192,7 @@ const HomeLandingPage = () => {
                             <Link to={`/albums/${song.album_id}`} className="song-link">
                                 <img src={song.album_art} alt={song.album_name} className="album-image" />
                                 <h3>{song.name}</h3>
-                                <p className="owner-text">{song.album_artist}</p>
+                                <p className="owner-text">{song.artist}</p>
                             </Link>
                             {hoveredSong === i && (
                                 <div className="play-button" onClick={(e) => handlePlaySong(song.id, e)}>
