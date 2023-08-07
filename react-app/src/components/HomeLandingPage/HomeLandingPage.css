@@ -219,7 +219,7 @@
     height: 50px;
     transition: background-color 0.4s, color 0.4s;
     width: 92%;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .loginbuttonlibrary button:hover {
