@@ -1,3 +1,4 @@
+/* Component Container */
 .album-details-container {
     padding-left: 3%;
     display: flex;
@@ -6,9 +7,18 @@
 
 }
 
+/*************** PAGE HEADER *************/
+
 .album-header-container {
+    /* width: 100%; */
     display: flex;
     margin-bottom: 2%;
+}
+
+img.album-details-art {
+    width: 270px;
+    height: 270px;
+    object-fit: cover;
 }
 
 .album-info-container {
@@ -20,112 +30,167 @@
     justify-content: flex-end;
 }
 
-.album-details-art {
-    width: 270px;
-    height: 270px;
-    object-fit: cover;
-}
-
-#album-info {
-    margin-bottom: 2.5px;
-}
-
-#album-length {
-    margin-top: 2.5px;
-    color: rgba(255, 255, 255, 0.701)
-}
-
-.album-name-header {
+h3.album-name-header {
     font-size: 400%;
     margin-top: 0%;
     margin-bottom: 0%;
 }
 
+p#album-info {
+    margin-bottom: 2.5px;
+}
+
+p#album-length {
+    margin-top: 2.5px;
+    color: rgba(255, 255, 255, 0.701)
+}
+
+/*************** ALBUM BUTTONS *******************/
+
+.album-buttons-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 11px;
+}
+
+button.album-play-button {
+    background-color: transparent;
+    color: rgb(33, 204, 6);
+    border: 0px;
+    box-shadow: 0px;
+    height: 100%;
+    font-size: 400%
+}
+
+button.album-play-button:hover {
+    color: rgb(34, 255, 0);
+    font-size: 403%;
+}
+
+i.fa-sharp.fa-solid.fa-circle-play {
+    width: 100%;
+    height: 100%;
+}
+
+.add-music-button-container:hover {
+    cursor: pointer;
+    transform: scale(0.95);
+}
+
+/***************  SONGS TABLE  ********************/
+
 table.details-songs-container {
     width: 100%;
-    padding-left: 0%;
     margin-top: 1%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill), 1fr;
-    grid-template-areas:
-        "track-header name-header . clock-header 1 2 "
-        "track name song-heart song-time song-manage-buttons plsong-buttons";
-    border: red 2px solid;
-
+    color: rgb(160, 160, 160);
 }
 
-tr.details-songs-header {
-    /* display: flex; */
-    width: 100%;
-    margin: 0;
-    padding-top: 0;
-    /* justify-content: space-between; */
-    /* align-items: center; */
-    /* height: fit-content; */
-    border-bottom: .5px solid rgb(74, 74, 74);
-    color: rgb(160, 160, 160);
-    /* margin-bottom: 25px; */
-}
-
-th.track-number-cells {
-    grid-area: track-header;
-    background-color: transparent;
-    color: rgb(160, 160, 160);
-    border: 0px;
-    box-shadow: 0px;
-    width: 7%;
-    text-align: left;
-}
-
-td.track-number-cells {
-    grid-area: track;
-    background-color: transparent;
-    color: rgb(160, 160, 160);
-    border: 0px;
-    box-shadow: 0px;
-    width: 7%;
-    text-align: left;
+.details-song-rows {
+    border: 2px solid red;
+    /* background-color: green; */
 }
 
 .song-name-cells {
-    grid-area: name;
-    width: 100%;
     text-align: left;
-    /* margin-left: 2%; */
+    padding-left: 1%;
+    width: 100%;
 }
 
 .song-time-cells {
-    grid-area: song-time;
+    width: auto;
+    margin: 0;
+    padding: 0;
 }
 
-.fa-regular.fa-clock {
-    grid-area: clock-header;
-    color: rgb(160, 160, 160);
-    padding-right: 5%;
+td.manage-song-buttons-cells:hover {
+    padding-left: 3%;
+    padding-right: 3%;
 }
 
-.album-song-time {
-    color: rgb(160, 160, 160);
+/**************  SONGS HEADER  *****************/
 
-}
+    /* tr.details-songs-header {
+        width: 100%;
+        border-bottom: .5px solid rgb(74, 74, 74);
+    } */
 
-.details-songs-play-button {
-    background-color: transparent;
-    color: rgb(160, 160, 160);
-    border: 0px;
-    box-shadow: 0px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding-right: 5%;
-    margin-top: 17px;
-}
+    th.track-number-cells {
+        background-color: transparent;
+        color: rgb(160, 160, 160);
+        text-align: left;
+    }
 
-.details-songs-play-button:hover {
-    background-color: rgb(45, 45, 45);
-    border-radius: 10px;
-}
+    /* th.song-name-cells { */
+        /* grid-area: song-title-header; */
+    /* } */
+
+    th.song-time-cells {
+        text-align: center
+    }
+
+    i.fa-regular.fa-clock {
+        color: rgb(160, 160, 160);
+    }
+
+/***************  SONGS ROWS  **************/
+
+    tr.details-song-rows {
+        background-color: brown;
+    }
+
+    .details-song-rows:hover {
+        background-color: rgb(45, 45, 45);
+        border-radius: 10px;
+        /* display: inline-flex; */
+    }
+
+    td.track-number-cells {
+        /* grid-area: track-number; */
+        background-color: transparent;
+        color: rgb(160, 160, 160);
+        /* width: 7%;
+        text-align: left; */
+    }
+
+    td.song-name-cells {
+        /* grid-area: song-title; */
+        color: white;
+    }
+
+    td.song-heart-cells {
+        /* grid-area: song-heart; */
+    }
+
+    td.song-time-cells {
+        /* grid-area: song-time; */
+        /* width: fit-content; */
+        text-align: right;
+    }
+
+    span.manage-song-buttons-modals {
+        display: inline-flex;
+        gap: 15%;
+        background-color: blue;
+        width: fit-content;
+
+    }
+
+    td.edit-plsong-button-cells {
+        /* grid-area: plsong-buttons; */
+    }
+
+    i.fa-regular.fa-trash-can:hover {
+        color: white;
+    }
+
+    i.fa-solid.fa-pen-to-square:hover {
+        color: white;
+    }
+
+/*********  REMOVE AFTER FIXING PLAYLIST DETAILS  ************/
+
+
 
 .number-name-container {
     display: flex;
@@ -135,45 +200,4 @@ td.track-number-cells {
 .change-to-how-album-details-index-has-it {
     display: flex;
     align-items: center;
-}
-
-
-
-.album-buttons-container {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    gap: 11px;
-}
-
-.add-music-button-container:hover {
-    cursor: pointer;
-    transform: scale(0.95);
-}
-
-.album-play-button {
-    background-color: transparent;
-    color: rgb(33, 204, 6);
-    border: 0px;
-    box-shadow: 0px;
-    height: 100%;
-    font-size: 400%
-}
-
-.album-play-button:hover {
-    color: rgb(34, 255, 0);
-    font-size: 403%;
-}
-
-.fa-sharp.fa-solid.fa-circle-play {
-    width: 100%;
-    height: 100%;
-}
-
-.fa-regular.fa-trash-can:hover {
-    color: white;
-}
-
-.fa-solid.fa-pen-to-square:hover {
-    color: white;
 }

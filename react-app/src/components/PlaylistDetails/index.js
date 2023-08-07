@@ -123,7 +123,7 @@ const PlaylistDetails = () => {
                     <i className="fa-regular fa-clock"></i>
                 </li>
                 {songs.map((song, i) => (
-                    <li key={song.playlistSongId} className='details-songs-play-button'
+                    <li key={song.playlistSongId} className='details-song-rows'
                         onMouseEnter={(e) => showPlayButton(i)}
                         onMouseLeave={() => hidePlayButton()}
                         onClick={() => handlePlaySong(song.id)}

@@ -85,64 +85,65 @@ const AlbumDetails = () => {
                     <i className="fa-sharp fa-solid fa-circle-play"></i>
                 </button>
                 <div className="add-music-button-container">
-
                     {user && singleAlbum.user.id === user.id ? <AddMusicButton
                         modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} type="create" />}
                     /> : null}
                 </div>
-
             </div>
             <table className='details-songs-container'>
-                <tr className='details-songs-header'>
-                    <th className='track-number-cells'>#</th>
-                    <th className='song-name-cells'>Title</th>
-                    <th className='song-header-clock' colSpan={3}>
-                        <i className="fa-regular fa-clock"></i>
-                    </th>
-                </tr>
-                {songsArray.map((song, i) => (
-                    <tr key={song.id} className='details-songs-play-button'
-                        onMouseEnter={(e) => showPlayButton(i)}
-                        onMouseLeave={() => hidePlayButton()}
-                        onClick={() => handlePlaySong(song.id)}
-                    >
-                        <td className='track-number-cells'>
-                            <span style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{song.track_number}</span>
-                            <span style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
-                                <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
-                            </span>
-                        </td>
-                        <td className='song-name-cells'>
-                            <p style={{ color: "white" }}>{song.name}</p>
-                        </td>
-                        <td className='song-heart-cells' style={hoveredSong === i ? { display: "block" } : { backgroundColor: "transparent" }}>
-                            <LikeButton
-                                songId={song.id}
-                            />
-                        </td>
-                        <td className='songs-time-cells'>
-                            <p className='album-song-time'>{secsToMins(song.duration)}</p>
-                        </td>
-                        {userOwned && hoveredSong === i && (
-                            <td style={{ display: "flex", alignItems: "center", gap: "3px" }}>
-                                <EditSongButton
-                                    modalComponent={<AddMusicModal className="add-music-modal" song={song} album={singleAlbum} type="update" />}
-                                />
-                                <DeleteMusicButton
-                                    modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />}
-                                    onClick={deleteHandleClick}
+                    <tr className='details-songs-header details-song-rows'>
+                        <th className='track-number-cells'>#</th>
+                        <th className='song-name-cells'>Title</th>
+                        <th></th>
+                        <th className='song-time-cells'>
+                            <i className="fa-regular fa-clock"></i>
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {songsArray.map((song, i) => (
+                        <tr key={song.id} className='details-song-rows'
+                            onMouseEnter={(e) => showPlayButton(i)}
+                            onMouseLeave={() => hidePlayButton()}
+                            onClick={() => handlePlaySong(song.id)}
+                        >
+                            <td className='track-number-cells'>
+                                <span style={hoveredSong !== i ? { display: "inline-block" } : { display: "none" }}>{song.track_number}</span>
+                                <span style={hoveredSong === i ? { display: "inline-block" } : { display: "none" }}>
+                                    <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
+                                </span>
+                            </td>
+                            <td className='song-name-cells'>{song.name}</td>
+                            <td className='song-heart-cells' style={hoveredSong === i ? { display: "block" } : { backgroundColor: "transparent" }}>
+                                <LikeButton
+                                    songId={song.id}
                                 />
                             </td>
-                        )}
-                        {user?.id &&
-                            (<td className='edit-plsong-button-container'>
-                                <AddPLSongButton
-                                    songId={song.id}
-                                    userId={user.id}
-                                />
-                            </td>)}
-                    </tr>
-                ))}
+                            <td className='song-time-cells'>{secsToMins(song.duration)}</td>
+                            <td className='manage-song-buttons-cells'>
+                                {userOwned && hoveredSong === i && (
+                                    <span className='manage-song-buttons-modals'>
+                                        <EditSongButton
+                                            modalComponent={<AddMusicModal className="add-music-modal" song={song} album={singleAlbum} type="update" />}
+                                        />
+                                        <DeleteMusicButton
+                                            modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />}
+                                            onClick={deleteHandleClick}
+                                        />
+                                    </span>
+                                )}
+                            </td>
+                            <td className='edit-plsong-button-cells'>
+                                {user?.id && (
+                                    <AddPLSongButton
+                                        songId={song.id}
+                                        userId={user.id}
+                                    />
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+                {/* </tbody> */}
             </table>
         </div>
     );
