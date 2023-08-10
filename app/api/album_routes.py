@@ -15,16 +15,6 @@ def get_all_albums():
     """
     return jsonify([album.to_dict() for album in Album.query.all()])
 
-
-@album_routes.route('/<int:id>')
-def get_album_by_id(id):
-    """
-    Query for an album by id and returns that album in a dictionary
-    """
-    album = Album.query.get(id)
-    return jsonify(album.to_dict())
-
-
 @album_routes.route('/current')
 @login_required
 def get_user_albums():
@@ -35,6 +25,13 @@ def get_user_albums():
     albums_dict = [album.to_dict() for album in user_albums]
     return jsonify(albums_dict)
 
+@album_routes.route('/<int:id>')
+def get_album_by_id(id):
+    """
+    Query for an album by id and returns that album in a dictionary
+    """
+    album = Album.query.get(id)
+    return jsonify(album.to_dict())
 
 # Deleting an Album created by the user
 @album_routes.route('/<int:id>/delete', methods=['DELETE'])

@@ -158,9 +158,9 @@ td.manage-song-buttons-cells:hover {
         color: white;
     }
 
-    td.song-heart-cells {
-        /* grid-area: song-heart; */
-    }
+    /* td.song-heart-cells {
+        grid-area: song-heart;
+    } */
 
     td.song-time-cells {
         /* grid-area: song-time; */
@@ -176,9 +176,9 @@ td.manage-song-buttons-cells:hover {
 
     }
 
-    td.edit-plsong-button-cells {
-        /* grid-area: plsong-buttons; */
-    }
+    /* td.edit-plsong-button-cells {
+        grid-area: plsong-buttons;
+    } */
 
     i.fa-regular.fa-trash-can:hover {
         color: white;
