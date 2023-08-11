@@ -107,7 +107,7 @@ export const updateAlbumThunk = (album, formData) => async (dispatch) => {
     if (!response.ok) {
       throw new Error(updatedAlbum)
     }
-    
+
     dispatch(receiveAlbumAction(updatedAlbum))
     return updatedAlbum;
   } catch (err) {
@@ -147,7 +147,7 @@ const albumReducer = (state = initialState, action) => {
       });
       return { ...state, allAlbums: allAlbumsObject };
     case RECEIVE_ALBUM:
-      return { ...state, allAlbums: { ...state.allAlbums, [action.album.id] : action.album }, singleAlbum: {[action.album.id] : action.album} };
+      return { ...state, allAlbums: { ...state.allAlbums, [action.album.id] : action.album }, singleAlbum: { [action.album.id] : action.album } };
     case DELETE_ALBUM:
       const newAlbums = { ...state.allAlbums };
       delete newAlbums[action.albumId];
