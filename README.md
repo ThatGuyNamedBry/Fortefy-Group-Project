@@ -30,6 +30,11 @@ Authentication is handled using a secure login system that hashes each stored pa
 - Likes:
     - Users can create, read, update, and delete likes for songs.
 
+# Screenshots:
+
+![image](./react-app/public/fortefy%20thumbnail.png)
+![image](./react-app/public/fortefy-screenshot.png)
+
 # Media Player:
 
 Users can listen to songs and albums directly on the website. Song play persists through all pages and closes when the current playlist queue ends.
