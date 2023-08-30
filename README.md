@@ -25,30 +25,30 @@ Authentication is handled using a secure login system that hashes each stored pa
   - Logged in users are directed to their profile page which displays either a list of uploads, playlists, and or likes.
   - Logged out users are directed to a page displaying all public playlists.
     
-# Songs
+## Songs
   - Users can create Songs.
   - Users can read/view Songs.
   - Users can update their uploaded Songs.
   - Users can delete their uploaded Songs.
     
-# Albums
+## Albums
   - Users can create/add songs to an album that they created.
   - Users can read/view all albums.
   - Users can remove songs from their albums.
   - Users should be able to delete their albums.
     
-# Likes
+## Likes
   - Users can create/add a like to a song.
   - Users can read/view their like on a song.
   - Users can unlike/remove their like from a song.
     
-# Playlists
+## Playlists
   - Users can view all of their playlists.
   - Users can create a playlist.
   - Users can add a song to one of their playlists.
   - Users can remove a song from their playlist.
 
-# AWS
+## AWS
   - Album artwork and song url are both handled utilizing AWS to allow a better user experience. 
 
 # Media Player:
