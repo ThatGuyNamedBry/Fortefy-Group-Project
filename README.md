@@ -39,6 +39,32 @@ The React H5 Audio Player https://www.npmjs.com/package/react-h5-audio-player wa
 
 The website is fully responsive and works on various screen sizes.
 
+# Features
+- New account creation, log in, log out, and guest/demo login
+  - Users can sign up, log in, and log out.
+  - Users can use a demo log in to try the site.
+  - Users can't use certain features without logging in (like playlists and user likes, read only for songs and albums).
+  - Logged in users are directed to their profile page which displays either a list of uploads, playlists, and or likes.
+  - Logged out users are directed to a page displaying all public playlists.
+- Songs
+  - Users should be able to view all Songs.
+  - Users should be able to upload songs.
+  - Users should be able to update their uploaded songs.
+  - Users should be able to delete their uploaded songs
+- Albums
+  - Users should be able to view all albums created by users.
+  - Users should be able to add songs to an album they created.
+  - Users should be able to remove songs from their albums.
+  - Users should be able to delete their albums.
+- Likes
+  - Users should be able to view the likes on a song.
+  - Users should be able to like a song.
+  - Users should be able to unlike a song.
+- Playlists
+  - Users should be able to view all of their playlists.
+  - Users should be able to add a song to one of their playlists.
+  - Users should be able to remove a song from a playlist.
+
 # Contributors
 Alex Basso
 https://www.linkedin.com/in/joshua-hoang-47979426b/
