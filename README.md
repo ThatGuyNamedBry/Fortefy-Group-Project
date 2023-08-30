@@ -49,7 +49,7 @@ Authentication is handled using a secure login system that hashes each stored pa
   - Users can remove a song from their playlist.
 
 ## AWS
-  - Album artwork and song url are both handled utilizing AWS to allow a better user experience. 
+  - Album artwork and song url are both handled utilizing AWS to allow a more seemless user experience. 
 
 # Media Player:
 
