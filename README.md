@@ -44,6 +44,153 @@ The React H5 Audio Player https://www.npmjs.com/package/react-h5-audio-player wa
 
 The website is fully responsive and works on various screen sizes.
 
+# API Documentation
+
+## Albums
+
+### Get all Albums
+
+Returns all albums in the database
+
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/albums
+  * Body: None
+
+* Response
+    * Status Code: 200
+    * Headers:
+        * Content-Type: application/json
+    * Body:
+
+    ```json
+    [
+    {
+        "art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
+        "artist": "Pink Floyd",
+        "genre": "Psychedelic Rock",
+        "id": 1,
+        "name": "The Dark Side of the Moon",
+        "songs": [
+            {
+                "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
+                "album_id": 1,
+                "artist": "Pink Floyd",
+                "duration": 65,
+                "id": 1,
+                "likes": [],
+                "name": "Speak to Me",
+                "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Speak+to+Me.mp3",
+                "track_number": 1,
+                "user": {
+                    "email": "demo@aa.io",
+                    "id": 1,
+                    "username": "Demo"
+                },
+                "user_id": 1
+            },
+            {
+                "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
+                "album_id": 1,
+                "artist": "Pink Floyd",
+                "duration": 169,
+                "id": 2,
+                "likes": [],
+                "name": "Breathe (In the Air)",
+                "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3",
+                "track_number": 2,
+                "user": {
+                    "email": "demo@aa.io",
+                    "id": 1,
+                    "username": "Demo"
+                },
+                "user_id": 1
+            }
+        ],
+        "user": {
+            "email": "demo@aa.io",
+            "id": 1,
+            "username": "Demo"
+        },
+        "year": 1973
+    }
+    ]
+    ```
+
+### Get a single Album
+
+Returns a single album in the database
+
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/albums/:id
+  * Body: None
+
+* Response
+    * Status Code: 200
+    * Headers:
+        * Content-Type: application/json
+    * Body:
+
+    ```json
+    {
+    "art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
+    "artist": "Pink Floyd",
+    "genre": "Psychedelic Rock",
+    "id": 1,
+    "name": "The Dark Side of the Moon",
+    "songs": [
+        {
+            "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
+            "album_id": 1,
+            "artist": "Pink Floyd",
+            "duration": 65,
+            "id": 1,
+            "likes": [],
+            "name": "Speak to Me",
+            "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Speak+to+Me.mp3",
+            "track_number": 1,
+            "user": {
+                "email": "demo@aa.io",
+                "id": 1,
+                "username": "Demo"
+            },
+            "user_id": 1
+        },
+        {
+            "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
+            "album_id": 1,
+            "artist": "Pink Floyd",
+            "duration": 169,
+            "id": 2,
+            "likes": [],
+            "name": "Breathe (In the Air)",
+            "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3",
+            "track_number": 2,
+            "user": {
+                "email": "demo@aa.io",
+                "id": 1,
+                "username": "Demo"
+            },
+            "user_id": 1
+        }
+    ],
+    "user": {
+        "email": "demo@aa.io",
+        "id": 1,
+        "username": "Demo"
+    },
+    "year": 1973
+    }
+    ```
+
+
+
+
+
+
 # Contributors
 Alex Basso
 https://www.linkedin.com/in/joshua-hoang-47979426b/
