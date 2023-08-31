@@ -1,4 +1,4 @@
-# ƒorteƒy Music PLayer
+# ƒorteƒy Music Player
 
 # Description
 ƒorteƒy is a full-stack web application that allows users to explore and enjoy their favorite music. The application offers a user-friendly interface with login and signup functionality, enabling users to create their personalized accounts and access exclusive features. The site is modelled off of Spotify's design.
