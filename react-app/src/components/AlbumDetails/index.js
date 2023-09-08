@@ -101,6 +101,7 @@ const AlbumDetails = () => {
                         <th></th>
                         <th></th>
                     </tr>
+                    {/* START Example 1 */}
                     {songsArray.map((song, i) => (
                         <tr key={song.id} className='details-song-rows'
                             onMouseEnter={(e) => showPlayButton(i)}

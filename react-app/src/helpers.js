@@ -50,6 +50,7 @@ export const checkImageErrors = (url) => {
 export const playlistValidation = (title, artUrl, description) => {
     const errors = { flag: false };
     if (!title.length) {
+        errors.flag = true;
         errors.title = 'Playlist Name is required';
     } else if (title.length > 60) {
         errors.flag = true;
