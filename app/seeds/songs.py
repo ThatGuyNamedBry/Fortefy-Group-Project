@@ -2,179 +2,279 @@ from app.models import db, User, environment, SCHEMA, Song
 from sqlalchemy.sql import text
 
 def seed_songs():
-
+# Polygondwanaland
     song1 = Song(
-        name="Speak to Me",
+        name="Crumbling Castle",
         user_id=1,
         album_id=1,
-        duration=65,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Speak+to+Me.mp3',
+        duration=644,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Crumbling+Castle.mp3',
         track_number=1
     )
-
     song2 = Song(
-        name="Breathe (In the Air)",
+        name="Polygondwanaland",
         user_id=1,
         album_id=1,
-        duration=169,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3',
+        duration=213,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Polygondwanaland.mp3',
         track_number=2
     )
-
     song3 = Song(
-        name="So Fresh So Clean",
+        name="The Castle In The Air",
         user_id=1,
-        album_id=2,
-        duration=240,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/OutKast/Stankonia/So+Fresh%2C+So+Clean.mp3',
-        track_number=4
-    )
-
-    song4 = Song(
-        name="Ms. Jackson",
-        user_id=1,
-        album_id=2,
-        duration=270,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/OutKast/Stankonia/Ms.+Jackson.mp3',
-        track_number=5
-    )
-
-    song5 = Song(
-        name="Ronald Reagan Era (His Evils)",
-        user_id=2,
-        album_id=3,
-        duration=216,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Kendrick+Lamar/Section.80/Ronald+Reagan+Era+(His+Evils).mp3',
-        track_number=7
-    )
-
-    song6 = Song(
-        name="HiiiPoWeR",
-        user_id=2,
-        album_id=3,
-        duration=279,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Kendrick+Lamar/Section.80/HiiiPoWeR.mp3',
-        track_number=16
-    )
-
-    song7 = Song(
-        name="Rigamortis",
-        user_id=2,
-        album_id=3,
+        album_id=1,
         duration=168,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Kendrick+Lamar/Section.80/Rigamortis.mp3',
-        track_number=12
-    )
-
-    song8 = Song(
-        name="Bohemian Rhapsody",
-        user_id=2,
-        album_id=4,
-        duration=355,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Queen/Greatest+Hits/Bohemian+Rhapsody.mp3',
-        track_number=1
-    )
-
-    song9 = Song(
-        name="We Will Rock You",
-        user_id=2,
-        album_id=4,
-        duration=121,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Queen/Greatest+Hits/We+Will+Rock+You.mp3',
-        track_number=16
-    )
-
-    song10 = Song(
-        name="All the Small Things",
-        user_id=3,
-        album_id=5,
-        duration=171,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/blink-182/Greatest+Hits/All+the+Small+Things.mp3',
-        track_number=6
-    )
-
-    song11 = Song(
-        name="I Miss You",
-        user_id=3,
-        album_id=5,
-        duration=227,
-        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/blink-182/Greatest+Hits/I+Miss+You.mp3',
-        track_number=13
-    )
-    song12 = Song(
-        name="Smoke Signals",
-        user_id=3,
-        album_id=6,
-        duration=325,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Phoebe+Bridgers/Stranger+in+the+Alps/Smoke+Signals.mp3",
-        track_number=1
-    )
-    song13 = Song(
-        name="Motion Sickness",
-        user_id=3,
-        album_id=6,
-        duration=230,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Phoebe+Bridgers/Stranger+in+the+Alps/Motion+Sickness.mp3",
-        track_number=2
-    )
-    song14 = Song(
-        name="Funeral",
-        user_id=3,
-        album_id=6,
-        duration=232,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Phoebe+Bridgers/Stranger+in+the+Alps/Funeral.mp3",
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/The+Castle+In+The+Air.mp3',
         track_number=3
     )
-    song15 = Song(
-        name="Dreams",
-        user_id=4,
-        album_id=7,
-        duration=254,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Fleetwood+Mac/Rumours/Dreams.mp3",
-        track_number=2
+    song4 = Song(
+        name="Deserted Dunes Welcome Weary Feet",
+        user_id=1,
+        album_id=1,
+        duration=214,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Deserted+Dunes+Welcome+Weary+Feet.mp3',
+        track_number=4
     )
-    song16 = Song(
-        name="The Chain",
-        user_id=4,
-        album_id=7,
-        duration=268,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Fleetwood+Mac/Rumours/The+Chain.mp3",
-        track_number=7
+    song5 = Song(
+        name="Inner Cell",
+        user_id=1,
+        album_id=1,
+        duration=236,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Inner+Cell.mp3',
+        track_number=5
     )
-    song17 = Song(
-        name="Break My Soul",
-        user_id=4,
-        album_id=8,
-        duration=278,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Beyonc%C3%A9/Renaissance/BREAK+MY+SOUL.mp3",
+    song6 = Song(
+        name="Loyalty",
+        user_id=1,
+        album_id=1,
+        duration=219,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Loyalty.mp3',
         track_number=6
     )
-    song18 = Song(
-        name="Autumn Leaves",
-        user_id=5,
-        album_id=9,
-        duration=661,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Cannonball+Adderley/Somethin'+Else/Autumn+Leaves.mp3",
+    song7 = Song(
+        name="Horology",
+        user_id=1,
+        album_id=1,
+        duration=172,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Horology.mp3',
+        track_number=7
+    )
+    song8 = Song(
+        name="Tetrachromacy",
+        user_id=1,
+        album_id=4,
+        duration=211,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Tetrachromacy.mp3',
+        track_number=8
+    )
+    song9 = Song(
+        name="Searching...",
+        user_id=1,
+        album_id=1,
+        duration=184,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Searching....mp3',
+        track_number=9
+    )
+    song10 = Song(
+        name="The Fourth Colour",
+        user_id=1,
+        album_id=1,
+        duration=372,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/The+Fourth+Colour.mp3',
+        track_number=10
+    )
+# Mimic Harbor
+    song11 = Song(
+        name="Future Times",
+        user_id=1,
+        album_id=10,
+        duration=111,
+        song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Deep+Owls/Mimic+Harbor/Future+Times.mp3',
         track_number=1
     )
-    song19 = Song(
-        name="I Wanna Dance With Somebody (Who Loves Me)",
-        user_id=5,
+    song12 = Song(
+        name="I Wanna Feel",
+        user_id=1,
         album_id=10,
-        duration=290,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Whitney+Houston/Whitney/I+Wanna+Dance+With+Somebody+(Who+Loves+Me).mp3",
+        duration=146,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Deep+Owls/Mimic+Harbor/I+Wanna+Feel.mp3",
+        track_number=2
+    )
+    song13 = Song(
+        name="Into the Night",
+        user_id=1,
+        album_id=10,
+        duration=141,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Deep+Owls/Mimic+Harbor/Into+the+Night.mp3",
+        track_number=3
+    )
+    song14 = Song(
+        name="Nightshades",
+        user_id=1,
+        album_id=10,
+        duration=126,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Deep+Owls/Mimic+Harbor/Nightshades.mp3",
+        track_number=4
+    )
+    song15 = Song(
+        name="Points of Egress",
+        user_id=1,
+        album_id=10,
+        duration=149,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Deep+Owls/Mimic+Harbor/Points+of+Egress.mp3",
+        track_number=5
+    )
+    song16 = Song(
+        name="Rise Over Run",
+        user_id=1,
+        album_id=10,
+        duration=68,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Deep+Owls/Mimic+Harbor/Rise+Over+Run.mp3",
+        track_number=6
+    )
+# Indestructable Sun
+    song17 = Song(
+        name="Indestructable Sun",
+        user_id=1,
+        album_id=3,
+        duration=104,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Elixir/Indestructable+Sun/Indestructable+Sun.mp3",
+        track_number=1
+    )
+    song18 = Song(
+        name="Maasai",
+        user_id=1,
+        album_id=3,
+        duration=165,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Elixir/Indestructable+Sun/Maasai.mp3",
+        track_number=2
+    )
+# Roadhouse
+    song19 = Song(
+        name="Getting There",
+        user_id=1,
+        album_id=4,
+        duration=129,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Glass+Suburban/Roadhouse/Getting+There.mp3",
         track_number=1
     )
     song20 = Song(
-        name="Xtal",
-        user_id=5,
-        album_id=11,
-        duration=294,
-        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Aphex+Twin/Selected+Ambient+Works+85-92/Xtal.mp3",
+        name="King Around Here",
+        user_id=1,
+        album_id=4,
+        duration=111,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Glass+Suburban/Roadhouse/King+Around+Here.mp3",
+        track_number=2
+    )
+    song21 = Song(
+        name="Rock It",
+        user_id=1,
+        album_id=4,
+        duration=93,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Glass+Suburban/Roadhouse/Rock+It.mp3",
+        track_number=3
+    )
+# Ganges
+    song22 = Song(
+        name="Devolving",
+        user_id=1,
+        album_id=5,
+        duration=90,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Prashant+Bidkar/Ganges/Devolving.mp3",
         track_number=1
     )
+    song23 = Song(
+        name="Mountainous",
+        user_id=1,
+        album_id=5,
+        duration=125,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Prashant+Bidkar/Ganges/Mountainous.mp3",
+        track_number=2
+    )
+# El corazón
+    song24 = Song(
+        name="Solera",
+        user_id=1,
+        album_id=6,
+        duration=214,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Rosa+de+Torres/El+corazo%CC%81n/Solera.mp3",
+        track_number=1
+    )
+# Things Gonna Change
+    song25 = Song(
+        name="She's Coming to Town",
+        user_id=1,
+        album_id=7,
+        duration=144,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Climbers/Things+Gonna+Change/She's+Coming+to+Town.mp3",
+        track_number=1
+    )
+    song26 = Song(
+        name="Things Gonna Change",
+        user_id=1,
+        album_id=7,
+        duration=203,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Climbers/Things+Gonna+Change/Things+Gonna+Change.mp3",
+        track_number=2
+    )
+# Blue Moods
+    song27 = Song(
+        name="Closer",
+        user_id=2,
+        album_id=8,
+        duration=229,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Dylan+Grelli+Band/Blue+Moods/Closer.mp3",
+        track_number=1
+    )
+    song28 = Song(
+        name="Grace's Song",
+        user_id=2,
+        album_id=8,
+        duration=77,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Dylan+Grelli+Band/Blue+Moods/Grace's+Song.mp3",
+        track_number=2
+    )
+    song29 = Song(
+        name="La promenade",
+        user_id=2,
+        album_id=8,
+        duration=105,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Dylan+Grelli+Band/Blue+Moods/La+promenade.mp3",
+        track_number=3
+    )
+# The Heapin' Helpins
+    song30 = Song(
+        name="Pickin' Party",
+        user_id=3,
+        album_id=9,
+        duration=181,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Heapin'+Helpins/The+Heapin'+Helpins/Pickin'+Party.mp3",
+        track_number=1
+    )
+# Dazed and Confused
+    song31 = Song(
+        name="Get Down",
+        user_id=3,
+        album_id=2,
+        duration=144,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Razors/Dazed+and+Confused/Get+Down.mp3",
+        track_number=1
+    )
+    song32 = Song(
+        name="Get Up",
+        user_id=3,
+        album_id=2,
+        duration=208,
+        song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Razors/Dazed+and+Confused/Get+Up.mp3",
+        track_number=2
+    )
 
-    db.session.add_all([song1, song2, song3, song4, song5, song6, song7, song8, song9, song10, song11, song12, song13, song14, song15, song16, song17, song18, song19, song20])
+
+    db.session.add_all([song1, song2, song3, song4, song5, song6, song7, song8, song9, song10,
+                        song11, song12, song13, song14, song15, song16, song17, song18, song19, song20,
+                        song21, song22, song23, song24, song25, song26, song27, song28, song29,
+                        song30, song31, song32
+                        ])
     db.session.commit()
 
 def undo_songs():

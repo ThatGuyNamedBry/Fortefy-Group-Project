@@ -4,95 +4,88 @@ from sqlalchemy.sql import text
 def seed_albums():
 
     album1 = Album(
-        name='The Dark Side of the Moon',
+        name='Polygondwanaland',
         user_id=1,
-        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg',
-        artist='Pink Floyd',
-        year=1973,
-        genre='Psychedelic Rock'
+        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Polygondwanaland.jpg',
+        artist='King Gizzard and the Lizard Wizard',
+        year=2017,
+        genre='Progressive Rock'
     )
     album2 = Album(
-        name='Stankonia',
-        user_id=1,
-        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/OutKast/Stankonia/Stankonia.jpg',
-        artist='OutKast',
-        year=2000,
-        genre='Southern Hip Hop'
+        name="Dazed and Confused",
+        user_id=5,
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Razors/Dazed+and+Confused/Dazed+and+Confused.jpg",
+        artist='The Razors',
+        year=1975,
+        genre='Funk'
     )
     album3 = Album(
-        name='Section.80',
+        name='Indestructable Sun',
         user_id=2,
-        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Kendrick+Lamar/Section.80/Section.80.jpg',
-        artist='Kendrick Lamar',
+        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Elixir/Indestructable+Sun/Indestructable+Sun.jpg',
+        artist='Elixir',
         year=2011,
-        genre='West Coast Hip Hop'
+        genre='Afrobeat'
     )
     album4 = Album(
-        name="Greatest Hits",
+        name="Roadhouse",
         user_id=2,
-        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/Queen/Greatest+Hits/Greatest+Hits.jpg',
-        artist='Queen',
-        year=1981,
-        genre='Glam Rock'
+        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Glass+Suburban/Roadhouse/Roadhouse.jpg',
+        artist='Glass Suburban',
+        year=2013,
+        genre='Rock'
     )
     album5 = Album(
-        name="Greatest Hits",
+        name="Ganges",
         user_id=3,
-        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/blink-182/Greatest+Hits/Greatest+Hits.jpg',
-        artist='blink-182',
-        year=2005,
-        genre='Pop Punk'
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Prashant+Bidkar/Ganges/Ganges.jpg",
+        artist='Prashant Bidkar',
+        year=2017,
+        genre='Instrumental Hip Hop'
     )
     album6 = Album(
-        name="Stranger in the Alps",
-        user_id=3,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Phoebe+Bridgers/Stranger+in+the+Alps/Stranger+in+the+Alps.jpg",
-        artist='Phoebe Bridgers',
-        year=2017,
-        genre='Indie Folk'
+        name="El corazón",
+        user_id=4,
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Rosa+de+Torres/El+corazo%CC%81n/El+corazo%CC%81n.jpg",
+        artist='Rosa de Torres',
+        year=2009,
+        genre='Flamenco'
     )
     album7 = Album(
-        name="Rumours",
-        user_id=4,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Fleetwood+Mac/Rumours/Rumours.jpg",
-        artist='Fleetwood Mac',
-        year=1977,
-        genre='Pop Rock'
+        name="Things Gonna Change",
+        user_id=5,
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Climbers/Things+Gonna+Change/Things+Gonna+Change.jpg",
+        artist='The Climbers',
+        year=1978,
+        genre='Reggae'
     )
     album8 = Album(
-        name="Renaissance",
+        name="Blue Moods",
         user_id=4,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Beyonc%C3%A9/Renaissance/Renaissance.jpg",
-        artist='Beyoncé',
-        year=2022,
-        genre='Alternative R&B'
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Dylan+Grelli+Band/Blue+Moods/Blue+Moods.jpg",
+        artist='The Dylan Grelli Band',
+        year=2011,
+        genre='Jazz'
     )
     album9 = Album(
-        name="Somethin' Else",
+        name="The Heapin' Helpins",
         user_id=5,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Cannonball+Adderley/Somethin'+Else/Somethin'+Else.jpg",
-        artist='Cannonball Adderley',
-        year=1958,
-        genre='Hard Bop'
+        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Heapin'+Helpins/The+Heapin'+Helpins/The+Heapin'+Helpins.jpg",
+        artist="The Heapin' Helpins",
+        year=2014,
+        genre='Bluegrass'
     )
     album10 = Album(
-        name="Whitney",
-        user_id=5,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Whitney+Houston/Whitney/Whitney.jpg",
-        artist='Whitney Houston',
-        year=1987,
-        genre='Dance Pop'
-    )
-    album11 = Album(
-        name="Selected Ambient Works 85-92",
-        user_id=5,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/Aphex+Twin/Selected+Ambient+Works+85-92/Selected+Ambient+Works+85-92.jpg",
-        artist='Aphex Twin',
-        year=1992,
-        genre='IDM'
+        name='Mimic Harbor',
+        user_id=1,
+        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Deep+Owls/Mimic+Harbor/Mimic+Harbor.jpg',
+        artist='Deep Owls',
+        year=2021,
+        genre='Electronic'
     )
 
-    db.session.add_all([album1, album2, album3, album4, album5, album6, album7, album8, album9, album10, album11])
+
+    db.session.add_all([album1, album2, album3, album4, album5, album6, album7, album8, album9, album10])
     db.session.commit()
 
 def undo_albums():
