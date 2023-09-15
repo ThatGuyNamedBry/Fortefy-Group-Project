@@ -186,20 +186,43 @@ Returns a single album in the database
     }
     ```
 
+## Installation Instructions
 
+1. Install dependencies
+```bash
+pipenv install -r requirements.txt
+```
+2. Create a **.env** file based on the example with proper settings for your development environment
 
+4. Replace the value for `SCHEMA` with a unique name, **making sure you use the snake_case convention**.
 
+6. Get into your pipenv, migrate your database, seed your database, and run your Flask app
+
+```bash
+pipenv shell
+```
+```bash
+flask db upgrade
+```
+```bash
+flask seed all
+```
+```bash
+flask run
+```
+
+7. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
 
 
 # Contributors
 Alex Basso
-https://www.linkedin.com/in/joshua-hoang-47979426b/
+https://www.linkedin.com/in/alexjbasso
 
 Angad Bhatia
 https://www.linkedin.com/in/angad-bhatia/
 
 Joshua Hoang
-https://www.linkedin.com/in/alexjbasso
+https://www.linkedin.com/in/joshua-hoang-47979426b/
 
 Bryant Stine
 https://www.linkedin.com/in/bryant-stine-447010272/
