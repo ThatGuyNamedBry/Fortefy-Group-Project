@@ -13,7 +13,7 @@ def seed_albums():
     )
     album2 = Album(
         name="Dazed and Confused",
-        user_id=5,
+        user_id=3,
         art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Razors/Dazed+and+Confused/Dazed+and+Confused.jpg",
         artist='The Razors',
         year=1975,
@@ -21,7 +21,7 @@ def seed_albums():
     )
     album3 = Album(
         name='Indestructable Sun',
-        user_id=2,
+        user_id=1,
         art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Elixir/Indestructable+Sun/Indestructable+Sun.jpg',
         artist='Elixir',
         year=2011,
@@ -29,7 +29,7 @@ def seed_albums():
     )
     album4 = Album(
         name="Roadhouse",
-        user_id=2,
+        user_id=1,
         art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Glass+Suburban/Roadhouse/Roadhouse.jpg',
         artist='Glass Suburban',
         year=2013,
@@ -37,7 +37,7 @@ def seed_albums():
     )
     album5 = Album(
         name="Ganges",
-        user_id=3,
+        user_id=1,
         art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Prashant+Bidkar/Ganges/Ganges.jpg",
         artist='Prashant Bidkar',
         year=2017,
@@ -45,7 +45,7 @@ def seed_albums():
     )
     album6 = Album(
         name="El corazón",
-        user_id=4,
+        user_id=2,
         art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Rosa+de+Torres/El+corazo%CC%81n/El+corazo%CC%81n.jpg",
         artist='Rosa de Torres',
         year=2009,
@@ -53,7 +53,7 @@ def seed_albums():
     )
     album7 = Album(
         name="Things Gonna Change",
-        user_id=5,
+        user_id=2,
         art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Climbers/Things+Gonna+Change/Things+Gonna+Change.jpg",
         artist='The Climbers',
         year=1978,
@@ -61,7 +61,7 @@ def seed_albums():
     )
     album8 = Album(
         name="Blue Moods",
-        user_id=4,
+        user_id=2,
         art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Dylan+Grelli+Band/Blue+Moods/Blue+Moods.jpg",
         artist='The Dylan Grelli Band',
         year=2011,
@@ -69,7 +69,7 @@ def seed_albums():
     )
     album9 = Album(
         name="The Heapin' Helpins",
-        user_id=5,
+        user_id=3,
         art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Heapin'+Helpins/The+Heapin'+Helpins/The+Heapin'+Helpins.jpg",
         artist="The Heapin' Helpins",
         year=2014,

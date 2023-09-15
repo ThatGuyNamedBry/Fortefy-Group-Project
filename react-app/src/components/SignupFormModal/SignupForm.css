@@ -50,6 +50,8 @@
 .signup-form label {
     margin: 10px 0;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .signup-form input {
@@ -104,7 +106,7 @@
 }
 
 .signup-error {
-    margin-left: 5px;
+    /* margin-left: 5px; */
     color:red;
     font-size: smaller;
 }

@@ -14,11 +14,9 @@ function SignupFormModal() {
 	const { closeModal } = useModal();
 	const [validationObject, setValidationObject] = useState({});
 
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const errorsObject = {};
-		// setErrors({});
 
 		if (!email) {
 			errorsObject.email = "Email is required";
@@ -60,14 +58,9 @@ function SignupFormModal() {
 		<div className="signup-form-modal-container">
 			<h1>Sign up for ƒorteƒy!</h1>
 			<form onSubmit={handleSubmit} className="signup-form">
-				<ul id='signup-errors'>
-					{Object.values(validationObject).map((error, idx) => (
-						<li key={idx}>{error}</li>
-					))}
-				</ul>
 				<label>
 					Email
-					{/* {validationObject.email && <span className="signup-error">{validationObject.email}</span>} */}
+					{validationObject.email && <span className="signup-error">{validationObject.email}</span>}
 					<input
 						type="text"
 						value={email}
@@ -77,7 +70,7 @@ function SignupFormModal() {
 				</label>
 				<label>
 					Username
-					{/* {validationObject.username && <span className="signup-error">{validationObject.username}</span>} */}
+					{validationObject.username && <span className="signup-error">{validationObject.username}</span>}
 					<input
 						type="text"
 						value={username}
@@ -87,7 +80,7 @@ function SignupFormModal() {
 				</label>
 				<label>
 					Password
-					{/* {validationObject.password && <span className="signup-error">{validationObject.password}</span>} */}
+					{validationObject.password && <span className="signup-error">{validationObject.password}</span>}
 					<input
 						type="password"
 						value={password}
@@ -97,9 +90,7 @@ function SignupFormModal() {
 				</label>
 				<label>
 					Confirm Password
-					{/* {validationObject.confirmPassword && (
-						<span className="signup-error">{validationObject.confirmPassword}</span>
-					)} */}
+					{validationObject.confirmPassword && (<span className="signup-error">{validationObject.confirmPassword}</span>)}
 					<input
 						type="password"
 						value={confirmPassword}
