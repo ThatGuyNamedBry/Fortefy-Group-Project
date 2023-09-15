@@ -82,7 +82,7 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-container">
-      <h1>{user?.name}</h1>
+      <h1>Manage Your Music</h1>
       <div className="section-container">
         <div className="header">
           <div className="inner-header">
