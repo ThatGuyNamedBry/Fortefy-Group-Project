@@ -194,7 +194,7 @@ def seed_songs():
 # El corazón
     song24 = Song(
         name="Solera",
-        user_id=1,
+        user_id=2,
         album_id=6,
         duration=214,
         song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Rosa+de+Torres/El+corazo%CC%81n/Solera.mp3",
@@ -203,7 +203,7 @@ def seed_songs():
 # Things Gonna Change
     song25 = Song(
         name="She's Coming to Town",
-        user_id=1,
+        user_id=2,
         album_id=7,
         duration=144,
         song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Climbers/Things+Gonna+Change/She's+Coming+to+Town.mp3",
@@ -211,7 +211,7 @@ def seed_songs():
     )
     song26 = Song(
         name="Things Gonna Change",
-        user_id=1,
+        user_id=2,
         album_id=7,
         duration=203,
         song_url="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Climbers/Things+Gonna+Change/Things+Gonna+Change.mp3",
