@@ -8,6 +8,12 @@
     flex-direction: column;
 }
 
+.profile-container h1 {
+    margin-top: 60px;
+    margin-bottom: 20px;
+    font-size: 45px;
+}
+
 .profile-container .header {
     display: flex;
     justify-content: space-between;
