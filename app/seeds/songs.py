@@ -62,7 +62,7 @@ def seed_songs():
     song8 = Song(
         name="Tetrachromacy",
         user_id=1,
-        album_id=4,
+        album_id=1,
         duration=211,
         song_url='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Tetrachromacy.mp3',
         track_number=8
