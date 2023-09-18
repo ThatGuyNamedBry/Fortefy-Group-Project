@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getAlbumByIdThunk } from '../../store/albums';
@@ -17,6 +17,7 @@ import AddPLSongButton from '../AddPLSongButton';
 const AlbumDetails = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const { albumId } = useParams();
 
     const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
@@ -89,6 +90,10 @@ const AlbumDetails = () => {
                     {user && singleAlbum.user.id === user.id ? <AddMusicButton
                         modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} type="create" />}
                     /> : null}
+                </div>
+
+                <div className='edit-music-button-container'>
+                    {userOwned && <div onClick={() => history.push(`/albums/${albumId}/edit`)} className='album-update-button fa-solid fa-pen-to-square'></div>}
                 </div>
 
             </div>

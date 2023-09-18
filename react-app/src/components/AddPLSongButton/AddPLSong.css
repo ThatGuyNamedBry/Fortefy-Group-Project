@@ -19,12 +19,43 @@
     background: none;
     color: rgb(19 19 19);
     border: 0px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    /* gap: 3px; */
+    /* height: auto; */
     /* border: medium solid green; */
+}
+
+.add-plsong-options {
+    width: 8%;
+    height: fit-content;
+    background-color: rgb(70, 70, 70);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* column-gap: 30px; */
+    padding: 0;
+    position: absolute;
+    z-index: 5;
+    margin-top: 1.25%;
+    border-radius: 20px;
+
 }
 
 .playlist-options {
     text-overflow: ellipsis;
     overflow: hidden;
+    padding: 10%;
+    /* background-color; */
+    /* width: fit-content; */
+}
+.playlist-options:hover {
+    background-color: rgb(160, 160, 160);
+    border-radius: 10px;
 }
 
 .user-playlists-select {
