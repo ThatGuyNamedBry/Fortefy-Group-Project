@@ -135,6 +135,18 @@
     color: white;
 }
 
+.album-update-button {
+    color: rgb(160, 160, 160);
+    font-size: 150%;
+    margin-left: 50%;
+}
+
+.album-update-button:hover {
+    cursor: pointer;
+    color: white;
+}
+
+
 .fa-solid.fa-pen-to-square:hover {
     color: white;
 }
