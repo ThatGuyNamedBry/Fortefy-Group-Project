@@ -31,7 +31,6 @@ function LoginFormModal() {
     await dispatch(login(demoUserCredentials.email, demoUserCredentials.password))
       .then(() => {
         closeModal();
-        alert("Demo user logged in 😎");
       })
       .catch(async (res) => {
         const data = await res.json();

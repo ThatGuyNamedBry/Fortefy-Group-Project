@@ -9,9 +9,11 @@ const AlbumCreate = () => {
 
   if (user) {
     return (
-      <AlbumForm
-      formType="Create Album"
-    />
+      <div className="page-wrapper">
+        <AlbumForm
+          formType="Create Album"
+        />
+      </div>
     )
   } else {
     return <h1>You need to be logged in to do that.</h1>
