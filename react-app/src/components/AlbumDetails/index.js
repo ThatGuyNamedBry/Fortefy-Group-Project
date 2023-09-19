@@ -71,7 +71,7 @@ const AlbumDetails = () => {
     if (!singleAlbum) return <h1>This album does not exist.</h1>
 
     return (
-        <div className='album-details-container'>
+        <div className='album-details-container page-wrapper'>
             <div className='album-header-container'>
                 <img className='album-details-art' src={singleAlbum.art} alt='Album Cover'></img>
                 <div className='album-info-container'>
