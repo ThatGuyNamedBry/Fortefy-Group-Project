@@ -1,0 +1,76 @@
+.carousel {
+    min-width: 0;
+    margin-bottom: 20px;
+}
+
+.carousel-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.carousel-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-width: 0;
+}
+
+.carousel-arrows {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.carousel-arrow {
+    background: none;
+    border: none;
+    padding: 4px;
+    margin: 0;
+    color: rgb(160, 160, 160);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.carousel-arrow:hover:not(:disabled) {
+    color: white;
+    transform: scale(1.15);
+}
+
+.carousel-arrow:active:not(:disabled) {
+    transform: scale(1);
+}
+
+.carousel-arrow:disabled {
+    color: #444444;
+    cursor: default;
+}
+
+/* The viewport clips the track; the track holds every card in one row and
+   slides left/right via translateX so paging animates. */
+.carousel-viewport {
+    overflow: hidden;
+    min-width: 0;
+}
+
+.carousel-track {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.carousel-slide {
+    min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-track {
+        transition: none;
+    }
+}

@@ -24,21 +24,19 @@
 .discover-music-container {
     width: 75%;
     margin-left: 40px;
+    /* Let the carousels shrink with the window instead of overflowing it. */
+    min-width: 0;
 }
 
-.album-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
-    gap: 17px;
-}
-
+/* Cards fill whatever width the carousel gives them; the artwork stays square. */
 .album-tile {
-    width: 190px;
-    height: 240px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding-bottom: 14px;
     list-style-type: none;
     text-align: center;
     background-color: rgb(28, 28, 28);
-    margin-top: 0px;
     border-radius: 8px;
     transition: background-color 0.4s, color 0.4s;
     position: relative;
@@ -46,14 +44,6 @@
 
 .album-tile:hover {
     background-color: rgb(40, 40, 40);
-    text-decoration: none;
-}
-
-.album-tile Link {
-    text-decoration: none;
-}
-
-.album-tile Link:hover {
     text-decoration: none;
 }
 
@@ -67,75 +57,30 @@
     white-space: nowrap;
 }
 
-
 .album-image {
-    width: 165px;
-    height: 165px;
+    display: block;
+    width: calc(100% - 20px);
+    height: auto;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 8px;
-    margin: 10px
+    margin: 10px;
 }
 
+.song-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
 
 .owner-text {
     color: rgba(255, 255, 255, 0.506);
-}
-
-#all-albums-container {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 20px;
-}
-
-#all-songs-container {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 20px;
-}
-
-/* #all-playlist-container {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 20px;
-} */
-
-.album-grid-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-right: 20px;
 }
 
 .link-as-text {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
-}
-
-/* .item-scroll div {
-    gap: 50px;
-} */
-
-.fa-solid.fa-angles-left {
-    margin-right: 10px;
-    cursor: pointer;
-    color: rgb(160, 160, 160);
-}
-
-.fa-solid.fa-angles-left:hover {
-    color: white;
-    font-weight: 900;
-}
-
-.fa-solid.fa-angles-right {
-    cursor: pointer;
-    color: rgb(160, 160, 160);
-}
-
-.fa-solid.fa-angles-right:hover {
-    color: white;
-    font-weight: 900;
 }
 
 .library-container {
@@ -234,280 +179,4 @@
 
 .play-button:active {
     transform: scale(1.30)
-}
-
-@media (max-width: 1200px) {
-    .album-tile {
-        width: 185px;
-        height: 235px;
-    }
-
-    .album-image {
-        width: 160px;
-        height: 160px
-    }
-}
-
-@media (max-width: 1150px) {
-    .album-tile {
-        width: 180px;
-        height: 230px;
-    }
-
-    .album-image {
-        width: 155px;
-        height: 155px
-    }
-}
-
-@media (max-width: 1120px) {
-    .album-tile {
-        width: 175px;
-        height: 225px;
-    }
-
-    .album-image {
-        width: 150px;
-        height: 150px
-    }
-}
-
-@media (max-width: 1090px) {
-    .album-tile {
-        width: 170px;
-        height: 220px;
-    }
-
-    .album-image {
-        width: 145px;
-        height: 145px;
-    }
-}
-
-@media (max-width: 1070px) {
-    .album-tile {
-        width: 165px;
-        height: 215px;
-    }
-
-    .album-image {
-        width: 140px;
-        height: 140px;
-    }
-}
-
-@media (max-width: 1045px) {
-    .album-tile {
-        width: 160px;
-        height: 210px;
-    }
-
-    .album-image {
-        width: 135px;
-        height: 135px;
-    }
-}
-
-@media (max-width: 1015px) {
-    .album-tile {
-        width: 155px;
-        height: 205px;
-    }
-
-    .album-image {
-        width: 130px;
-        height: 130px;
-    }
-}
-
-@media (max-width: 990px) {
-    .album-tile {
-        width: 155px;
-        height: 200px;
-    }
-
-    .album-image {
-        width: 130px;
-        height: 130px;
-    }
-}
-
-@media (max-width: 975px) {
-    .album-tile {
-        width: 150px;
-        height: 195px;
-    }
-
-    .album-image {
-        width: 125px;
-        height: 125px;
-    }
-}
-
-@media (max-width: 950px) {
-    .album-tile {
-        width: 145px;
-        height: 190px;
-    }
-
-    .album-image {
-        width: 120px;
-        height: 120px;
-    }
-}
-
-@media (max-width: 925px) {
-    .album-tile {
-        width: 140px;
-        height: 185px;
-    }
-
-    .album-image {
-        width: 115px;
-        height: 115px;
-    }
-}
-
-@media (max-width: 900px) {
-    .album-tile {
-        width: 135px;
-        height: 180px;
-    }
-
-    .album-image {
-        width: 110px;
-        height: 110px;
-    }
-}
-
-@media (max-width: 875px) {
-    .album-tile {
-        width: 130px;
-        height: 175px;
-    }
-
-    .album-image {
-        width: 105px;
-        height: 105px;
-    }
-}
-
-@media (max-width: 850px) {
-    .album-tile {
-        width: 125px;
-        height: 170px;
-    }
-
-    .album-image {
-        width: 100px;
-        height: 100px;
-    }
-}
-
-@media (max-width: 825px) {
-    .album-tile {
-        width: 120px;
-        height: 165px;
-    }
-
-    .album-image {
-        width: 95px;
-        height: 95px;
-    }
-}
-
-@media (max-width: 800px) {
-    .album-tile {
-        width: 115px;
-        height: 160px;
-    }
-
-    .album-image {
-        width: 90px;
-        height: 90px;
-    }
-}
-
-@media (max-width: 775px) {
-    .album-tile {
-        width: 110px;
-        height: 155px;
-    }
-
-    .album-image {
-        width: 85px;
-        height: 85px;
-    }
-}
-
-@media (max-width: 750px) {
-    .album-tile {
-        width: 105px;
-        height: 150px;
-    }
-
-    .album-image {
-        width: 80px;
-        height: 80px;
-    }
-}
-
-@media (max-width: 725px) {
-    .album-tile {
-        width: 100px;
-        height: 145px;
-    }
-
-    .album-image {
-        width: 78px;
-        height: 75px;
-    }
-}
-
-@media (max-width: 700px) {
-    .album-tile {
-        width: 95px;
-        height: 140px;
-    }
-
-    .album-image {
-        width: 70px;
-        height: 70px;
-    }
-}
-
-@media (max-width: 675px) {
-    .album-tile {
-        width: 90px;
-        height: 135px;
-    }
-
-    .album-image {
-        width: 70px;
-        height: 70px;
-    }
-}
-
-@media (max-width: 650px) {
-    .album-tile {
-        width: 85px;
-        height: 135px;
-    }
-
-    .album-image {
-        width: 65px;
-        height: 65px;
-    }
-}
-
-@media (max-width: 625px) {
-    .album-tile {
-        width: 80px;
-        height: 130px;
-    }
-
-    .album-image {
-        width: 60px;
-        height: 60px;
-    }
 }

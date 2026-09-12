@@ -7,6 +7,7 @@ import './HomeLandingPage.css';
 import { Link } from 'react-router-dom';
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
+import Carousel from '../Carousel';
 import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 
 const HomeLandingPage = () => {
@@ -16,14 +17,9 @@ const HomeLandingPage = () => {
     const allPlaylists = useSelector((state) => state.playlists.allPlaylists);
     const user = useSelector(state => state.session.user)
     const [sortedSongs, setSortedSongs] = useState([]);
-    const [startIndexAlbums, setStartIndexAlbums] = useState(0);
-    const [startIndexSongs, setStartIndexSongs] = useState(0);
-    const [startIndexPlaylists, setStartIndexPlaylists] = useState(0);
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
-    const [hoveredSong, setHoveredSong] = useState(-1);
-
-    const itemsPerPage = 4;
+    const [hoveredSong, setHoveredSong] = useState(null);
 
     useEffect(() => {
         dispatch(getAllAlbumsThunk());
@@ -51,43 +47,6 @@ const HomeLandingPage = () => {
 
     const closeMenu = () => setShowMenu(false);
 
-
-    const handleNextClickAlbums = () => {
-        if (startIndexAlbums + itemsPerPage < Object.values(allAlbums).length) {
-            setStartIndexAlbums(startIndexAlbums + itemsPerPage);
-        }
-    };
-
-    const handlePrevClickAlbums = () => {
-        if (startIndexAlbums - itemsPerPage >= 0) {
-            setStartIndexAlbums(startIndexAlbums - itemsPerPage);
-        }
-    };
-
-    const handleNextClickSongs = () => {
-        if (startIndexSongs + itemsPerPage < Object.values(allSongs).length) {
-            setStartIndexSongs(startIndexSongs + itemsPerPage);
-        }
-    };
-
-    const handlePrevClickSongs = () => {
-        if (startIndexSongs - itemsPerPage >= 0) {
-            setStartIndexSongs(startIndexSongs - itemsPerPage);
-        }
-    };
-
-    const handlePrevClickPlaylists = () => {
-        if (startIndexPlaylists - itemsPerPage >= 0) {
-            setStartIndexPlaylists(startIndexPlaylists - itemsPerPage);
-        }
-    };
-
-    const handleNextClickPlaylists = () => {
-        if (startIndexPlaylists + itemsPerPage < Object.values(allPlaylists).length) {
-            setStartIndexPlaylists(startIndexPlaylists + itemsPerPage);
-        }
-    };
-
     const handlePlaySong = (songId, e) => {
         e.stopPropagation();
         const selectedSong = allSongs[songId];
@@ -96,15 +55,13 @@ const HomeLandingPage = () => {
         dispatch(setIsPlaying(true));
     };
 
-    const showPlayButton = (i) => {
-        setHoveredSong(i);
+    const showPlayButton = (songId) => {
+        setHoveredSong(songId);
     };
 
     const hidePlayButton = () => {
-        setHoveredSong(-1);
+        setHoveredSong(null);
     };
-
-    // console.log(allSongs[1])
 
     return (
         <div className="home-container">
@@ -128,9 +85,6 @@ const HomeLandingPage = () => {
                             )}
                         </div>
                     ) : (
-                        // <div>
-                        //     <h2>Please log in to see your playlists</h2>
-                        // </div>
                         <div className='loginbuttonlibrary'>
                             {<OpenModalButton
                                 buttonText="Log in to see your playlists!"
@@ -142,51 +96,24 @@ const HomeLandingPage = () => {
                 </div>
             </div>
             <div className="discover-music-container">
-                <div className="album-grid-header">
-                    <h2>All Albums</h2>
-                    <div className="item-scroll">
+                <Carousel
+                    title="All Albums"
+                    items={Object.values(allAlbums)}
+                    renderItem={album => (
+                        <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
+                            <img src={album.art} alt={album.name} className="album-image" />
+                            <h3>{album.name}</h3>
+                            <p className='owner-text'>{album.artist}</p>
+                        </Link>
+                    )}
+                />
+                <Carousel
+                    title="Discover Songs"
+                    items={sortedSongs}
+                    renderItem={song => (
                         <div
-                            className={`fa-solid fa-angles-left ${startIndexAlbums === 0 ? 'disabled' : ''}`}
-                            onClick={handlePrevClickAlbums}
-                        ></div>
-                        <div
-                            className={`fa-solid fa-angles-right ${startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length ? 'disabled' : ''
-                                }`}
-                            onClick={handleNextClickAlbums}
-                        ></div>
-                    </div>
-                </div>
-                <div id='all-albums-container' className="album-grid">
-                    {Object.values(allAlbums)
-                        .slice(startIndexAlbums, startIndexAlbums + itemsPerPage)
-                        .map(album => (
-                            <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
-                                <img src={album.art} alt={album.name} className="album-image" />
-                                <h3>{album.name}</h3>
-                                <p className='owner-text'>{album.artist}</p>
-                            </Link>
-                        ))}
-                </div>
-                <div className="album-grid-header">
-                    <h2>Discover Songs</h2>
-                    <div className="item-scroll">
-                        <div
-                            className={`fa-solid fa-angles-left ${startIndexSongs === 0 ? 'disabled' : ''}`}
-                            onClick={handlePrevClickSongs}
-                        ></div>
-                        <div
-                            className={`fa-solid fa-angles-right ${startIndexSongs + itemsPerPage >= Object.values(allSongs).length ? 'disabled' : ''
-                                }`}
-                            onClick={handleNextClickSongs}
-                        ></div>
-                    </div>
-                </div>
-                <div id="all-songs-container" className="album-grid">
-                    {sortedSongs.slice(startIndexSongs, startIndexSongs + itemsPerPage).map((song, i) => (
-                        <div
-                            key={`${song.album_id}-${song.id}`}
                             className="album-tile link-as-text"
-                            onMouseEnter={() => showPlayButton(i)}
+                            onMouseEnter={() => showPlayButton(song.id)}
                             onMouseLeave={hidePlayButton}
                         >
                             <Link to={`/albums/${song.album_id}`} className="song-link">
@@ -194,57 +121,28 @@ const HomeLandingPage = () => {
                                 <h3>{song.name}</h3>
                                 <p className="owner-text">{song.artist}</p>
                             </Link>
-                            {hoveredSong === i && (
+                            {hoveredSong === song.id && (
                                 <div className="play-button" onClick={(e) => handlePlaySong(song.id, e)}>
                                     <i className="fa-sharp fa-solid fa-circle-play" />
                                 </div>
                             )}
                         </div>
-                    ))}
-                </div>
-                <div className="album-grid-header">
-                    <h2>All Playlists</h2>
-                    <div className="item-scroll">
-                        <div
-                            className={`fa-solid fa-angles-left ${startIndexPlaylists === 0 ? 'disabled' : ''}`}
-                            onClick={handlePrevClickPlaylists}
-                        ></div>
-                        <div
-                            className={`fa-solid fa-angles-right ${startIndexPlaylists + itemsPerPage >= Object.values(allPlaylists).length ? 'disabled' : ''
-                                }`}
-                            onClick={handleNextClickPlaylists}
-                        ></div>
-                    </div>
-                </div>
-                <div id='all-playlists-container' className="album-grid">
-                    {Object.values(allPlaylists)
-                        .slice(startIndexPlaylists, startIndexPlaylists + itemsPerPage)
-                        .map(playlist => (
-                            <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
-                                <img src={playlist.art} alt={playlist.title} className="album-image" />
-                                <h3>{playlist.title}</h3>
-                                <p className='owner-text'>{playlist.user.username}</p>
-                            </Link>
-                        ))}
-                </div>
+                    )}
+                />
+                <Carousel
+                    title="All Playlists"
+                    items={Object.values(allPlaylists)}
+                    renderItem={playlist => (
+                        <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
+                            <img src={playlist.art} alt={playlist.title} className="album-image" />
+                            <h3>{playlist.title}</h3>
+                            <p className='owner-text'>{playlist.user.username}</p>
+                        </Link>
+                    )}
+                />
             </div>
         </div>
     );
 };
 
 export default HomeLandingPage;
-
-{/* <div className="item-scroll">
-    <div className='fa-solid fa-angles-left' onClick={handlePrevClickAlbums} disabled={startIndexAlbums === 0}></div>
-    <div className='fa-solid fa-angles-right' onClick={handleNextClickAlbums} disabled={startIndexAlbums + itemsPerPage >= Object.values(allAlbums).length}></div>
-</div> */}
-
-{/* <div className="item-scroll">
-<div className='fa-solid fa-angles-left' onClick={handlePrevClickSongs} disabled={startIndexSongs === 0}></div>
-<div className='fa-solid fa-angles-right' onClick={handleNextClickSongs} disabled={startIndexSongs + itemsPerPage >= sortedSongs.length}></div>
-</div> */}
-
-{/* <div className="item-scroll">
-    <div className='fa-solid fa-angles-left' onClick={handlePrevClickPlaylists} disabled={startIndexPlaylists === 0}></div>
-    <div className='fa-solid fa-angles-right' onClick={handleNextClickPlaylists} disabled={startIndexPlaylists + itemsPerPage >= Object.values(allPlaylists).length}></div>
-</div> */}

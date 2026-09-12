@@ -1,29 +1,12 @@
 .profile-container {
-    margin-inline-start: 60px;
+    margin-inline: 60px;
     /* margin-top: 10px; */
-}
-
-.section-container {
-    display: flex;
-    flex-direction: column;
 }
 
 .profile-container h1 {
     margin-top: 60px;
     margin-bottom: 20px;
     font-size: 45px;
-}
-
-.profile-container .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* margin-bottom: -30px; */
-    margin-right: 30px;
-}
-.item-scroll {
-    justify-content: center;
-    margin-right: 5px;
 }
 
 .create-album-button {
@@ -39,21 +22,6 @@
 
 .create-album-button:hover {
     color: rgb(34, 255, 0);
-}
-
-/* .section-container h2{
-    margin-bottom: -13px;
-} */
-
-.album-grid {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 30px;
-}
-
-.song-grid {
-    display: flex;
-    flex-direction: row;
 }
 
 .profile-tile-buttons {
@@ -77,16 +45,8 @@
     color:rgb(208, 0, 0);
 }
 
-/* .update-delte-music-buttons fa-solid {
-    position: relative;
-    right: 34px;
-} */
-
 .profile-tile-container {
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
-    gap: 25px;
 }
 
 .create-playlist-button {
@@ -103,19 +63,3 @@
 .create-playlist-button:hover {
     color: rgb(34, 255, 0);
 }
-
-.profile-container .item-scroll {
-    display: flex;
-    align-items: flex-end;
-}
-
-.profile-container .inner-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.item-scroll .fa-solid.disabled {
-    color: #444444;
-  }
