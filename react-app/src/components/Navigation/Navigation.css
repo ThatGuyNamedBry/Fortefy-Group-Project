@@ -70,9 +70,44 @@
   margin-right: 10px;
 }
 
+#nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 #nav-right {
   display: flex;
+  justify-content: flex-end;
+  align-items: center;
   gap: 20px
+}
+
+/* The left and right sides share the leftover space equally so the logo
+   stays centered no matter how wide the search bar is. */
+#nav-left,
+#nav-right {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* On narrow screens there is no room for the search bar beside the logo and
+   account controls, so Home and the search bar drop to their own full-width
+   row underneath. */
+@media (max-width: 760px) {
+  #NavigationContainer {
+    flex-wrap: wrap;
+    row-gap: 14px;
+  }
+
+  #nav-left {
+    order: 2;
+    flex: 1 1 100%;
+  }
+
+  #nav-left .search-bar {
+    max-width: none;
+  }
 }
 
 #profile-bttn {

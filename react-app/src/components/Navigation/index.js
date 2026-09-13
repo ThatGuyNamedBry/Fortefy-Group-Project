@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
+import SearchBar from '../SearchBar';
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
@@ -9,9 +10,10 @@ function Navigation({ isLoaded }) {
 
 	return (
 		<ul id='NavigationContainer'>
-			<li>
+			<li id='nav-left'>
 				<NavLink exact to="/" className="nav-link">
 					<i className="fas fa-home" ></i>Home</NavLink>
+				<SearchBar />
 			</li>
 			<li id='welcome-text'>
 				{/* <span className="welcome-text-symbol">ƒ</span> */}

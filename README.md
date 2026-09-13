@@ -48,6 +48,11 @@ Authentication is handled using a secure login system that hashes each stored pa
   - Users can add a song to one of their playlists.
   - Users can remove a song from their playlist.
 
+## Search
+  - Users can search for songs by song name or artist.
+  - Users can search for albums by album name or artist.
+  - Users can view the results of their search, play any matching song, and jump to any matching album.
+
 ## AWS
   - Album artwork and song url are both handled utilizing AWS to allow a more seemless user experience.
 
@@ -204,6 +209,65 @@ Returns a single album in the database
         "username": "Demo"
     },
     "year": 1973
+    }
+    ```
+
+## Search
+
+### Search Songs and Albums
+
+Returns the songs whose name or artist contains the search term, and the albums whose name or artist contains the search term. Matching is case-insensitive. Results whose name starts with the term are listed first, then the rest alphabetically, up to 50 of each. A blank term returns empty lists.
+
+* Require Authentication: false
+* Request
+  * Method: GET
+  * URL: /api/search?q=:term
+  * Body: None
+
+* Response
+    * Status Code: 200
+    * Headers:
+        * Content-Type: application/json
+    * Body:
+
+    ```json
+    {
+    "songs": [
+        {
+            "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
+            "album_id": 1,
+            "album_name": "The Dark Side of the Moon",
+            "artist": "Pink Floyd",
+            "duration": 169,
+            "id": 2,
+            "likes": [],
+            "name": "Breathe (In the Air)",
+            "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3",
+            "track_number": 2,
+            "user": {
+                "email": "demo@aa.io",
+                "id": 1,
+                "username": "Demo"
+            },
+            "user_id": 1
+        }
+    ],
+    "albums": [
+        {
+            "art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
+            "artist": "Pink Floyd",
+            "genre": "Psychedelic Rock",
+            "id": 1,
+            "name": "The Dark Side of the Moon",
+            "songs": [],
+            "user": {
+                "email": "demo@aa.io",
+                "id": 1,
+                "username": "Demo"
+            },
+            "year": 1973
+        }
+    ]
     }
     ```
 

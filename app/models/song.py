@@ -36,6 +36,7 @@ class Song(db.Model):
             'song_url': self.song_url,
             'track_number': self.track_number,
             'artist': self.album.artist,
+            'album_name': self.album.name,
             "album_art": self.album.art
         }
 
