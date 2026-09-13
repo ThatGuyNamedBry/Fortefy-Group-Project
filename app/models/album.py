@@ -15,8 +15,8 @@ class Album(db.Model):
     artist = db.Column(db.String(50), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     genre = db.Column(db.String(50), nullable=False)
-    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = db.relationship('User', back_populates='albums')
     songs = db.relationship('Song', back_populates='album', cascade="all, delete")
@@ -31,4 +31,6 @@ class Album(db.Model):
             'genre': self.genre,
             'user': self.user.to_dict(),
             'songs': [song.to_dict() for song in self.songs],
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
         }

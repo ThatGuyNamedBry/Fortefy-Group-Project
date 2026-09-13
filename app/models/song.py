@@ -16,8 +16,8 @@ class Song(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     song_url = db.Column(db.String(255), nullable=False)
     track_number = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now())
-    updated_at = db.Column(db.DateTime, default=datetime.now())
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = db.relationship('User', back_populates='songs')
     album = db.relationship('Album', back_populates='songs')
@@ -36,7 +36,9 @@ class Song(db.Model):
             'song_url': self.song_url,
             'track_number': self.track_number,
             'artist': self.album.artist,
-            "album_art": self.album.art
+            "album_art": self.album.art,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
         }
 
     def to_dict_likes(self):

@@ -13,8 +13,8 @@ class PlaylistSong(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')), nullable=False)
     playlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('playlists.id')), nullable=False)
-    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     song= db.relationship('Song', back_populates='playlist_songs')
     playlist = db.relationship('Playlist', back_populates='playlist_songs')
@@ -25,4 +25,6 @@ class PlaylistSong(db.Model):
          'song_id': self.song_id,
          'playlist_id': self.playlist_id,
          'song': self.song.to_dict(),
+         'created_at': self.created_at.isoformat() if self.created_at else None,
+         'updated_at': self.updated_at.isoformat() if self.updated_at else None,
      }
