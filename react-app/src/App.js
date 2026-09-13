@@ -14,6 +14,7 @@ import ProfilePage from "./components/ProfilePage";
 import PlaylistDetails from "./components/PlaylistDetails";
 import PlaylistCreate from "./components/PlaylistCreate";
 import Footer from "./components/Footer";
+import SearchPage from "./components/SearchPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={HomeLandingPage} />
           <Route exact path="/profile" component={ProfilePage} />
+          <Route exact path="/search" component={SearchPage} />
           <Route path="/login" component={LoginFormPage} />
           <Route path="/signup" component={SignupFormPage} />
           <Route path="/albums/new" component={AlbumCreate} />
