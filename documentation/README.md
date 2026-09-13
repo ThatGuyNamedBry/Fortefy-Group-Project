@@ -79,14 +79,30 @@ npm install --prefix react-app &&
 npm run build --prefix react-app &&
 pip install -r requirements.txt &&
 pip install psycopg2 &&
-flask db upgrade &&
-flask seed all
+flask db upgrade
 ```
 
 This script will install dependencies for the frontend, and run the build
 command in the __package.json__ file for the frontend, which builds the React
 application. Then, it will install the dependencies needed for the Python
-backend, and run the migration and seed files.
+backend and run the migrations.
+
+**Do not put `flask seed all` in the build command.** The build command runs
+on every deploy, and re-seeding on every deploy is how the production database
+used to get wiped. Seed the database once instead, after the first successful
+deploy, from the "Shell" tab of your Render web service:
+
+```shell
+flask seed all
+```
+
+`flask seed all` skips itself when the database already has data, so running it
+again is harmless. To throw everything away and start over from fresh seed data
+(this deletes every album, song, and playlist users have created), run:
+
+```shell
+flask seed undo && flask seed all
+```
 
 Now, add your start command in the Start field:
 
