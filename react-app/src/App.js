@@ -13,6 +13,7 @@ import AlbumUpdate from "./components/AlbumUpdate";
 import ProfilePage from "./components/ProfilePage";
 import PlaylistDetails from "./components/PlaylistDetails";
 import PlaylistCreate from "./components/PlaylistCreate";
+import LikedSongs from "./components/LikedSongs";
 import Footer from "./components/Footer";
 import SearchPage from "./components/SearchPage";
 
@@ -42,6 +43,7 @@ function App() {
           <Route path="/signup" component={SignupFormPage} />
           <Route path="/albums/new" component={AlbumCreate} />
           <Route path="/playlists/new" component={PlaylistCreate} />
+          <Route exact path="/playlists/liked" component={LikedSongs} />
           <Route path="/albums/:albumId/edit" component={AlbumUpdate} />
           <Route path="/albums/:albumId" component={AlbumDetails} />
           <Route path="/playlists/:playlistId" component={PlaylistDetails} />

@@ -88,6 +88,16 @@ export const getCurrentUserAllSongsThunk = () => async (dispatch) => {
   }
 };
 
+//Get Current User's Liked Songs Thunk
+export const getLikedSongsThunk = () => async (dispatch) => {
+  const response = await fetch('/api/songs/liked');
+  if (response.ok) {
+    const songs = await response.json();
+    dispatch(getAllSongsAction(songs));
+    return songs;
+  }
+};
+
 //Get Song by ID Thunk
 export const getSongByIdThunk = (songId) => async (dispatch) => {
   const response = await fetch(`/api/songs/${songId}`);

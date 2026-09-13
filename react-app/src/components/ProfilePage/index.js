@@ -9,6 +9,7 @@ import AddMusicModal from '../AddMusicModal';
 import DeleteModal from '../DeleteModal';
 import DeleteMusicButton from '../DeleteMusicButton/DeleteMusicButton';
 import Carousel from '../Carousel';
+import LikedSongsCover from '../LikedSongs/LikedSongsCover';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
@@ -29,6 +30,11 @@ const ProfilePage = () => {
   const userAlbums = Object.values(userAlbumsObject);
   const userSongs = Object.values(userSongsObject);
   const userPlaylists = Object.values(userPlaylistsObject);
+
+  // The auto-generated Liked Songs playlist is pinned first in Your Playlists.
+  // It is not a real playlist row, so it gets no edit/delete buttons.
+  const LIKED_SONGS_TILE = { id: 'liked' };
+  const playlistTiles = [LIKED_SONGS_TILE, ...userPlaylists];
 
   const handleUpdateAlbum = (album) => {
     history.push(`/albums/${album.id}/edit`);
@@ -91,22 +97,35 @@ const ProfilePage = () => {
             <i className="fa-solid fa-circle-plus"></i>
           </NavLink>
         )}
-        items={userPlaylists}
-        renderItem={(playlist) => (
-          <div className="profile-tile-container">
-            <div className="profile-tile-buttons">
-              <div className='update-delte-music-buttons fa-solid fa-pen-to-square' onClick={editPlaylistClick}>
-                {/* Edit Playlist Modal Here (Optional) */}
+        items={playlistTiles}
+        renderItem={(playlist) => {
+          if (playlist.id === 'liked') {
+            return (
+              <div className="profile-tile-container">
+                <Link to="/playlists/liked" className="album-tile link-as-text">
+                  <LikedSongsCover className="album-image" />
+                  <h3>Liked Songs</h3>
+                  <p className='owner-text'>{user?.username}</p>
+                </Link>
               </div>
-              <DeleteMusicButton className="delete-song-modal" modalComponent={<DeleteModal type='playlist' id={playlist.id} />} />
+            );
+          }
+          return (
+            <div className="profile-tile-container">
+              <div className="profile-tile-buttons">
+                <div className='update-delte-music-buttons fa-solid fa-pen-to-square' onClick={editPlaylistClick}>
+                  {/* Edit Playlist Modal Here (Optional) */}
+                </div>
+                <DeleteMusicButton className="delete-song-modal" modalComponent={<DeleteModal type='playlist' id={playlist.id} />} />
+              </div>
+              <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
+                <img src={playlist?.art} alt={playlist?.name} className="album-image" />
+                <h3>{playlist?.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
+                <p className='owner-text'>{playlist.user.username}</p>
+              </Link>
             </div>
-            <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
-              <img src={playlist?.art} alt={playlist?.name} className="album-image" />
-              <h3>{playlist?.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
-              <p className='owner-text'>{playlist.user.username}</p>
-            </Link>
-          </div>
-        )}
+          );
+        }}
       />
     </div>
   );
