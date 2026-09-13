@@ -34,6 +34,16 @@ def get_user_songs():
     songs_dict = [song.to_dict() for song in user_songs]
     return jsonify(songs_dict)
 
+@song_routes.route('/liked')
+@login_required
+def get_liked_songs():
+    """
+    Query for all songs the current user has liked and return them in a list of song dictionaries, most recently liked first
+    """
+    user_likes = Like.query.filter(Like.user_id == current_user.id).order_by(Like.id.desc()).all()
+    songs_dict = [like.song.to_dict() for like in user_likes]
+    return jsonify(songs_dict)
+
 @song_routes.route("/<int:id>/likes")
 @login_required
 def get_song_likes(id):

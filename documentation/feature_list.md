@@ -26,6 +26,7 @@ Fortefy, a Spotify clone, is a website for users to discover and share new music
 * Users should be able to view the likes on a song.
 * Users should be able to like a song.
 * Users should be able to unlike a song.
+* Users should be able to view and play all of their liked songs in a "Liked Songs" playlist.
 
 ## 5. Playlists
 * Users should be able to view all of their playlists.

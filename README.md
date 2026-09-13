@@ -41,6 +41,7 @@ Authentication is handled using a secure login system that hashes each stored pa
   - Users can create/add a like to a song.
   - Users can read/view their like on a song.
   - Users can unlike/remove their like from a song.
+  - Users can view and play every song they have liked in an auto-generated "Liked Songs" playlist.
 
 ## Playlists
   - Users can view all of their playlists.

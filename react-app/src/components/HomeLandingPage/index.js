@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import Carousel from '../Carousel';
+import LikedSongsCover from '../LikedSongs/LikedSongsCover';
 import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
 
 const HomeLandingPage = () => {
@@ -70,6 +71,10 @@ const HomeLandingPage = () => {
                 <div>
                     {user ? (
                         <div className='library-container'>
+                            <Link to="/playlists/liked" className="playlist-tile liked-songs-tile">
+                                <LikedSongsCover className="playlist-image" />
+                                <h3>Liked Songs</h3>
+                            </Link>
                             {Object.values(allPlaylists)
                                 .filter(playlist => playlist.user_id === user.id)
                                 .map(playlist => (
