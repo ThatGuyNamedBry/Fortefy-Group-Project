@@ -308,13 +308,18 @@ credentials, so the app runs fine without doing any of this.
 1. In the [Google Cloud console](https://console.cloud.google.com/apis/credentials),
    create an **OAuth client ID** of type **Web application**.
 
-2. Add an **Authorized redirect URI** that matches where your Flask app is running:
+2. Add an **Authorized redirect URI** for each place the app runs. Paste these
+   exactly, including the `http://` — Google rejects a URI whose host is not a
+   real domain with the error *"Invalid Redirect: must contain a domain"*, and
+   without a scheme it reads `localhost:5000` as one and finds no host at all.
+   Plain `http` is fine here because localhost is exempt from Google's HTTPS
+   requirement; the deployed URL has to be `https`.
 
    | Running | Redirect URI |
    | --- | --- |
    | Flask serving the React build (`flask run`) | `http://localhost:5000/api/auth/oauth/google/callback` |
    | React dev server in front of Flask (`npm start`) | `http://localhost:3000/api/auth/oauth/google/callback` |
-   | Production | `https://<your-domain>/api/auth/oauth/google/callback` |
+   | Production | `https://fortefy.onrender.com/api/auth/oauth/google/callback` |
 
 3. Put the client ID and secret in your **.env**:
 
