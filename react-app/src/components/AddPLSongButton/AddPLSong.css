@@ -1,65 +1,92 @@
-#plus-playlist-song {
-    background-color: rgb(160, 160, 160);
-    border: 2px solid rgb(160, 160, 160);
-    border-radius: 30px;
-    /* text-shadow: rgb(150, 240, 150) 1px -1px; */
-    /* width: 12px; */
-}
-
-#plus-playlist-song:hover {
-    background-color: white;
-    border: 2px solid white;
-}
-
-.playlist-options-container {
-    width: 1%;
-}
-
-#open-playlist-select-button {
+/* Wrapper is the positioning context for the dropdown. */
+.add-plsong {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
     background: none;
-    color: rgb(19 19 19);
-    border: 0px;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
-    /* gap: 3px; */
-    /* height: auto; */
-    /* border: medium solid green; */
+    border: 0;
 }
 
-.add-plsong-options {
-    width: 8%;
-    height: fit-content;
-    background-color: rgb(70, 70, 70);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* column-gap: 30px; */
-    padding: 0;
-    position: absolute;
-    z-index: 5;
-    margin-top: 1.25%;
-    border-radius: 20px;
+/* The circle-plus trigger. */
+.add-plsong-toggle {
+    color: rgb(160, 160, 160);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
 
+.add-plsong-toggle:hover,
+.add-plsong-toggle.is-open {
+    color: rgb(33, 204, 6);
+    transform: scale(1.1);
+}
+
+/* Right-aligned so the menu never runs off the edge of a song row. */
+.add-plsong-options {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 5;
+    width: 200px;
+    max-height: 240px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    text-align: left;
+    background-color: rgb(40, 40, 40);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 .playlist-options {
-    text-overflow: ellipsis;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    color: rgb(233, 233, 233);
+    font-size: 14px;
+    cursor: pointer;
+    /* Long playlist titles stay on one line and truncate. */
+    white-space: nowrap;
     overflow: hidden;
-    padding: 10%;
-    /* background-color; */
-    /* width: fit-content; */
-}
-.playlist-options:hover {
-    background-color: rgb(160, 160, 160);
-    border-radius: 10px;
+    text-overflow: ellipsis;
+    transition: background-color 0.15s ease;
 }
 
-.user-playlists-select {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    /* width: 20%; */
+.playlist-options:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* "Create Playlist" is the accented action, split off from the playlists. */
+.add-plsong-create {
+    position: relative;
+    margin-bottom: 7px;
+    color: rgb(33, 204, 6);
+    font-weight: 600;
+}
+
+.add-plsong-create::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: -4px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.add-plsong-options::-webkit-scrollbar {
+    width: 8px;
+}
+
+.add-plsong-options::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.add-plsong-options::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.3);
 }
