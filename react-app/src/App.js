@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation, useHistory } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
+import LoginFormModal from "./components/LoginFormModal";
+import { useModal } from "./context/Modal";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import HomeLandingPage from "./components/HomeLandingPage";
@@ -25,11 +27,24 @@ function App() {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const history = useHistory();
+  const { setModalContent } = useModal();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  // A failed OAuth attempt comes back as a full page redirect rather than a
+  // fetch response, so the server passes the reason as a query param. Reopen
+  // the login modal to show it, then clear the param so a refresh does not
+  // bring the modal straight back.
+  useEffect(() => {
+    const oauthError = new URLSearchParams(search).get("oauth_error");
+    if (!oauthError) return;
+    setModalContent(<LoginFormModal errors={[oauthError]} />);
+    history.replace(pathname);
+  }, [search, pathname, history, setModalContent]);
 
   return (
     <>

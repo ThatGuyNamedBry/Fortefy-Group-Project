@@ -19,8 +19,28 @@
     position: relative;
 }
 
-.login-form::before,
-.login-form::after {
+/* LoginFormPage/LoginForm.css is a near copy of this file and styles the same
+   .login-form class globally, so anything the modal needs to do differently is
+   scoped under .login-modal to outrank it regardless of bundle order. */
+.login-modal.login-modal-container {
+    /* Grows instead of clipping now that a provider button can be added */
+    height: auto;
+    min-height: 600px;
+}
+
+/* That copy draws a divider at a fixed offset which assumed exactly one button
+   above it. The button group below positions its own instead. */
+.login-modal .login-form::before {
+    content: none;
+}
+
+.login-modal .login-form button.demoUserLink {
+    /* Spacing under the group is handled by .auth-alt-methods */
+    margin-bottom: 0;
+}
+
+.login-form::after,
+.login-modal .auth-alt-methods::after {
     content: "";
     position: absolute;
     left: 0;
@@ -29,10 +49,21 @@
     background-color: rgb(30, 30, 30);
 }
 
-.login-form::before {
-    top: 92px;
+/* Demo and OAuth sign in, separated from the email/password fields below */
+.auth-alt-methods {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.login-modal .auth-alt-methods::after {
+    bottom: 0;
     width: 140%;
-    left: -45px
+    left: -45px;
 }
 
 .login-form::after {
@@ -79,7 +110,6 @@
 .login-form button.demoUserLink {
     background-color: black;
     border: 1px solid rgb(161, 161, 161);
-    margin-bottom: 45px;
     padding: 16px;
     font-weight: bolder;
 }

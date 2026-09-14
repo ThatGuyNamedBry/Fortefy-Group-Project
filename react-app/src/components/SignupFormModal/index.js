@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
+import OAuthButtons from "../OAuthButtons";
 import "./SignupForm.css";
 
 function SignupFormModal() {
@@ -57,6 +58,7 @@ function SignupFormModal() {
 	return (
 		<div className="signup-form-modal-container">
 			<h1>Sign up for ƒorteƒy!</h1>
+			<OAuthButtons label="Sign up with Google" />
 			<form onSubmit={handleSubmit} className="signup-form">
 				<label>
 					Email

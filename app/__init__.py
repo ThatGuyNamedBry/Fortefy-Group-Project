@@ -8,6 +8,7 @@ from .models import db, User
 from .api import user_routes, auth_routes, album_routes, playlist_routes, song_routes, search_routes
 from .seeds import seed_commands
 from .config import Config
+from .oauth import init_oauth
 
 app = Flask(__name__, static_folder='../react-app/build', static_url_path='/')
 
@@ -33,6 +34,7 @@ app.register_blueprint(playlist_routes.playlist_routes, url_prefix='/api/playlis
 app.register_blueprint(search_routes.search_routes, url_prefix='/api/search')
 db.init_app(app)
 Migrate(app, db)
+init_oauth(app)
 
 # Application Security
 CORS(app)

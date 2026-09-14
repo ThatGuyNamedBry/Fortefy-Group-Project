@@ -3,13 +3,14 @@ import { login } from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import SignupFormModal from "../SignupFormModal";
+import OAuthButtons from "../OAuthButtons";
 import "./LoginForm.css";
 
-function LoginFormModal() {
+function LoginFormModal({ errors: initialErrors = [] }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState(initialErrors);
   const { closeModal, setModalContent } = useModal();
 
   const handleSubmit = async (e) => {
@@ -46,10 +47,13 @@ function LoginFormModal() {
   };
 
   return (
-    <div className="login-modal-container">
+    <div className="login-modal-container login-modal">
       <h1 className="Log-in-text">Log in to ƒorteƒy</h1>
       <form onSubmit={handleSubmit} className="login-form">
-        <button className="demoUserLink" onClick={demoUserLogin}>Continue with Demo User</button>
+        <div className="auth-alt-methods">
+          <button className="demoUserLink" onClick={demoUserLogin}>Continue with Demo User</button>
+          <OAuthButtons label="Continue with Google" />
+        </div>
             <ul className="errors-ul">
               {errors.map((error, idx) => (
                 <li key={idx}>{error}</li>
