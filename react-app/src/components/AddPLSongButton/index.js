@@ -46,12 +46,6 @@ const AddPLSongButton = ({ songId, userId }) => {
         } else {
             dispatch(addPlaylistSongThunk(playlistId, songId));
         }
-
-        // if (e.target.value === "Create Playlist") {
-        //     history.push('/playlists/new');
-        // } else {
-        //     dispatch(addPlaylistSongThunk(e.target.value, songId));
-        // }
     }
 
     if (!userId) {
@@ -59,17 +53,16 @@ const AddPLSongButton = ({ songId, userId }) => {
     }
 
     return (
-        <div id='open-playlist-select-button'>
+        <div className='add-plsong'>
             <i
-                id='plus-playlist-song'
-                className="plsong-fixed fa-solid fa-circle-plus"
+                className={`add-plsong-toggle fa-solid fa-circle-plus${showOptions === 'block' ? ' is-open' : ''}`}
+                title='Add to playlist'
                 onClick={onPlusClick}
             ></i>
 
             <ul className='add-plsong-options' ref={ulRef} style={{display : showOptions}}>
                 <li
-                    className="playlist-options"
-                    id="create-playlist-option"
+                    className='playlist-options add-plsong-create'
                     onClick={(e) => onPlaylistSelect(e, 'new')}
                     >Create Playlist
                 </li>
@@ -77,33 +70,11 @@ const AddPLSongButton = ({ songId, userId }) => {
                     <li
                         key={playlist.id}
                         className='playlist-options'
+                        title={playlist.title}
                         onClick={(e) => onPlaylistSelect(e, playlist.id)}
                     >{playlist.title}</li>
                 ))}
             </ul>
-
-            {/* <div className='custom-select playlist-options-container' style={{display : showOptions }}>
-                <select
-                    className="user-playlists-select"
-                    style={{visibility : showOptions }}
-                    onChange={onPlaylistSelect}
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <option
-                        className="playlist-options"
-                        id="create-playlist-option"
-                        value="Create Playlist"
-                    >Create Playlist
-                    </option>
-                    {playlists.map(playlist => (
-                        <option
-                            key={playlist.id}
-                            className='playlist-options'
-                            value={playlist.id}
-                        >{playlist.title}</option>
-                    ))}
-                </select> */}
-            {/* </div> */}
         </div>
     )
 };
