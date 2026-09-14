@@ -21,6 +21,7 @@ Authentication is handled using a secure login system that hashes each stored pa
 - New account creation, log in, log out, and guest/demo login
   - Users can sign up, log in, and log out.
   - Users can use a demo log in to try the site.
+  - Users can sign up or log in with their Google account (OAuth), from either the log in or the sign up modal.
   - Users can't use certain features without logging in (like playlists and user likes, read only for songs and albums).
   - Logged in users are directed to their profile page which displays either a list of uploads, playlists, and or likes.
   - Logged out users are directed to a page displaying all public playlists.
@@ -299,6 +300,44 @@ flask run
 
 7. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
 
+## Setting up Google Login (optional)
+
+The "Continue with Google" buttons only appear once the server has Google
+credentials, so the app runs fine without doing any of this.
+
+1. In the [Google Cloud console](https://console.cloud.google.com/apis/credentials),
+   create an **OAuth client ID** of type **Web application**.
+
+2. Add an **Authorized redirect URI** for each place the app runs. Paste these
+   exactly, including the `http://` — Google rejects a URI whose host is not a
+   real domain with the error *"Invalid Redirect: must contain a domain"*, and
+   without a scheme it reads `localhost:5000` as one and finds no host at all.
+   Plain `http` is fine here because localhost is exempt from Google's HTTPS
+   requirement; the deployed URL has to be `https`.
+
+   | Running | Redirect URI |
+   | --- | --- |
+   | Flask serving the React build (`flask run`) | `http://localhost:5000/api/auth/oauth/google/callback` |
+   | React dev server in front of Flask (`npm start`) | `http://localhost:3000/api/auth/oauth/google/callback` |
+   | Production | `https://fortefy.onrender.com/api/auth/oauth/google/callback` |
+
+3. Put the client ID and secret in your **.env**:
+
+```bash
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-client-secret
+```
+
+4. Only when you are using the React dev server, also set `GOOGLE_REDIRECT_URI`.
+   Flask sees itself on port 5000 and cannot tell that the browser is on port
+   3000, so it needs to be told which URL to send Google back to:
+
+```bash
+GOOGLE_REDIRECT_URI=http://localhost:3000/api/auth/oauth/google/callback
+```
+
+Signing in with a Google account whose email already has a ƒorteƒy account links
+the two, so that account keeps working with either its password or Google.
 
 
 # Contributors

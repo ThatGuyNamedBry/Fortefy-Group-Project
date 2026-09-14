@@ -1,0 +1,34 @@
+.oauth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.oauth-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid rgb(161, 161, 161);
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    font-weight: bolder;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.oauth-button:hover {
+    border-color: white;
+    color: white;
+}
+
+.oauth-logo {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}

@@ -27,6 +27,8 @@ werkzeug = "==2.2.2"
 wtforms = "==3.0.1"
 boto3 = "==1.28.17"
 mutagen = "==1.46.0"
+authlib = "==1.2.1"
+requests = "==2.31.0"
 
 [dev-packages]
 

@@ -19,6 +19,10 @@ def password_matches(form, field):
     user = User.query.filter(User.email == email).first()
     if not user:
         raise ValidationError('No such user exists.')
+    if not user.hashed_password:
+        # Signed up through a provider, so there is no password to check
+        raise ValidationError(
+            'This account signs in with Google. Use "Continue with Google" instead.')
     if not user.check_password(password):
         raise ValidationError('Password was incorrect.')
 
