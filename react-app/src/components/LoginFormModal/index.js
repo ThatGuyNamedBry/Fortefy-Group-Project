@@ -6,7 +6,7 @@ import SignupFormModal from "../SignupFormModal";
 import OAuthButtons from "../OAuthButtons";
 import "./LoginForm.css";
 
-function LoginFormModal({ errors: initialErrors = [] }) {
+function LoginFormModal({ errors: initialErrors = {} }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,8 +55,8 @@ function LoginFormModal({ errors: initialErrors = [] }) {
           <OAuthButtons label="Continue with Google" />
         </div>
             <ul className="errors-ul">
-              {errors.map((error, idx) => (
-                <li key={idx}>{error}</li>
+              {Object.entries(errors).map(([field, message]) => (
+                <li key={field}>{message}</li>
               ))}
             </ul>
         <label>

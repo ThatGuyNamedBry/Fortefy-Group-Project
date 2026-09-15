@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     const oauthError = new URLSearchParams(search).get("oauth_error");
     if (!oauthError) return;
-    setModalContent(<LoginFormModal errors={[oauthError]} />);
+    setModalContent(<LoginFormModal errors={{ oauth: oauthError }} />);
     history.replace(pathname);
   }, [search, pathname, history, setModalContent]);
 

@@ -80,7 +80,9 @@ export const createPlaylistThunk = (formData) => async (dispatch) => {
         });
         const newPlaylist = await response.json();
         if (!response.ok) {
-            throw new Error(newPlaylist)
+            // Hand the { errors: { field: message } } body back so the form can
+            // show it, rather than losing it inside an Error
+            return newPlaylist
         }
         dispatch(receivePlaylistAction(newPlaylist));
         return newPlaylist;
@@ -101,7 +103,7 @@ export const updatePlaylistThunk = (playlistId, formData) => async (dispatch) =>
         });
         const updatedPlaylist = await response.json();
         if (!response.ok) {
-            throw new Error(updatedPlaylist);
+            return updatedPlaylist;
         }
         return dispatch(receivePlaylistAction(updatedPlaylist));
     } catch (err) {

@@ -1,10 +1,10 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db, Song, Like
-from app.forms import EditSongForm
+from app.forms import SongForm
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 
-from app.api.auth_routes import validation_errors_to_error_messages
+from app.api.auth_routes import validation_errors_to_error_object
 
 song_routes = Blueprint('song', __name__)
 
@@ -121,7 +121,7 @@ def delete_song(id):
 @song_routes.route('/<int:id>', methods=['PUT'])
 @login_required
 def edit_song(id):
-    form = EditSongForm()
+    form = SongForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
@@ -139,4 +139,4 @@ def edit_song(id):
 
         return jsonify(current_song.to_dict())
 
-    return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
+    return { 'errors': validation_errors_to_error_object(form.errors)}, 400

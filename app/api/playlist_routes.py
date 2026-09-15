@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db, Playlist, PlaylistSong, Song
-from app.forms import CreatePlaylistForm, EditPlaylistForm
-from app.api.auth_routes import validation_errors_to_error_messages
+from app.forms import PlaylistForm
+from app.api.auth_routes import validation_errors_to_error_object
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3
 
 playlist_routes = Blueprint('playlists', __name__)
@@ -32,7 +32,7 @@ def get_user_playlists():
 @playlist_routes.route('/new', methods=['POST'])
 @login_required
 def create_new_playlist():
-    form = CreatePlaylistForm()
+    form = PlaylistForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
@@ -47,8 +47,8 @@ def create_new_playlist():
         db.session.commit()
         return jsonify(new_playlist.to_dict())
 
-    # print(validation_errors_to_error_messages(form.errors))
-    return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
+    # print(validation_errors_to_error_object(form.errors))
+    return { 'errors': validation_errors_to_error_object(form.errors)}, 400
 
 # Add a Song to a Playlist with Playlist Id and **SONG** ID
 @playlist_routes.route('/<int:playlist_id>/playlist-songs/<int:song_id>/new', methods=['POST'])
@@ -92,7 +92,7 @@ def remove_playlist_song(playlist_id, playlist_song_id):
 @playlist_routes.route('/<int:id>/edit', methods=['PUT'])
 @login_required
 def edit_playlist(id):
-    form = EditPlaylistForm()
+    form = PlaylistForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
@@ -110,7 +110,7 @@ def edit_playlist(id):
         db.session.commit()
 
         return jsonify(playlist.to_dict())
-    return { 'errors': validation_errors_to_error_messages(form.errors) }, 400
+    return { 'errors': validation_errors_to_error_object(form.errors) }, 400
 
 # Delete a Playlist By Id
 @playlist_routes.route('/<int:id>/delete', methods=['DELETE'])

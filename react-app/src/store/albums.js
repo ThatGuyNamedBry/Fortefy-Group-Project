@@ -90,7 +90,10 @@ export const createAlbumThunk = (formData) => async (dispatch) => {
     });
     const newAlbum = await response.json();
     if (!response.ok) {
-      throw new Error(newAlbum)
+      // Hand the { errors: { field: message } } body back so the form can show
+      // it. Wrapping it in an Error used to lose it, and the form then threw
+      // reading .payload.id off the Error
+      return newAlbum
     }
     return dispatch(createAlbumAction(newAlbum))
   } catch (err) {
@@ -110,7 +113,7 @@ export const updateAlbumThunk = (album, formData) => async (dispatch) => {
     });
     const updatedAlbum = await response.json();
     if (!response.ok) {
-      throw new Error(updatedAlbum)
+      return updatedAlbum
     }
     return dispatch(updateAlbumAction(updatedAlbum))
   } catch (err) {

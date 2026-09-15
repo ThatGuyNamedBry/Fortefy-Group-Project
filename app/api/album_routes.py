@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Album, db, Song
-from app.forms import CreateAlbumForm, EditAlbumForm, CreateSongForm
-from app.api.auth_routes import validation_errors_to_error_messages
+from app.forms import AlbumForm, CreateSongForm
+from app.api.auth_routes import validation_errors_to_error_object
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from mutagen.mp3 import MP3
 
@@ -59,7 +59,7 @@ def delete_album(id):
 @album_routes.route('/newAlbum', methods=['POST'])
 @login_required
 def create_new_album():
-    form = CreateAlbumForm()
+    form = AlbumForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     form.data['user_id'] = current_user.id
@@ -79,7 +79,7 @@ def create_new_album():
 
         return jsonify(new_album.to_dict())
 
-    return { 'errors': validation_errors_to_error_messages(form.errors) }, 400
+    return { 'errors': validation_errors_to_error_object(form.errors) }, 400
 
 
 # Create a Song for an album
@@ -122,15 +122,15 @@ def create_album_song(id):
 
         return jsonify(newSong.to_dict())
 
-    print(validation_errors_to_error_messages(form.errors))
-    return { 'errors': validation_errors_to_error_messages(form.errors)}, 400
+    print(validation_errors_to_error_object(form.errors))
+    return { 'errors': validation_errors_to_error_object(form.errors)}, 400
 
 
 # Editing an Album a user already created
 @album_routes.route('/edit/<int:id>', methods=['PUT'])
 @login_required
 def edit_album(id):
-    form = EditAlbumForm()
+    form = AlbumForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
@@ -152,4 +152,4 @@ def edit_album(id):
 
         return jsonify(album.to_dict())
 
-    return { 'errors': validation_errors_to_error_messages(form.errors) }, 400
+    return { 'errors': validation_errors_to_error_object(form.errors) }, 400
