@@ -29,6 +29,7 @@ boto3 = "==1.28.17"
 mutagen = "==1.46.0"
 authlib = "==1.2.1"
 requests = "==2.31.0"
+email-validator = "==2.0.0.post2"
 
 [dev-packages]
 

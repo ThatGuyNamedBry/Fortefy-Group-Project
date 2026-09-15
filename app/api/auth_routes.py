@@ -12,25 +12,19 @@ from flask_login import current_user, login_user, logout_user, login_required
 auth_routes = Blueprint('auth', __name__)
 
 
-def validation_errors_to_error_messages(validation_errors):
-    """
-    Simple function that turns the WTForms validation errors into a simple list
-    """
-    errorMessages = []
-    for field in validation_errors:
-        for error in validation_errors[field]:
-            errorMessages.append(f'{field} : {error}')
-    return errorMessages
-
 def validation_errors_to_error_object(validation_errors):
     """
-    Simple function that turns the WTForms validation errors into an errors object
+    Turns the WTForms validation errors into the one error shape every route
+    answers with, { field: message }. Only the first message for a field is
+    kept, which is the most fundamental one: WTForms reports in validator
+    order, so 'This field is required.' comes before a length or range
+    complaint about the same value.
+
+    The forms in the browser already read errors this way, keyed by field, so
+    this is the shape they can actually render.
     """
-    errorMessages = {}
-    for field in validation_errors:
-        for error in validation_errors[field]:
-            errorMessages[field] = error
-    return errorMessages
+    return {field: errors[0]
+            for field, errors in validation_errors.items() if errors}
 
 
 @auth_routes.route('/')
@@ -57,7 +51,7 @@ def login():
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
         return user.to_dict_private()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    return {'errors': validation_errors_to_error_object(form.errors)}, 401
 
 
 @auth_routes.route('/logout', methods=['POST'])
