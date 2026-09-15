@@ -6,6 +6,7 @@ from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from app.oauth import oauth, google_enabled, unique_username
+from app.api.csrf import csrf_token_from_request
 from flask_login import current_user, login_user, logout_user, login_required
 
 auth_routes = Blueprint('auth', __name__)
@@ -32,7 +33,7 @@ def authenticate():
     Authenticates a user.
     """
     if current_user.is_authenticated:
-        return current_user.to_dict()
+        return current_user.to_dict_private()
     return {'errors': ['Unauthorized']}
 
 
@@ -42,21 +43,22 @@ def login():
     Logs a user in
     """
     form = LoginForm()
-    # Get the csrf_token from the request cookie and put it into the
-    # form manually to validate_on_submit can be used
-    form['csrf_token'].data = request.cookies['csrf_token']
+    # Put the token the client sent into the form by hand so that
+    # validate_on_submit can be used
+    form['csrf_token'].data = csrf_token_from_request()
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
-        return user.to_dict()
+        return user.to_dict_private()
     return {'errors': validation_errors_to_error_object(form.errors)}, 401
 
 
-@auth_routes.route('/logout')
+@auth_routes.route('/logout', methods=['POST'])
 def logout():
     """
-    Logs a user out
+    Logs a user out. POST only: as a GET, any third party page could log our
+    users out with an <img src=".../api/auth/logout"> tag
     """
     logout_user()
     return {'message': 'User logged out'}
@@ -68,7 +70,7 @@ def sign_up():
     Creates a new user and logs them in
     """
     form = SignUpForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = csrf_token_from_request()
     if form.validate_on_submit():
         user = User(
             username=form.data['username'],
@@ -78,7 +80,7 @@ def sign_up():
         db.session.add(user)
         db.session.commit()
         login_user(user)
-        return user.to_dict()
+        return user.to_dict_private()
     return {'errors': validation_errors_to_error_object(form.errors)}, 401
 
 

@@ -1,3 +1,5 @@
+import { csrfHeaders } from "../csrf";
+
 // constants
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
@@ -32,9 +34,9 @@ export const authenticate = () => async (dispatch) => {
 export const login = (email, password) => async (dispatch) => {
 	const response = await fetch("/api/auth/login", {
 		method: "POST",
-		headers: {
+		headers: csrfHeaders({
 			"Content-Type": "application/json",
-		},
+		}),
 		body: JSON.stringify({
 			email,
 			password,
@@ -57,9 +59,10 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
 	const response = await fetch("/api/auth/logout", {
-		headers: {
+		method: "POST",
+		headers: csrfHeaders({
 			"Content-Type": "application/json",
-		},
+		}),
 	});
 
 	if (response.ok) {
@@ -70,9 +73,9 @@ export const logout = () => async (dispatch) => {
 export const signUp = (username, email, password) => async (dispatch) => {
 	const response = await fetch("/api/auth/signup", {
 		method: "POST",
-		headers: {
+		headers: csrfHeaders({
 			"Content-Type": "application/json",
-		},
+		}),
 		body: JSON.stringify({
 			username,
 			email,

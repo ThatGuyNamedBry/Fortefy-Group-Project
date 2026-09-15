@@ -37,7 +37,12 @@ Migrate(app, db)
 init_oauth(app)
 
 # Application Security
-CORS(app)
+# In production the React build is served from this same origin, so no cross
+# origin request is ever legitimate. In development the CRA dev server proxies
+# /api to us, so this only matters if someone points a browser on port 3000
+# straight at port 5000.
+if os.environ.get('FLASK_ENV') != 'production':
+    CORS(app, origins=['http://localhost:3000'], supports_credentials=True)
 
 
 # Since we are deploying with Docker and Flask,
@@ -62,7 +67,12 @@ def inject_csrf_token(response):
         secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
         samesite='Strict' if os.environ.get(
             'FLASK_ENV') == 'production' else None,
-        httponly=True)
+        # Readable by our own JavaScript on purpose: it has to copy the token
+        # into the X-CSRFToken header, which is the half of the double submit
+        # another origin cannot forge. The token is not a credential, so there
+        # is nothing here worth hiding from the page that already has the
+        # session
+        httponly=False)
     return response
 
 
