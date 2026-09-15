@@ -40,9 +40,23 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
     def to_dict(self):
+        """
+        The public shape of a user. This is embedded in songs, albums, likes
+        and playlists, all of which are readable without logging in, so it must
+        never carry anything private.
+        """
         return {
             'id': self.id,
-            'username': self.username,
+            'username': self.username
+        }
+
+    def to_dict_private(self):
+        """
+        The public shape plus the fields only the account holder may see. Used
+        by /api/auth/* for current_user and nowhere else.
+        """
+        return {
+            **self.to_dict(),
             'email': self.email
         }
     albums = db.relationship('Album', back_populates='user')
