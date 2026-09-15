@@ -152,4 +152,8 @@ def get_playlist_by_id(id):
     Query for a playlist by id and returns that playlist in a dictionary
     """
     playlist = Playlist.query.get(id)
+
+    if playlist is None:
+        return { 'errors': 'Playlist not found' }, 404
+
     return jsonify(playlist.to_dict())
