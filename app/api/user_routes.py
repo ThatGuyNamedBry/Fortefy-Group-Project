@@ -27,4 +27,8 @@ def user(id):
     Query for a user by id and returns that user in a public dictionary
     """
     user = User.query.get(id)
+
+    if user is None:
+        return { 'errors': 'User not found' }, 404
+
     return user.to_dict()

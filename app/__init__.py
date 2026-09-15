@@ -88,6 +88,17 @@ def api_help():
     return route_list
 
 
+def is_api_request():
+    """
+    Whether this request was aimed at the API rather than at the React app.
+
+    Errors under /api have to answer with JSON. Handing back index.html means
+    a thunk's response.json() chokes on HTML, and an unknown /api route looks
+    like a successful 200 rather than the 404 it is.
+    """
+    return request.path.startswith('/api/')
+
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def react_root(path):
@@ -98,9 +109,29 @@ def react_root(path):
     """
     if path == 'favicon.ico':
         return app.send_from_directory('public', 'favicon.ico')
+    # This catch-all sits in front of the 404 handler, so without this an
+    # unknown /api/... route would be answered with the React app
+    if is_api_request():
+        return {'errors': 'Not found'}, 404
     return app.send_static_file('index.html')
 
 
 @app.errorhandler(404)
 def not_found(e):
+    if is_api_request():
+        return {'errors': 'Not found'}, 404
     return app.send_static_file('index.html')
+
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    if is_api_request():
+        return {'errors': 'Method not allowed'}, 405
+    return e
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    if is_api_request():
+        return {'errors': 'Internal server error'}, 500
+    return e

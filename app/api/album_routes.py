@@ -23,6 +23,10 @@ def get_album_by_id(id):
     Query for an album by id and returns that album in a dictionary
     """
     album = Album.query.get(id)
+
+    if album is None:
+        return { 'errors': 'Album not found' }, 404
+
     return jsonify(album.to_dict())
 
 
@@ -42,10 +46,13 @@ def get_user_albums():
 @login_required
 def delete_album(id):
     album = Album.query.get(id)
-    songs = album.to_dict()['songs']
 
     if album is None or album.user_id != current_user.id:
         return {'errors': 'Album not found'}, 404
+
+    # Below the check, not above it: reading songs off a missing album was
+    # raising first, so the check under it could never run
+    songs = album.to_dict()['songs']
 
     for song in songs:
         remove_file_from_s3(song['song_url'])

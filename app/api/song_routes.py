@@ -23,6 +23,10 @@ def get_song_by_id(id):
     Query for a song by id and returns that song in a dictionary
     """
     song = Song.query.get(id)
+
+    if song is None:
+        return { 'errors': 'Song not found' }, 404
+
     return jsonify(song.to_dict())
 
 @song_routes.route('/current')
@@ -51,8 +55,12 @@ def get_song_likes(id):
     """
     Query for a song by id and return a list of like dictionaries for that song
     """
-    song_likes = Song.query.get(id).to_dict()["likes"]
-    return jsonify(song_likes)
+    song = Song.query.get(id)
+
+    if song is None:
+        return { 'errors': 'Song not found' }, 404
+
+    return jsonify(song.to_dict()["likes"])
 
 @song_routes.route('/<int:id>/add-like', methods=['POST'])
 @login_required
@@ -60,7 +68,12 @@ def add_song_like(id):
     """
     Add a like to a selected song and return likes for the song in a list of like dictionaries
     """
-    song = Song.query.get(id).to_dict()
+    song = Song.query.get(id)
+
+    if song is None:
+        return { 'errors': 'Song not found' }, 404
+
+    song = song.to_dict()
     # If song already has user's like, return error
     for like in song["likes"]:
         if like["user_id"] == current_user.id:
@@ -84,6 +97,9 @@ def remove_song_like(id):
     """
     song = Song.query.get(id)
 
+    if song is None:
+        return { 'errors': 'Song not found' }, 404
+
     # Iterate through list of like dictionaries which CANNOT be deleted from the db
     ind = 0
     for like in song.to_dict()["likes"]:
@@ -106,6 +122,9 @@ def remove_song_like(id):
 @login_required
 def delete_song(id):
     selected_song = Song.query.get(id)
+
+    if selected_song is None:
+        return { 'errors': 'Song not found' }, 404
 
     if selected_song.to_dict()['user_id'] != current_user.id:
         return { 'errors': 'Song not found' }, 404
