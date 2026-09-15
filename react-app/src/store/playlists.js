@@ -1,3 +1,5 @@
+import { csrfHeaders } from '../csrf';
+
 //                                           Action Types
 const LOAD_PLAYLISTS = 'playlists/LOAD_PLAYLISTS';
 const RECEIVE_PLAYLIST = 'playlists/RECEIVE_PLAYLIST'
@@ -74,7 +76,7 @@ export const createPlaylistThunk = (formData) => async (dispatch) => {
     try {
         const response = await fetch('/api/playlists/new', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: csrfHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify(formData),
           // console.log('After new playlist fetch, this is response : ', response)
         });
@@ -95,7 +97,7 @@ export const updatePlaylistThunk = (playlistId, formData) => async (dispatch) =>
     try {
         const response = await fetch(`/api/playlists/${playlistId}/edit`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: csrfHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify(formData),
           // console.log('After update playlist fetch, this is response : ', response)
         });
@@ -113,6 +115,7 @@ export const updatePlaylistThunk = (playlistId, formData) => async (dispatch) =>
 export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
     const response = await fetch(`/api/playlists/${playlistId}/delete`, {
         method: 'DELETE',
+        headers: csrfHeaders(),
     });
 
     if (response.ok) {
@@ -127,6 +130,7 @@ export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
 export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => {
     const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${songId}/new`, {
         method: 'POST',
+        headers: csrfHeaders(),
     });
 
     if (response.ok) {
@@ -140,7 +144,8 @@ export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => 
     // Arguments = playlist Id, **PLAYLISTSONG ID**
 export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (dispatch) => {
     const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${playlistSongId}/delete`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: csrfHeaders(),
     });
 
     if (response.ok) {
