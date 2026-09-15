@@ -58,14 +58,23 @@ def add_playlist_song(playlist_id, song_id):
     """
     Create a playlist_song instance and return the altered playlist as a dictionary
     """
+    updated_playlist = Playlist.query.get(playlist_id)
+
+    if updated_playlist is None:
+        return {"errors": "Playlist could not be found"}, 404
+    elif updated_playlist.user_id != current_user.id:
+        return {"errors": "Playlist does not belong to user"}, 403
+
+    # Without this the insert either violates the foreign key (a 500 on
+    # Postgres) or, on SQLite where foreign keys are off, stores a row whose
+    # song is missing, which then breaks to_dict() for everyone viewing it
+    if Song.query.get(song_id) is None:
+        return {"errors": "Song could not be found"}, 404
+
     playlist_song = PlaylistSong(
         song_id = song_id,
         playlist_id = playlist_id
     )
-
-    updated_playlist = Playlist.query.get(playlist_id)
-    if updated_playlist is None:
-        return {"errors": "Playlist could not be found"}, 404
 
     db.session.add(playlist_song)
     db.session.commit()
@@ -77,15 +86,22 @@ def add_playlist_song(playlist_id, song_id):
 @login_required
 def remove_playlist_song(playlist_id, playlist_song_id):
     """Query for a playlist_song by it's playlist_song_id, delete it from the db and return the altered playlist as a dictionary"""
+    updated_playlist = Playlist.query.get(playlist_id)
+
+    if updated_playlist is None:
+        return {"errors": "Playlist could not be found"}, 404
+    elif updated_playlist.user_id != current_user.id:
+        return {"errors": "Playlist does not belong to user"}, 403
+
     playlist_song = PlaylistSong.query.get(playlist_song_id)
 
-    if playlist_song is None:
+    # The second half stops a row being deleted out of playlist B through a URL
+    # that names playlist A
+    if playlist_song is None or playlist_song.playlist_id != playlist_id:
         return {"errors": "Song cannot be found in Playlist"}, 404
 
     db.session.delete(playlist_song)
     db.session.commit()
-
-    updated_playlist = Playlist.query.get(playlist_id)
 
     return jsonify(updated_playlist.to_dict())
 

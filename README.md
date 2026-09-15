@@ -112,7 +112,6 @@ Returns all albums in the database
                 "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Speak+to+Me.mp3",
                 "track_number": 1,
                 "user": {
-                    "email": "demo@aa.io",
                     "id": 1,
                     "username": "Demo"
                 },
@@ -129,7 +128,6 @@ Returns all albums in the database
                 "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3",
                 "track_number": 2,
                 "user": {
-                    "email": "demo@aa.io",
                     "id": 1,
                     "username": "Demo"
                 },
@@ -137,7 +135,6 @@ Returns all albums in the database
             }
         ],
         "user": {
-            "email": "demo@aa.io",
             "id": 1,
             "username": "Demo"
         },
@@ -181,7 +178,6 @@ Returns a single album in the database
             "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Speak+to+Me.mp3",
             "track_number": 1,
             "user": {
-                "email": "demo@aa.io",
                 "id": 1,
                 "username": "Demo"
             },
@@ -198,7 +194,6 @@ Returns a single album in the database
             "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3",
             "track_number": 2,
             "user": {
-                "email": "demo@aa.io",
                 "id": 1,
                 "username": "Demo"
             },
@@ -206,7 +201,6 @@ Returns a single album in the database
         }
     ],
     "user": {
-        "email": "demo@aa.io",
         "id": 1,
         "username": "Demo"
     },
@@ -247,7 +241,6 @@ Returns the songs whose name or artist contains the search term, and the albums 
             "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3",
             "track_number": 2,
             "user": {
-                "email": "demo@aa.io",
                 "id": 1,
                 "username": "Demo"
             },
@@ -263,7 +256,6 @@ Returns the songs whose name or artist contains the search term, and the albums 
             "name": "The Dark Side of the Moon",
             "songs": [],
             "user": {
-                "email": "demo@aa.io",
                 "id": 1,
                 "username": "Demo"
             },
