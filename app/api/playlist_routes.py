@@ -4,6 +4,7 @@ from app.models import db, Playlist, PlaylistSong, Song
 from app.forms import CreatePlaylistForm, EditPlaylistForm
 from app.api.auth_routes import validation_errors_to_error_messages
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3
+from app.api.csrf import csrf_token_from_request
 
 playlist_routes = Blueprint('playlists', __name__)
 
@@ -33,7 +34,7 @@ def get_user_playlists():
 @login_required
 def create_new_playlist():
     form = CreatePlaylistForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
         new_playlist = Playlist(
@@ -109,7 +110,7 @@ def remove_playlist_song(playlist_id, playlist_song_id):
 @login_required
 def edit_playlist(id):
     form = EditPlaylistForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
         playlist = Playlist.query.get(id)
