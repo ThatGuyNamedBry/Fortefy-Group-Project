@@ -4,6 +4,7 @@ from app.models import Album, db, Song
 from app.forms import CreateAlbumForm, EditAlbumForm, CreateSongForm
 from app.api.auth_routes import validation_errors_to_error_messages
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3, remove_file_from_s3
+from app.api.csrf import csrf_token_from_request
 from mutagen.mp3 import MP3
 
 album_routes = Blueprint('albums', __name__)
@@ -60,7 +61,7 @@ def delete_album(id):
 @login_required
 def create_new_album():
     form = CreateAlbumForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = csrf_token_from_request()
 
     form.data['user_id'] = current_user.id
     if form.validate_on_submit():
@@ -88,7 +89,7 @@ def create_new_album():
 def create_album_song(id):
 
     form = CreateSongForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = csrf_token_from_request()
 
     print('form data:', form.data)
 
@@ -131,7 +132,7 @@ def create_album_song(id):
 @login_required
 def edit_album(id):
     form = EditAlbumForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
         album = Album.query.get(id)

@@ -10,7 +10,10 @@ class Config:
     # so the connection uri must be updated here (for production)
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL').replace('postgres://', 'postgresql://')
-    SQLALCHEMY_ECHO = True
+    # Echoing every statement, bound parameters and all, writes the email
+    # addresses used on login lookups straight to the logs, and slows every
+    # request down. Useful while developing, never in production.
+    SQLALCHEMY_ECHO = os.environ.get('FLASK_ENV') != 'production'
 
     # Google OAuth. Left as None when the credentials are not in the .env, which
     # is how /api/auth/oauth/providers knows to tell the frontend not to render

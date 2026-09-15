@@ -1,3 +1,5 @@
+import { csrfHeaders } from '../csrf';
+
 //                                           Action Types
 const LOAD_SONGS = 'songs/LOAD_SONGS';
 const LOAD_SONG = 'songs/LOAD_SONG';
@@ -111,6 +113,7 @@ export const createSongThunk = (album, formData) => async (dispatch) => {
   // console.log('Create song thunk running, this is the formData', formData)
   const response = await fetch(`/api/albums/${album.id}/song`, {
     method: 'POST',
+    headers: csrfHeaders(),
     body: formData,
   });
   // console.log('After fetch, this is the response', response)
@@ -130,6 +133,7 @@ export const updateSongThunk = (song, formData) => async (dispatch) => {
   // console.log('Edit/Update an song Thunk, this is song  ', song);
   const response = await fetch(`/api/songs/${song.id}`, {
     method: 'PUT',
+    headers: csrfHeaders(),
     body: formData
   });
 
@@ -147,6 +151,7 @@ export const updateSongThunk = (song, formData) => async (dispatch) => {
 export const deleteSongThunk = (songId) => async (dispatch) => {
   const response = await fetch(`/api/songs/${songId}/delete`, {
     method: 'DELETE',
+    headers: csrfHeaders(),
   });
 
   if (response.ok) {
@@ -159,9 +164,9 @@ export const deleteSongThunk = (songId) => async (dispatch) => {
 export const addLikeThunk = (songId) => async (dispatch) => {
     const response = await fetch(`/api/songs/${songId}/add-like`, {
       method: 'POST',
-      headers: {
+      headers: csrfHeaders({
         "Content-Type": "application/json"
-      }
+      })
     });
 
     if (response.ok) {
@@ -174,7 +179,8 @@ export const addLikeThunk = (songId) => async (dispatch) => {
 //Remove a Like Thunk
 export const removeLikeThunk = (songId, likeId) => async (dispatch) => {
   const response = await fetch(`/api/songs/${songId}/remove-like`, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: csrfHeaders(),
   });
 
   if (response.ok) {
