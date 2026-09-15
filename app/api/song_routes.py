@@ -127,6 +127,11 @@ def edit_song(id):
     if form.validate_on_submit():
         current_song = Song.query.get(id)
 
+        if current_song is None:
+            return { 'errors': 'Song not found'}, 404
+        elif current_song.user_id != current_user.id:
+            return { 'errors': 'Song does not belong to user' }, 403
+
         current_song.name = form.data['name']
         current_song.track_number = form.data['track_number']
 
