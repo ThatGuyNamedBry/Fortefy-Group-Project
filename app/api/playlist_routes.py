@@ -14,7 +14,7 @@ def get_all_playlists():
     """
     Query for all playlists and returns them in a list of playlist dictionaries
     """
-    playlists = [playlist.to_dict() for playlist in Playlist.query.all()]
+    playlists = [playlist.to_dict() for playlist in Playlist.query.options(*Playlist.to_dict_loads()).all()]
     return jsonify(playlists)
 
 
@@ -25,7 +25,7 @@ def get_user_playlists():
     """
     Query for all playlists created by the current user and return them in a list of playlist dictionaries
     """
-    user_playlists = Playlist.query.filter(Playlist.user_id == current_user.id)
+    user_playlists = Playlist.query.options(*Playlist.to_dict_loads()).filter(Playlist.user_id == current_user.id)
     playlists_dict = [playlist.to_dict() for playlist in user_playlists]
     return jsonify(playlists_dict)
 
@@ -151,7 +151,7 @@ def get_playlist_by_id(id):
     """
     Query for a playlist by id and returns that playlist in a dictionary
     """
-    playlist = Playlist.query.get(id)
+    playlist = Playlist.query.options(*Playlist.to_dict_loads()).get(id)
 
     if playlist is None:
         return { 'errors': 'Playlist not found' }, 404

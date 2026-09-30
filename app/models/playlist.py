@@ -1,3 +1,4 @@
+from sqlalchemy.orm import joinedload, selectinload
 from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
 from .user import User
 
@@ -30,3 +31,19 @@ class Playlist(db.Model):
          'created_at': to_iso(self.created_at),
          'updated_at': to_iso(self.updated_at),
      }
+
+    @staticmethod
+    def to_dict_loads():
+        """
+        Loader options for everything to_dict() reads, for .options(): the
+        owner, and each entry's song with everything the song serialises
+        """
+        # Imported here: both modules import this one
+        from .playlist_song import PlaylistSong
+        from .song import Song
+        return (
+            joinedload(Playlist.user),
+            selectinload(Playlist.playlist_songs)
+                .joinedload(PlaylistSong.song)
+                .options(*Song.to_dict_loads()),
+        )
