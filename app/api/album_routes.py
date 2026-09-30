@@ -61,13 +61,13 @@ def delete_album(id):
 
     # Below the check, not above it: reading songs off a missing album was
     # raising first, so the check under it could never run
-    songs = album.to_dict()['songs']
-
-    for song in songs:
-        remove_file_from_s3(song['song_url'])
+    song_urls = [song.song_url for song in album.songs]
 
     db.session.delete(album)
     db.session.commit()
+
+    for song_url in song_urls:
+        remove_file_from_s3(song_url)
 
     return { 'message': 'Successfully Deleted'}
 
