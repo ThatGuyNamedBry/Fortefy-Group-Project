@@ -110,21 +110,26 @@ export const getSongByIdThunk = (songId) => async (dispatch) => {
 
 //Create a Song Thunk
 export const createSongThunk = (album, formData) => async (dispatch) => {
-  // console.log('Create song thunk running, this is the formData', formData)
-  const response = await fetch(`/api/albums/${album.id}/song`, {
-    method: 'POST',
-    headers: csrfHeaders(),
-    body: formData,
-  });
-  // console.log('After fetch, this is the response', response)
+  let response;
+  try {
+    response = await fetch(`/api/albums/${album.id}/song`, {
+      method: 'POST',
+      headers: csrfHeaders(),
+      body: formData,
+    });
+  } catch {
+    // No response at all: offline, or the connection dropped mid-upload
+    return { errors: 'The upload was interrupted. Check your connection and try again.' };
+  }
+
   if (response.ok) {
     const song = await response.json();
-    // console.log('If response is okay running, this is song', song)
     dispatch(createSongAction(song))
     return song;
   } else {
-    const errorData = await response.json();
-    return errorData;
+    // An error page from something in front of Flask (a proxy, a gateway
+    // timeout) is HTML, not our JSON
+    return response.json().catch(() => ({ errors: `Upload failed (error ${response.status}). Please try again.` }));
   }
 };
 

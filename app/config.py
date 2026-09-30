@@ -15,6 +15,12 @@ class Config:
     # request down. Useful while developing, never in production.
     SQLALCHEMY_ECHO = os.environ.get('FLASK_ENV') != 'production'
 
+    # The largest request Flask will read, song uploads included; anything
+    # bigger is refused with a 413. 50 MB is about five minutes of CD-quality
+    # WAV, or most of an hour of MP3. AddMusicModal checks the same limit
+    # before sending, so nobody waits for a doomed upload to finish.
+    MAX_CONTENT_LENGTH = 50 * 1024 * 1024
+
     # Google OAuth. Left as None when the credentials are not in the .env, which
     # is how /api/auth/oauth/providers knows to tell the frontend not to render
     # the "Continue with Google" button.
