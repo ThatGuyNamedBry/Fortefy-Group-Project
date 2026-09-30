@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from "react-redux";
 import { useModal } from '../../context/Modal';
 import { deleteAlbumThunk } from "../../store/albums";
-import { deleteSongThunk, getCurrentUserAllSongsThunk } from "../../store/songs";
+import { deleteSongThunk } from "../../store/songs";
 import { deletePlaylistThunk } from "../../store/playlists";
 import './DeleteModal.css';
 
@@ -14,8 +14,9 @@ function DeleteModal({ type, id }) {
 
   const handleDelete = async () => {
     if (type === 'album') {
+      // deleteAlbumThunk also drops the album's songs from the songs cache,
+      // so there is no need to refetch them
       await dispatch(deleteAlbumThunk(id));
-      await dispatch(getCurrentUserAllSongsThunk());
     } else if (type === 'song') {
       dispatch(deleteSongThunk(id));
     } else if (type === 'playlist') {

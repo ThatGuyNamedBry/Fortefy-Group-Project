@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchThunk, clearSearchResultsAction } from '../../store/search';
-import { getAllSongsAction } from '../../store/songs';
 import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import { secsToMins } from '../../helpers';
 import LikeButton from '../LikeButton';
@@ -24,11 +23,6 @@ const SearchPage = () => {
             dispatch(clearSearchResultsAction());
         }
     }, [dispatch, query]);
-
-    // Mirror the matching songs into the songs store so the like buttons can find them
-    useEffect(() => {
-        dispatch(getAllSongsAction(songs));
-    }, [dispatch, songs]);
 
     const handlePlaySong = (index) => {
         // Queue every song result so playback continues down the list

@@ -1,5 +1,6 @@
 import { csrfHeaders } from '../csrf';
 import { REQUEST_FAILED, getJson } from '../helpers';
+import { receiveSongsAction } from './songs';
 
 //                                           Action Types
 const LOAD_PLAYLISTS = 'playlists/LOAD_PLAYLISTS';
@@ -69,7 +70,13 @@ export const getCurrentUserAllPlaylistsThunk = () => async (dispatch, getState) 
 //Get Playlist by Id Thunk
 export const getPlaylistByIdThunk = (playlistId) => async (dispatch) => {
     const playlist = await getJson(`/api/playlists/${playlistId}`);
-    if (!playlist.errors) dispatch(receivePlaylistAction(playlist));
+    if (!playlist.errors) {
+        // Cached so the like buttons on the playlist page find their songs.
+        // Copies, because PlaylistDetails tags these objects with a
+        // playlistSongId that has no business in the songs cache.
+        dispatch(receiveSongsAction(playlist.playlist_songs.map(playlistSong => ({ ...playlistSong.song }))));
+        dispatch(receivePlaylistAction(playlist));
+    }
     return playlist;
 };
 

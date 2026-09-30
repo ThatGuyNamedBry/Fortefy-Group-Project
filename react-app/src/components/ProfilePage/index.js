@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { useHistory, Link, NavLink } from 'react-router-dom';
-import { getCurrentUserAllAlbumsThunk } from '../../store/albums';
-import { getCurrentUserAllSongsThunk } from '../../store/songs';
+import { getCurrentUserAllAlbumsThunk, selectUserAlbums } from '../../store/albums';
+import { getCurrentUserAllSongsThunk, selectUserSongs } from '../../store/songs';
 import { getCurrentUserAllPlaylistsThunk, selectUserPlaylists } from '../../store/playlists';
 import EditSongButton from '../EditSongButton';
 import AddMusicModal from '../AddMusicModal';
@@ -17,20 +17,19 @@ const ProfilePage = () => {
   const history = useHistory();
 
   const user = useSelector((state) => state.session.user);
-  const userAlbumsObject = useSelector((state) => state.albums.allAlbums);
-  const userSongsObject = useSelector((state) => state.songs.allSongs);
-  // Filtered to this user: allPlaylists also holds everyone else's once the
-  // home page has loaded them
+  // Each filtered to this user. The stores hold everyone's albums, songs and
+  // playlists once the home page has loaded them, and this page used to list
+  // all of those as "yours" until its own requests came back.
+  const userAlbums = useSelector(selectUserAlbums, shallowEqual);
+  const userSongs = useSelector(selectUserSongs, shallowEqual);
   const userPlaylists = useSelector(selectUserPlaylists, shallowEqual);
+  const allAlbums = useSelector((state) => state.albums.allAlbums);
 
   useEffect(() => {
     dispatch(getCurrentUserAllAlbumsThunk());
     dispatch(getCurrentUserAllSongsThunk());
     dispatch(getCurrentUserAllPlaylistsThunk());
   }, [dispatch]);
-
-  const userAlbums = Object.values(userAlbumsObject);
-  const userSongs = Object.values(userSongsObject);
 
   // The auto-generated Liked Songs playlist is pinned first in Your Playlists.
   // It is not a real playlist row, so it gets no edit/delete buttons.
@@ -75,7 +74,7 @@ const ProfilePage = () => {
         title="Your Songs"
         items={userSongs}
         renderItem={(song) => {
-          const album = userAlbumsObject[song.album_id];
+          const album = allAlbums[song.album_id];
           return (
             <div className="profile-tile-container">
               <div className="profile-tile-buttons">

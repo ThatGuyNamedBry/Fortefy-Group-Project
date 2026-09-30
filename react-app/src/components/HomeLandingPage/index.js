@@ -18,7 +18,7 @@ const HomeLandingPage = () => {
     const allPlaylists = useSelector((state) => state.playlists.allPlaylists);
     const userPlaylists = useSelector(selectUserPlaylists, shallowEqual);
     const user = useSelector(state => state.session.user)
-    const [sortedSongs, setSortedSongs] = useState([]);
+    const [songOrder, setSongOrder] = useState([]);
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
     const [hoveredSong, setHoveredSong] = useState(null);
@@ -36,9 +36,17 @@ const HomeLandingPage = () => {
         return () => { current = false; };
     }, [dispatch]);
 
+    // Shuffled once per visit, and again only when songs are added or removed.
+    // Reshuffling on every change to the songs store meant one like anywhere
+    // rearranged the whole carousel.
     useEffect(() => {
-        setSortedSongs(Object.values(allSongs).sort(() => Math.random() - 0.5));
+        setSongOrder(order => {
+            const ids = Object.keys(allSongs);
+            const sameSongs = order.length === ids.length && order.every(id => id in allSongs);
+            return sameSongs ? order : ids.sort(() => Math.random() - 0.5);
+        });
     }, [allSongs]);
+    const sortedSongs = songOrder.map(id => allSongs[id]);
 
     useEffect(() => {
         if (!showMenu) return;
