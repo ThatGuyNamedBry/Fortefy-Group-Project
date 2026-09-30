@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { useHistory, Link, NavLink } from 'react-router-dom';
 import { getCurrentUserAllAlbumsThunk } from '../../store/albums';
 import { getCurrentUserAllSongsThunk } from '../../store/songs';
-import { getCurrentUserAllPlaylistsThunk } from '../../store/playlists';
+import { getCurrentUserAllPlaylistsThunk, selectUserPlaylists } from '../../store/playlists';
 import EditSongButton from '../EditSongButton';
 import AddMusicModal from '../AddMusicModal';
 import DeleteModal from '../DeleteModal';
@@ -19,7 +19,9 @@ const ProfilePage = () => {
   const user = useSelector((state) => state.session.user);
   const userAlbumsObject = useSelector((state) => state.albums.allAlbums);
   const userSongsObject = useSelector((state) => state.songs.allSongs);
-  const userPlaylistsObject = useSelector((state) => state.playlists.allPlaylists)
+  // Filtered to this user: allPlaylists also holds everyone else's once the
+  // home page has loaded them
+  const userPlaylists = useSelector(selectUserPlaylists, shallowEqual);
 
   useEffect(() => {
     dispatch(getCurrentUserAllAlbumsThunk());
@@ -29,7 +31,6 @@ const ProfilePage = () => {
 
   const userAlbums = Object.values(userAlbumsObject);
   const userSongs = Object.values(userSongsObject);
-  const userPlaylists = Object.values(userPlaylistsObject);
 
   // The auto-generated Liked Songs playlist is pinned first in Your Playlists.
   // It is not a real playlist row, so it gets no edit/delete buttons.
