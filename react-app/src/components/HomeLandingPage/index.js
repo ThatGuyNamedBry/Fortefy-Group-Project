@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { getAllAlbumsThunk } from '../../store/albums';
 import { getAllSongsThunk } from '../../store/songs';
-import { getAllPlaylistsThunk } from '../../store/playlists';
+import { getAllPlaylistsThunk, selectUserPlaylists } from '../../store/playlists';
 import './HomeLandingPage.css';
 import { Link } from 'react-router-dom';
 import OpenModalButton from "../OpenModalButton";
@@ -16,6 +16,7 @@ const HomeLandingPage = () => {
     const allAlbums = useSelector(state => state.albums.allAlbums);
     const allSongs = useSelector(state => state.songs.allSongs);
     const allPlaylists = useSelector((state) => state.playlists.allPlaylists);
+    const userPlaylists = useSelector(selectUserPlaylists, shallowEqual);
     const user = useSelector(state => state.session.user)
     const [sortedSongs, setSortedSongs] = useState([]);
     const [showMenu, setShowMenu] = useState(false);
@@ -74,15 +75,13 @@ const HomeLandingPage = () => {
                                 <LikedSongsCover className="playlist-image" />
                                 <h3>Liked Songs</h3>
                             </Link>
-                            {Object.values(allPlaylists)
-                                .filter(playlist => playlist.user_id === user.id)
-                                .map(playlist => (
-                                    <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
-                                        <img src={playlist.art} alt={playlist.title} className="playlist-image" />
-                                        <h3>{playlist.title}</h3>
-                                    </Link>
-                                ))}
-                            {Object.values(allPlaylists).every(playlist => playlist.user_id !== user.id) && (
+                            {userPlaylists.map(playlist => (
+                                <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
+                                    <img src={playlist.art} alt={playlist.title} className="playlist-image" />
+                                    <h3>{playlist.title}</h3>
+                                </Link>
+                            ))}
+                            {userPlaylists.length === 0 && (
                                 <Link to="/playlists/new" className="create-playlist-link">
                                     Create Your First Playlist!
                                 </Link>

@@ -3,6 +3,7 @@ import { REQUEST_FAILED } from '../helpers';
 
 //                                           Action Types
 const LOAD_PLAYLISTS = 'playlists/LOAD_PLAYLISTS';
+const LOAD_USER_PLAYLISTS = 'playlists/LOAD_USER_PLAYLISTS';
 const RECEIVE_PLAYLIST = 'playlists/RECEIVE_PLAYLIST'
 const DELETE_PLAYLIST = 'playlists/DELETE_PLAYLIST';
 const LOAD_PLAYLIST_SONGS = 'playlists/LOAD_PLAYLIST_SONGS'
@@ -14,6 +15,15 @@ export const getAllPlaylistsAction = (playlists) => {
     return {
         type: LOAD_PLAYLISTS,
         payload: playlists,
+    };
+};
+
+// One user's playlists, from /api/playlists/current. Unlike LOAD_PLAYLISTS
+// this leaves everyone else's playlists in the store alone
+export const getUserPlaylistsAction = (userId, playlists) => {
+    return {
+        type: LOAD_USER_PLAYLISTS,
+        payload: { userId, playlists },
     };
 };
 
@@ -51,11 +61,11 @@ export const getAllPlaylistsThunk = () => async (dispatch) => {
 };
 
 //Get All Playlists by Current User Thunk
-export const getCurrentUserAllPlaylistsThunk = () => async (dispatch) => {
+export const getCurrentUserAllPlaylistsThunk = () => async (dispatch, getState) => {
     const response = await fetch('/api/playlists/current');
     if (response.ok) {
         const playlists = await response.json();
-        dispatch(getAllPlaylistsAction(playlists));
+        dispatch(getUserPlaylistsAction(getState().session.user?.id, playlists));
         return playlists;
     }
 };
@@ -162,6 +172,17 @@ export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (di
     }
 }
 
+//                                            Selectors
+
+// The logged-in user's playlists. allPlaylists holds everyone's (the home
+// page lists them all), so "yours" is always a filter over it rather than a
+// second copy that could drift. Pass shallowEqual to useSelector: the array
+// is new each time, but its entries are the same objects until one changes.
+export const selectUserPlaylists = (state) => {
+    const userId = state.session.user?.id;
+    return Object.values(state.playlists.allPlaylists).filter(playlist => playlist.user_id === userId);
+};
+
 //Reducer function
 const initialState = {
     allPlaylists: {},
@@ -177,6 +198,17 @@ const playlistReducer = (state = initialState, action) => {
                 allPlaylistsObject[playlist.id] = playlist;
             });
             return { ...state, allPlaylists: allPlaylistsObject };
+        case LOAD_USER_PLAYLISTS: {
+            // The server's word on this user's playlists replaces what the
+            // store had for them, one deleted elsewhere included
+            const { userId, playlists } = action.payload;
+            const merged = {};
+            Object.values(state.allPlaylists)
+                .filter(playlist => playlist.user_id !== userId)
+                .forEach(playlist => { merged[playlist.id] = playlist; });
+            playlists.forEach(playlist => { merged[playlist.id] = playlist; });
+            return { ...state, allPlaylists: merged };
+        }
         case RECEIVE_PLAYLIST:
             return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: action.payload };
         case DELETE_PLAYLIST:

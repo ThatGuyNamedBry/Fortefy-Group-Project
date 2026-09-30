@@ -1,45 +1,50 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentUserAllPlaylistsThunk, addPlaylistSongThunk } from '../../store/playlists';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { addPlaylistSongThunk, selectUserPlaylists } from '../../store/playlists';
 import './AddPLSong.css';
 
 const AddPLSongButton = ({ songId, userId }) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const ulRef = useRef();
+    const menuRef = useRef();
 
-    const playlistsObject = useSelector(state => state.playlists.allPlaylists);
-    const playlists = Object.values(playlistsObject);
+    // Loaded once per login by App. This button is rendered on every song
+    // row, so fetching here sent one identical request per row.
+    const playlists = useSelector(selectUserPlaylists, shallowEqual);
 
-    const [showOptions, setShowOptions] = useState('none');
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        dispatch(getCurrentUserAllPlaylistsThunk());
-    }, [dispatch]);
+        if (!isOpen) return;
 
-    // useEffect(() => {
-    //     if (showOptions === 'none') return;
+        // Capture phase: the toggle and the options stop their clicks from
+        // bubbling, so the row underneath does not play the song, and a
+        // bubbling listener would never hear a click on another row's toggle
+        const closeOnOutsideClick = (e) => {
+            // No menu at all once the user has logged out
+            if (!menuRef.current?.contains(e.target)) setIsOpen(false);
+        };
+        const closeOnEscape = (e) => {
+            if (e.key === 'Escape') setIsOpen(false);
+        };
 
-    //     const closeOptions = (e) => {
-    //         if (!ulRef.current.contains(e.target)) {
-    //             setShowOptions('none');
-    //         }
-    //     };
-
-    //     document.addEventListener("click", closeOptions);
-
-    //     return () => document.removeEventListener("click", closeOptions);
-    // }, [showOptions]);
+        document.addEventListener('click', closeOnOutsideClick, true);
+        document.addEventListener('keydown', closeOnEscape);
+        return () => {
+            document.removeEventListener('click', closeOnOutsideClick, true);
+            document.removeEventListener('keydown', closeOnEscape);
+        };
+    }, [isOpen]);
 
     const onPlusClick = (e) => {
         e.stopPropagation();
-        setShowOptions(showOptions === 'none' ? 'block' : 'none');
+        setIsOpen(!isOpen);
     };
 
     const onPlaylistSelect = (e, playlistId) => {
         e.stopPropagation();
-        setShowOptions('none');
+        setIsOpen(false);
 
         if (playlistId === 'new') {
             history.push('/playlists/new');
@@ -53,14 +58,14 @@ const AddPLSongButton = ({ songId, userId }) => {
     }
 
     return (
-        <div className='add-plsong'>
+        <div className='add-plsong' ref={menuRef}>
             <i
-                className={`add-plsong-toggle fa-solid fa-circle-plus${showOptions === 'block' ? ' is-open' : ''}`}
+                className={`add-plsong-toggle fa-solid fa-circle-plus${isOpen ? ' is-open' : ''}`}
                 title='Add to playlist'
                 onClick={onPlusClick}
             ></i>
 
-            <ul className='add-plsong-options' ref={ulRef} style={{display : showOptions}}>
+            <ul className='add-plsong-options' style={{ display: isOpen ? 'block' : 'none' }}>
                 <li
                     className='playlist-options add-plsong-create'
                     onClick={(e) => onPlaylistSelect(e, 'new')}

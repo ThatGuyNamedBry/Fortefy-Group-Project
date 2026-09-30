@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, useLocation, useHistory } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import LoginFormModal from "./components/LoginFormModal";
 import { useModal } from "./context/Modal";
 import { authenticate } from "./store/session";
+import { getCurrentUserAllPlaylistsThunk } from "./store/playlists";
 import Navigation from "./components/Navigation";
 import HomeLandingPage from "./components/HomeLandingPage";
 import AlbumDetails from "./components/AlbumDetails";
@@ -26,6 +27,13 @@ function App() {
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
+
+  // Every "add to playlist" menu lists these, so load them once per login
+  // rather than once per song row
+  const userId = useSelector((state) => state.session.user?.id);
+  useEffect(() => {
+    if (userId) dispatch(getCurrentUserAllPlaylistsThunk());
+  }, [dispatch, userId]);
 
   const { pathname, search } = useLocation();
   const history = useHistory();
