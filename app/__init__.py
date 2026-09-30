@@ -130,6 +130,14 @@ def method_not_allowed(e):
     return e
 
 
+@app.errorhandler(413)
+def request_too_large(e):
+    if is_api_request():
+        limit = app.config['MAX_CONTENT_LENGTH'] // (1024 * 1024)
+        return {'errors': f'File is too large. The limit is {limit} MB.'}, 413
+    return e
+
+
 @app.errorhandler(500)
 def internal_server_error(e):
     if is_api_request():

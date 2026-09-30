@@ -1,13 +1,22 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from flask_login import login_required, current_user
 from app.models import Album, db, Song
 from app.forms import AlbumForm, CreateSongForm
 from app.api.auth_routes import validation_errors_to_error_object
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from app.api.csrf import csrf_token_from_request
+from mutagen import MutagenError
 from mutagen.mp3 import MP3
+from mutagen.mp4 import MP4
+from mutagen.wave import WAVE
 
 album_routes = Blueprint('albums', __name__)
+
+# The mutagen reader for each extension CreateSongForm accepts
+# (ALLOWED_EXTENSIONS). mutagen.File() would have to guess the format from the
+# file's name and first bytes, and an upload's name never reaches it: it
+# returns None for a real WAV, and for an MP3 without an ID3 tag.
+AUDIO_READERS = {'mp3': MP3, 'm4a': MP4, 'wav': WAVE}
 
 @album_routes.route('')
 def get_all_albums():
@@ -98,8 +107,6 @@ def create_album_song(id):
     form = CreateSongForm()
     form['csrf_token'].data = csrf_token_from_request()
 
-    print('form data:', form.data)
-
     if form.validate_on_submit():
         album = Album.query.get(id)
 
@@ -107,14 +114,27 @@ def create_album_song(id):
             return { 'errors': 'Album not found'}, 404
 
         song = form.data['song']
-        audio = MP3(song)
+        extension = song.filename.rsplit('.', 1)[1].lower()
+
+        # The form only checked the name. A file whose contents are not the
+        # format its extension claims used to crash here with a 500
+        try:
+            audio = AUDIO_READERS[extension](song)
+            playable = audio.info.length > 0
+        except MutagenError:
+            playable = False
+        if not playable:
+            return { 'errors': { 'song': f'File is not a playable .{extension} file' } }, 400
+
         song.filename = get_unique_filename(song.filename)
         song.seek(0)
         upload = upload_file_to_s3(song)
 
-
+        # boto3's reason (bad credentials, missing bucket, no network) is for
+        # the logs; the browser only needs to know the file was not stored
         if 'url' not in upload:
-            return { 'errors': 'upload error'}
+            current_app.logger.error('Song upload to S3 failed: %s', upload['errors'])
+            return { 'errors': { 'song': 'The file could not be stored. Please try again later.' } }, 502
 
         newSong = Song (
             name = form.data['name'],
@@ -122,7 +142,8 @@ def create_album_song(id):
             song_url = upload['url'],
             user_id = album.user_id,
             album_id = album.id,
-            duration = audio.info.length
+            # mutagen measures in fractional seconds; the column holds whole ones
+            duration = round(audio.info.length)
         )
 
         db.session.add(newSong)
@@ -130,7 +151,6 @@ def create_album_song(id):
 
         return jsonify(newSong.to_dict())
 
-    print(validation_errors_to_error_object(form.errors))
     return { 'errors': validation_errors_to_error_object(form.errors)}, 400
 
 
