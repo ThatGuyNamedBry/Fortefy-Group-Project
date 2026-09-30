@@ -1,5 +1,5 @@
 import { csrfHeaders } from '../csrf';
-import { REQUEST_FAILED } from '../helpers';
+import { REQUEST_FAILED, getJson } from '../helpers';
 
 //                                           Action Types
 const LOAD_PLAYLISTS = 'playlists/LOAD_PLAYLISTS';
@@ -54,30 +54,23 @@ export const loadPlaylistSongsAction = (songs) => {
   //                                             Thunks
 //Get All Playlists Thunk
 export const getAllPlaylistsThunk = () => async (dispatch) => {
-    const response = await fetch('/api/playlists');
-    const playlists = await response.json();
-    dispatch(getAllPlaylistsAction(playlists));
+    const playlists = await getJson('/api/playlists');
+    if (!playlists.errors) dispatch(getAllPlaylistsAction(playlists));
     return playlists;
 };
 
 //Get All Playlists by Current User Thunk
 export const getCurrentUserAllPlaylistsThunk = () => async (dispatch, getState) => {
-    const response = await fetch('/api/playlists/current');
-    if (response.ok) {
-        const playlists = await response.json();
-        dispatch(getUserPlaylistsAction(getState().session.user?.id, playlists));
-        return playlists;
-    }
+    const playlists = await getJson('/api/playlists/current');
+    if (!playlists.errors) dispatch(getUserPlaylistsAction(getState().session.user?.id, playlists));
+    return playlists;
 };
 
 //Get Playlist by Id Thunk
 export const getPlaylistByIdThunk = (playlistId) => async (dispatch) => {
-    const response = await fetch(`/api/playlists/${playlistId}`);
-    if (response.ok) {
-        const playlist = await response.json();
-        dispatch(receivePlaylistAction(playlist));
-        return playlist;
-    }
+    const playlist = await getJson(`/api/playlists/${playlistId}`);
+    if (!playlist.errors) dispatch(receivePlaylistAction(playlist));
+    return playlist;
 };
 
 //Create a Playlist Thunk

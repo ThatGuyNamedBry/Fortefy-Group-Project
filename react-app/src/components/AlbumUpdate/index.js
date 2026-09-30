@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAlbumByIdThunk } from '../../store/albums';
 import AlbumForm from "../AlbumForm";
+import PageStatus, { useLoadStatus } from "../PageStatus";
 
 const AlbumUpdate = () => {
   const dispatch = useDispatch();
@@ -15,14 +16,13 @@ const AlbumUpdate = () => {
     state.session.user ? state.session.user : null
   );
 
-  useEffect(() => {
-    dispatch(getAlbumByIdThunk(albumId));
-  }, [dispatch, albumId]);
+  const status = useLoadStatus(useCallback(
+    () => dispatch(getAlbumByIdThunk(albumId)), [dispatch, albumId]));
 
-  if (!album) return (<h1>Album does not exist</h1>);
+  if (status === 'missing' || !album) return <PageStatus status={status} thing="album" />;
 
-
-  if (album.user.id === user.id) {
+  // Logged out, there is no user to compare against
+  if (user && album.user.id === user.id) {
     return (
       Object.keys(album).length > 1 && (
         <AlbumForm

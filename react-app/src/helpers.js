@@ -38,6 +38,23 @@ export const serverErrors = (errors, fields) => {
 // request never got an answer, or the answer was not our JSON
 export const REQUEST_FAILED = { errors: 'Something went wrong. Please try again.' };
 
+// GET one of our API routes. Resolves to the parsed body when the response is
+// ok, and to { errors, status } when it is not, so a failed load is never
+// dispatched into the store as if it were data. A request that got no
+// response at all has status 0; it is caught here rather than left as an
+// unhandled rejection inside a component's useEffect.
+export const getJson = async (url) => {
+    let status = 0;
+    try {
+        const response = await fetch(url);
+        status = response.status;
+        const body = await response.json();
+        return response.ok ? body : { errors: body.errors || REQUEST_FAILED.errors, status };
+    } catch {
+        return { ...REQUEST_FAILED, status };
+    }
+};
+
 //Image Validation
 export const checkImageErrors = (url) => {
     const isValidUrl = urlString=> {
