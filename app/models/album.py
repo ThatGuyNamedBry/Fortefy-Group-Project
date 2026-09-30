@@ -1,6 +1,5 @@
-from .db import db, environment, SCHEMA, add_prefix_for_prod
+from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
 from .user import User
-from datetime import datetime
 
 class Album(db.Model):
     __tablename__ = 'albums'
@@ -15,8 +14,8 @@ class Album(db.Model):
     artist = db.Column(db.String(50), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     genre = db.Column(db.String(50), nullable=False)
-    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    created_at = db.Column(db.DateTime, nullable=False, default=utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=utcnow, onupdate=utcnow)
 
     user = db.relationship('User', back_populates='albums')
     songs = db.relationship('Song', back_populates='album', cascade="all, delete")
@@ -31,4 +30,6 @@ class Album(db.Model):
             'genre': self.genre,
             'user': self.user.to_dict(),
             'songs': [song.to_dict() for song in self.songs],
+            'created_at': to_iso(self.created_at),
+            'updated_at': to_iso(self.updated_at),
         }

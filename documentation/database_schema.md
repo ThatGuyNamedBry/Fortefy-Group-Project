@@ -8,7 +8,7 @@
 | email       | string    | not null, indexed, unique |
 | password    | string    | not null                  |
 | created_at  | datetime  | not null                  |
-| updated-at  | datetime  | not null                  |
+| updated_at  | datetime  | not null                  |
 
 | rship name  | table     | back_populates        |
 |-------------|-----------|-----------------------|
@@ -29,7 +29,7 @@
 | year        | integer   | not null              |
 | genre       | string    | not null              |
 | created_at  | datetime  | not null              |
-| updated-at  | datetime  | not null              |
+| updated_at  | datetime  | not null              |
 
 | rship name  | table     | back_populates        |
 |-------------|-----------|-----------------------|
@@ -47,7 +47,7 @@
 | albumId     | integer   | not null, foreign key |
 | duration    | integer   | not null              | (int to convert later?)
 | created_at  | datetime  | not null              |
-| updated-at  | datetime  | not null              |
+| updated_at  | datetime  | not null              |
 
 | rship name  | table     | back_populates        |
 |-------------|-----------|-----------------------|
@@ -61,6 +61,8 @@
 |-------------|-----------|-----------------------|
 | songId      | integer   | not null, foreign key |
 | userId      | integer   | not null, foreign key |
+| created_at  | datetime  | not null              |
+| updated_at  | datetime  | not null              |
 
 | rship name  | table     | back_populates        |
 |-------------|-----------|-----------------------|
@@ -77,6 +79,8 @@
 | title       | string    | not null              |
 | art         | string?   | not null              |
 | description | string    |                       |
+| created_at  | datetime  | not null              |
+| updated_at  | datetime  | not null              |
 
 | rship  name | table     | back_populates        |
 |-------------|-----------|-----------------------|
@@ -91,7 +95,7 @@
 | songId      | integer   | not null, foreign key |
 | playlistId  | integer   | not null, foreign key |
 | created_at  | datetime  | not null              |
-| updated-at  | datetime  | not null              |
+| updated_at  | datetime  | not null              |
 
 | rship  name | table     | back_populates        |
 |-------------|-----------|-----------------------|
