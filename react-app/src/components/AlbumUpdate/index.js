@@ -9,7 +9,7 @@ const AlbumUpdate = () => {
   const dispatch = useDispatch();
   let { albumId } = useParams()
   const album = useSelector((state) =>
-    state.albums.singleAlbum[albumId] ? state.albums.singleAlbum[albumId] : null
+    state.albums.allAlbums[albumId] ? state.albums.allAlbums[albumId] : null
   );
 
   const user = useSelector((state) =>

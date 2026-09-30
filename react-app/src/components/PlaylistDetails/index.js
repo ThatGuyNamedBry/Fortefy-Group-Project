@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getPlaylistByIdThunk, removePlaylistSongThunk, loadPlaylistSongsAction } from '../../store/playlists';
-import { getAllSongsAction } from '../../store/songs';
 import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import LikeButton from '../LikeButton';
 import PageStatus, { useLoadStatus } from '../PageStatus';
@@ -42,7 +41,6 @@ const PlaylistDetails = () => {
             let time = 0;
             setPlaylistDuration(0);
             const normalizedPlayerSongs = {};
-            const allSongsStoreArray = [];
             const songsArray = [];
             playlist.playlist_songs.forEach(playlistSong => {
                 time += playlistSong.song.duration;
@@ -54,8 +52,6 @@ const PlaylistDetails = () => {
 
                 // array of songs(duplicates, included) for the Playlist Store
                 songsArray.push(playlistSong.song);
-                // array of Unique songs for the Songs Store
-                allSongsStoreArray.push(playlistSong.song);
             });
 
             setPlaylistDuration(time);
@@ -63,8 +59,6 @@ const PlaylistDetails = () => {
 
             // Load Playlist songs to display the correct number of each song from Playlists Store
             dispatch(loadPlaylistSongsAction(songsArray));
-            // getAllSongsAction to populate All Songs in Songs store for like functionality purposes after refresh
-            dispatch(getAllSongsAction(allSongsStoreArray));
         }
     }, [dispatch, playlist]);
 

@@ -3,7 +3,9 @@ import { getJson } from '../helpers';
 
 //                                           Action Types
 const LOAD_SONGS = 'songs/LOAD_SONGS';
-const LOAD_SONG = 'songs/LOAD_SONG';
+const LOAD_USER_SONGS = 'songs/LOAD_USER_SONGS';
+const RECEIVE_SONGS = 'songs/RECEIVE_SONGS';
+const REMOVE_ALBUM_SONGS = 'songs/REMOVE_ALBUM_SONGS';
 const CREATE_SONG = 'songs/CREATE_SONG';
 const UPDATE_SONG = 'songs/UPDATE_SONG';
 const DELETE_SONG = 'songs/DELETE_SONG';
@@ -13,7 +15,11 @@ const REMOVE_LIKE = 'songs/REMOVE_LIKE';
 
 //                                         Action Creators
 
-//Get All Songs Action
+// allSongs is a cache of every song seen so far, keyed by id. Pages read the
+// songs they show out of it through selectors rather than each loading "their"
+// list into it, so the like button finds its song on any page.
+
+// Every song there is (/api/songs), so it replaces the cache outright
 export const getAllSongsAction = (songs) => {
   return {
     type: LOAD_SONGS,
@@ -21,11 +27,29 @@ export const getAllSongsAction = (songs) => {
   };
 };
 
-//Get Song by ID Action
-export const getSongByIdAction = (song) => {
+// One user's songs (/api/songs/current): replaces that user's entries, a song
+// deleted elsewhere included, and leaves everyone else's alone
+export const getUserSongsAction = (userId, songs) => {
   return {
-    type: LOAD_SONG,
-    payload: song,
+    type: LOAD_USER_SONGS,
+    payload: { userId, songs },
+  };
+};
+
+// Any other handful of songs (an album's, a playlist's, liked songs, search
+// results): merged in, never replacing what is already there
+export const receiveSongsAction = (songs) => {
+  return {
+    type: RECEIVE_SONGS,
+    payload: songs,
+  };
+};
+
+// Deleting an album deletes its songs on the server too
+export const removeAlbumSongsAction = (albumId) => {
+  return {
+    type: REMOVE_ALBUM_SONGS,
+    payload: albumId,
   };
 };
 
@@ -81,23 +105,23 @@ export const getAllSongsThunk = () => async (dispatch) => {
 };
 
 //Get All Songs by Current User Thunk
-export const getCurrentUserAllSongsThunk = () => async (dispatch) => {
+export const getCurrentUserAllSongsThunk = () => async (dispatch, getState) => {
   const songs = await getJson('/api/songs/current');
-  if (!songs.errors) dispatch(getAllSongsAction(songs));
+  if (!songs.errors) dispatch(getUserSongsAction(getState().session.user?.id, songs));
   return songs;
 };
 
 //Get Current User's Liked Songs Thunk
 export const getLikedSongsThunk = () => async (dispatch) => {
   const songs = await getJson('/api/songs/liked');
-  if (!songs.errors) dispatch(getAllSongsAction(songs));
+  if (!songs.errors) dispatch(receiveSongsAction(songs));
   return songs;
 };
 
 //Get Song by ID Thunk
 export const getSongByIdThunk = (songId) => async (dispatch) => {
   const song = await getJson(`/api/songs/${songId}`);
-  if (!song.errors) dispatch(getSongByIdAction(song));
+  if (!song.errors) dispatch(receiveSongsAction([song]));
   return song;
 };
 
@@ -187,35 +211,66 @@ export const removeLikeThunk = (songId, likeId) => async (dispatch) => {
 }
 
 
+//                                            Selectors
+// Each returns a new array, but of the same song objects until one of them
+// changes, so pass shallowEqual to useSelector.
+
+// An album's songs in track order, as currently cached (likes included)
+export const selectAlbumSongs = (state, albumId) => {
+  const album = state.albums.allAlbums[albumId];
+  if (!album) return [];
+  return album.songs
+    .map(song => state.songs.allSongs[song.id])
+    .filter(Boolean)
+    .sort((song1, song2) => song1.track_number - song2.track_number);
+};
+
+// The logged-in user's own songs
+export const selectUserSongs = (state) => {
+  const userId = state.session.user?.id;
+  return Object.values(state.songs.allSongs).filter(song => song.user_id === userId);
+};
+
+const byId = (songs) => {
+  const songsObject = {};
+  songs.forEach((song) => { songsObject[song.id] = song; });
+  return songsObject;
+};
+
 //Reducer function
 const initialState = {
     allSongs: {},
-    singleSong: {}
   }
 
   const songReducer = (state = initialState, action) => {
     switch (action.type) {
       case LOAD_SONGS:
-        // console.log(action.payload);
-        const allSongsObject = {};
-        action.payload.forEach((song) => {
-          allSongsObject[song.id] = song;
-        });
-        return { ...state, allSongs: allSongsObject };
-      case LOAD_SONG:
-        return { ...state, singleSong: {[action.payload.id]: action.payload}};
+        return { ...state, allSongs: byId(action.payload) };
+      case LOAD_USER_SONGS: {
+        const { userId, songs } = action.payload;
+        const others = Object.values(state.allSongs).filter(song => song.user_id !== userId);
+        return { ...state, allSongs: { ...byId(others), ...byId(songs) } };
+      }
+      case RECEIVE_SONGS:
+        return { ...state, allSongs: { ...state.allSongs, ...byId(action.payload) } };
       case CREATE_SONG:
         return {...state, allSongs: {  ...state.allSongs, [action.payload.id]: action.payload }};
       case UPDATE_SONG:
-        return { ...state, allSongs: { ...state.allSongs, [action.payload.id]: action.payload }, singleSong: { [action.payload.id]: action.payload} }
+        return { ...state, allSongs: { ...state.allSongs, [action.payload.id]: action.payload } }
       case DELETE_SONG:
         const newSongs = { ...state.allSongs };
         delete newSongs[action.payload];
         return { ...state, allSongs: newSongs };
+      case REMOVE_ALBUM_SONGS:
+        return { ...state, allSongs: byId(Object.values(state.allSongs).filter(song => song.album_id !== action.payload)) };
       case ADD_LIKE:
+        // Every page caches the songs it shows, but a like for one that is not
+        // cached should be a no-op rather than a TypeError
+        if (!state.allSongs[action.songId]) return state;
         const songLikesAdded = [...state.allSongs[action.songId].likes, action.like];
         return { ...state, allSongs: { ...state.allSongs, [action.songId]: { ...state.allSongs[action.songId], likes: [...songLikesAdded] } } }
       case REMOVE_LIKE:
+        if (!state.allSongs[action.songId]) return state;
         const currentLikes = [...state.allSongs[action.songId].likes];
         const deleteLike = currentLikes.find(like => like.id === action.likeId);
         const ind = currentLikes.indexOf(deleteLike);

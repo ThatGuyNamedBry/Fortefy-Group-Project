@@ -1,3 +1,5 @@
+import { receiveSongsAction } from './songs';
+
 //                                           Action Types
 const START_SEARCH = 'search/START_SEARCH';
 const LOAD_SEARCH_RESULTS = 'search/LOAD_SEARCH_RESULTS';
@@ -48,6 +50,8 @@ export const searchThunk = (query) => async (dispatch) => {
       throw new Error('Search request failed');
     }
     const results = await response.json();
+    // Cached so the like buttons on the results find their songs
+    dispatch(receiveSongsAction(results.songs));
     dispatch(loadSearchResultsAction(query, results));
     return results;
   } catch (err) {

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getAlbumByIdThunk } from '../../store/albums';
-import { getAllSongsAction } from '../../store/songs';
+import { selectAlbumSongs } from '../../store/songs';
 import AddMusicButton from '../AddMusicButton';
 import LikeButton from '../LikeButton';
 import AddMusicModal from '../AddMusicModal'
@@ -21,11 +21,12 @@ const AlbumDetails = () => {
     const history = useHistory();
     const { albumId } = useParams();
 
-    const singleAlbum = useSelector(state => state.albums.singleAlbum[albumId]);
+    const singleAlbum = useSelector(state => state.albums.allAlbums[albumId]);
     const user = useSelector(state => state.session.user)
-    const songs = useSelector(state => state.songs.allSongs);
-
-    const songsArray = Object.values(songs).sort((song1, song2) => song1.track_number - song2.track_number);
+    // This album's songs, from the songs cache so their likes are current.
+    // They used to be whatever the songs store last held: arriving from the
+    // home page listed every song in the library until this album loaded.
+    const songsArray = useSelector(state => selectAlbumSongs(state, albumId), shallowEqual);
     const albumTime = songsArray.reduce((acc, song) => acc + song.duration, 0);
 
     // const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
@@ -36,10 +37,6 @@ const AlbumDetails = () => {
         () => dispatch(getAlbumByIdThunk(albumId)), [dispatch, albumId]));
 
     useEffect(() => {
-        dispatch(getAllSongsAction(singleAlbum ? singleAlbum.songs : []));
-    }, [dispatch, singleAlbum])
-
-    useEffect(() => {
         setUserOwned(singleAlbum?.user?.id === user?.id);
     }, [dispatch, singleAlbum, user]);
 
@@ -48,13 +45,11 @@ const AlbumDetails = () => {
     };
 
     const handlePlayAlbum = () => {
-        const albumSongIds = singleAlbum.songs.map((song) => song.id);
-        const albumSongs = albumSongIds.map((songId) => songs[songId]);
-        dispatch(setCurrentPlaylist(albumSongs));
+        dispatch(setCurrentPlaylist(songsArray));
         dispatch(setCurrentSongIndex(0));
     };
     const handlePlaySong = (songId) => {
-        const selectedSong = songs[songId];
+        const selectedSong = songsArray.find(song => song.id === songId);
         dispatch(setCurrentPlaylist([selectedSong]));
         dispatch(setCurrentSongIndex(0));
     };
