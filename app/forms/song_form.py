@@ -3,8 +3,9 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import SubmitField, StringField, IntegerField
 from wtforms.validators import DataRequired, Length, NumberRange
 
-from ..api.aws_helper import ALLOWED_EXTENSIONS
 from .validators import NumberRequired
+
+ALLOWED_EXTENSIONS = {"mp3", "m4a", "wav"}
 
 
 class SongForm(FlaskForm):

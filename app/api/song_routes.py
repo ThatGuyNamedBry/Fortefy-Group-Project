@@ -129,10 +129,12 @@ def delete_song(id):
     if selected_song.to_dict()['user_id'] != current_user.id:
         return { 'errors': 'Song not found' }, 404
 
-    remove_file_from_s3(selected_song.to_dict()['song_url'])
+    song_url = selected_song.song_url
 
     db.session.delete(selected_song)
     db.session.commit()
+
+    remove_file_from_s3(song_url)
 
     return { 'message': 'Deleted Successfully' }
 

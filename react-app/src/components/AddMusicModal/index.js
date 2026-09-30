@@ -6,7 +6,7 @@ import "./AddMusicModal.css"
 import { getAlbumByIdThunk } from '../../store/albums';
 
 // Keep these in step with the server: ALLOWED_EXTENSIONS in
-// app/api/aws_helper.py and MAX_CONTENT_LENGTH in app/config.py
+// app/forms/song_form.py and MAX_CONTENT_LENGTH in app/config.py
 const AUDIO_EXTENSIONS = ['mp3', 'm4a', 'wav'];
 const MAX_UPLOAD_MB = 50;
 
