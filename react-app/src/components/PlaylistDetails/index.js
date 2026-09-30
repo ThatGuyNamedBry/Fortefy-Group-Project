@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
@@ -6,6 +6,7 @@ import { getPlaylistByIdThunk, removePlaylistSongThunk, loadPlaylistSongsAction 
 import { getAllSongsAction } from '../../store/songs';
 import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import LikeButton from '../LikeButton';
+import PageStatus, { useLoadStatus } from '../PageStatus';
 import './PlaylistDetails.css';
 
 const PlaylistDetails = () => {
@@ -33,9 +34,8 @@ const PlaylistDetails = () => {
         setHoveredSong(-1);
     }
 
-    useEffect(() => {
-        dispatch(getPlaylistByIdThunk(playlistId));
-    }, [dispatch, playlistId]);
+    const status = useLoadStatus(useCallback(
+        () => dispatch(getPlaylistByIdThunk(playlistId)), [dispatch, playlistId]));
 
     useEffect(() => {
         if (playlist?.id) {
@@ -92,8 +92,10 @@ const PlaylistDetails = () => {
         const removeSong = playlist.playlist_songs.find(song => song.song_id === songId);
         dispatch(removePlaylistSongThunk(playlistId, removeSong.id));
     }
-    if(!playlist?.id) {
-        return <h1>This playlist does not exist.</h1>
+    // singlePlaylist is whichever playlist loaded last, which is the previous
+    // page's until this one arrives, and stays so if this one never does
+    if (status === 'missing' || playlist?.id !== Number(playlistId)) {
+        return <PageStatus status={status} thing="playlist" />
     }
 
     return (

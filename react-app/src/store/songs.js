@@ -1,4 +1,5 @@
 import { csrfHeaders } from '../csrf';
+import { getJson } from '../helpers';
 
 //                                           Action Types
 const LOAD_SONGS = 'songs/LOAD_SONGS';
@@ -74,38 +75,30 @@ export const removeLikeAction = (songId, likeId) => {
 //                                             Thunks
 //Get All Songs Thunk
 export const getAllSongsThunk = () => async (dispatch) => {
-  const response = await fetch('/api/songs');
-  const songs = await response.json();
-  dispatch(getAllSongsAction(songs));
-  return response;
+  const songs = await getJson('/api/songs');
+  if (!songs.errors) dispatch(getAllSongsAction(songs));
+  return songs;
 };
 
 //Get All Songs by Current User Thunk
 export const getCurrentUserAllSongsThunk = () => async (dispatch) => {
-  const response = await fetch('/api/songs/current');
-  if (response.ok) {
-    const songs = await response.json();
-    dispatch(getAllSongsAction(songs));
-    return songs;
-  }
+  const songs = await getJson('/api/songs/current');
+  if (!songs.errors) dispatch(getAllSongsAction(songs));
+  return songs;
 };
 
 //Get Current User's Liked Songs Thunk
 export const getLikedSongsThunk = () => async (dispatch) => {
-  const response = await fetch('/api/songs/liked');
-  if (response.ok) {
-    const songs = await response.json();
-    dispatch(getAllSongsAction(songs));
-    return songs;
-  }
+  const songs = await getJson('/api/songs/liked');
+  if (!songs.errors) dispatch(getAllSongsAction(songs));
+  return songs;
 };
 
 //Get Song by ID Thunk
 export const getSongByIdThunk = (songId) => async (dispatch) => {
-  const response = await fetch(`/api/songs/${songId}`);
-  const song = await response.json();
-  dispatch(getSongByIdAction(song));
-  return response;
+  const song = await getJson(`/api/songs/${songId}`);
+  if (!song.errors) dispatch(getSongByIdAction(song));
+  return song;
 };
 
 //Create a Song Thunk

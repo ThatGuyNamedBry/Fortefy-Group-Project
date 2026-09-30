@@ -1,0 +1,35 @@
+.page-loading {
+    display: flex;
+    justify-content: center;
+    padding: 80px 0;
+}
+
+/* Only shows up if loading takes longer than a moment, so a fast load goes
+   straight to the page instead of flashing a spinner */
+.page-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: rgb(0, 191, 0);
+    border-radius: 50%;
+    opacity: 0;
+    animation: page-spinner-appear 0s linear 0.2s forwards, page-spinner-spin 0.8s linear infinite;
+}
+
+@keyframes page-spinner-appear {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes page-spinner-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-spinner {
+        animation: page-spinner-appear 0s linear 0.2s forwards, page-spinner-spin 3s linear infinite;
+    }
+}

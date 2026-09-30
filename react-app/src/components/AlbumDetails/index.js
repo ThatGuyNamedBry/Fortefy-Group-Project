@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
@@ -13,6 +13,7 @@ import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import DeleteMusicButton from '../DeleteMusicButton/DeleteMusicButton';
 import EditSongButton from '../EditSongButton';
 import AddPLSongButton from '../AddPLSongButton';
+import PageStatus, { useLoadStatus } from '../PageStatus';
 
 const AlbumDetails = () => {
 
@@ -31,9 +32,8 @@ const AlbumDetails = () => {
     const [hoveredSong, setHoveredSong] = useState(-1);
     const [userOwned, setUserOwned] = useState(false);
 
-    useEffect(() => {
-        dispatch(getAlbumByIdThunk(albumId));
-    }, [dispatch, albumId]);
+    const status = useLoadStatus(useCallback(
+        () => dispatch(getAlbumByIdThunk(albumId)), [dispatch, albumId]));
 
     useEffect(() => {
         dispatch(getAllSongsAction(singleAlbum ? singleAlbum.songs : []));
@@ -66,7 +66,9 @@ const AlbumDetails = () => {
         setHoveredSong(-1);
     }
 
-    if (!singleAlbum) return <h1>This album does not exist.</h1>
+    // An album seen before shows from the store while it reloads, unless the
+    // reload says it has since been deleted
+    if (status === 'missing' || !singleAlbum) return <PageStatus status={status} thing="album" />
 
     return (
         <div className='album-details-container page-wrapper'>

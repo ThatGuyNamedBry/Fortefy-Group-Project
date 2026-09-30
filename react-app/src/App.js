@@ -19,6 +19,7 @@ import PlaylistCreate from "./components/PlaylistCreate";
 import LikedSongs from "./components/LikedSongs";
 import Footer from "./components/Footer";
 import SearchPage from "./components/SearchPage";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   const dispatch = useDispatch();
@@ -58,19 +59,21 @@ function App() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
-        <Switch>
-          <Route exact path="/" component={HomeLandingPage} />
-          <Route exact path="/profile" component={ProfilePage} />
-          <Route exact path="/search" component={SearchPage} />
-          <Route path="/login" component={LoginFormPage} />
-          <Route path="/signup" component={SignupFormPage} />
-          <Route path="/albums/new" component={AlbumCreate} />
-          <Route path="/playlists/new" component={PlaylistCreate} />
-          <Route exact path="/playlists/liked" component={LikedSongs} />
-          <Route path="/albums/:albumId/edit" component={AlbumUpdate} />
-          <Route path="/albums/:albumId" component={AlbumDetails} />
-          <Route path="/playlists/:playlistId" component={PlaylistDetails} />
-        </Switch>
+        <ErrorBoundary resetKey={pathname}>
+          <Switch>
+            <Route exact path="/" component={HomeLandingPage} />
+            <Route exact path="/profile" component={ProfilePage} />
+            <Route exact path="/search" component={SearchPage} />
+            <Route path="/login" component={LoginFormPage} />
+            <Route path="/signup" component={SignupFormPage} />
+            <Route path="/albums/new" component={AlbumCreate} />
+            <Route path="/playlists/new" component={PlaylistCreate} />
+            <Route exact path="/playlists/liked" component={LikedSongs} />
+            <Route path="/albums/:albumId/edit" component={AlbumUpdate} />
+            <Route path="/albums/:albumId" component={AlbumDetails} />
+            <Route path="/playlists/:playlistId" component={PlaylistDetails} />
+          </Switch>
+        </ErrorBoundary>
       )}
       <Footer />
       <AudioPlayerComponent />

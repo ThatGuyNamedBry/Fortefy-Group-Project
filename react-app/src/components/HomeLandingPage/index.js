@@ -22,11 +22,18 @@ const HomeLandingPage = () => {
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
     const [hoveredSong, setHoveredSong] = useState(null);
+    const [loadFailed, setLoadFailed] = useState(false);
 
     useEffect(() => {
-        dispatch(getAllAlbumsThunk());
-        dispatch(getAllSongsThunk());
-        dispatch(getAllPlaylistsThunk());
+        let current = true;
+        Promise.all([
+            dispatch(getAllAlbumsThunk()),
+            dispatch(getAllSongsThunk()),
+            dispatch(getAllPlaylistsThunk()),
+        ]).then(results => {
+            if (current) setLoadFailed(results.some(result => result.errors));
+        });
+        return () => { current = false; };
     }, [dispatch]);
 
     useEffect(() => {
@@ -99,6 +106,11 @@ const HomeLandingPage = () => {
                 </div>
             </div>
             <div className="discover-music-container">
+                {loadFailed && (
+                    <p className="errors" role="alert">
+                        Some of the library could not be loaded. Please refresh the page.
+                    </p>
+                )}
                 <Carousel
                     title="All Albums"
                     items={Object.values(allAlbums)}

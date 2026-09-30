@@ -1,5 +1,5 @@
 import { csrfHeaders } from '../csrf';
-import { REQUEST_FAILED } from '../helpers';
+import { REQUEST_FAILED, getJson } from '../helpers';
 
 //                                           Action Types
 const LOAD_ALBUMS = 'albums/LOAD_ALBUMS';
@@ -55,30 +55,23 @@ export const deleteAlbumAction = (albumId) => {
 //                                             Thunks
 //Get All Albums Thunk
 export const getAllAlbumsThunk = () => async (dispatch) => {
-  const response = await fetch('/api/albums');
-  const albums = await response.json();
-  dispatch(getAllAlbumsAction(albums));
-  return response;
+  const albums = await getJson('/api/albums');
+  if (!albums.errors) dispatch(getAllAlbumsAction(albums));
+  return albums;
 };
 
 //Get All Albums by Current User Thunk
 export const getCurrentUserAllAlbumsThunk = () => async (dispatch) => {
-  const response = await fetch('/api/albums/current');
-  if (response.ok) {
-    const albums = await response.json();
-    dispatch(getAllAlbumsAction(albums));
-    return albums;
-  }
+  const albums = await getJson('/api/albums/current');
+  if (!albums.errors) dispatch(getAllAlbumsAction(albums));
+  return albums;
 };
 
 //Get Album by ID Thunk
 export const getAlbumByIdThunk = (albumId) => async (dispatch) => {
-  const response = await fetch(`/api/albums/${albumId}`);
-  if (response.ok) {
-    const album = await response.json();
-    dispatch(getAlbumByIdAction(album));
-    return album;
-  }
+  const album = await getJson(`/api/albums/${albumId}`);
+  if (!album.errors) dispatch(getAlbumByIdAction(album));
+  return album;
 };
 
 //Create an Album Thunk
