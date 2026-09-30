@@ -1,4 +1,5 @@
 import { csrfHeaders } from '../csrf';
+import { REQUEST_FAILED } from '../helpers';
 
 //                                           Action Types
 const LOAD_ALBUMS = 'albums/LOAD_ALBUMS';
@@ -98,8 +99,9 @@ export const createAlbumThunk = (formData) => async (dispatch) => {
       return newAlbum
     }
     return dispatch(createAlbumAction(newAlbum))
-  } catch (err) {
-    return err
+  } catch {
+    // Returning the Error itself sent the form on to read .payload.id off it
+    return REQUEST_FAILED
   }
 };
 
@@ -118,8 +120,8 @@ export const updateAlbumThunk = (album, formData) => async (dispatch) => {
       return updatedAlbum
     }
     return dispatch(updateAlbumAction(updatedAlbum))
-  } catch (err) {
-    return err
+  } catch {
+    return REQUEST_FAILED
   }
 }
 

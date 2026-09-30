@@ -20,6 +20,24 @@ export const secsToMins = (time) => {
 
 /************       Error Validation        ************/
 
+// Turns a server error body's `errors` into the form's own error object.
+// fields maps each server field name to the key the form shows it under.
+// Some errors are one message for the whole request ('Album not found'), and
+// they, like an error on a field the form has no input for, go under `server`.
+export const serverErrors = (errors, fields) => {
+    if (typeof errors === 'string') return { server: errors };
+
+    const mapped = {};
+    for (const [field, message] of Object.entries(errors || {})) {
+        mapped[fields[field] || 'server'] = message;
+    }
+    return mapped;
+}
+
+// What a thunk hands back when there is no usable response at all: the
+// request never got an answer, or the answer was not our JSON
+export const REQUEST_FAILED = { errors: 'Something went wrong. Please try again.' };
+
 //Image Validation
 export const checkImageErrors = (url) => {
     const isValidUrl = urlString=> {

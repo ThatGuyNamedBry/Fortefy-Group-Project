@@ -2,16 +2,22 @@ import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createAlbumThunk, updateAlbumThunk } from "../../store/albums";
+import { serverErrors } from "../../helpers";
 import "./AlbumForm.css"
+
+// Every field the server can report on has an input of the same name here
+const ALBUM_FIELDS = { artist: 'artist', name: 'name', year: 'year', genre: 'genre', art: 'art' };
 
 const AlbumForm = ({ album, formType }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [artist, setArtist] = useState(album?.artist);
-  const [name, setName] = useState(album?.name);
-  const [year, setYear] = useState(album?.year);
-  const [genre, setGenre] = useState(album?.genre);
-  const [art, setArt] = useState(album?.art === 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Compact_Disc.jpg' ? '' : album?.art);
+  // '' rather than undefined when creating, so each input is controlled from
+  // the first render instead of switching over on the first keystroke
+  const [artist, setArtist] = useState(album?.artist ?? '');
+  const [name, setName] = useState(album?.name ?? '');
+  const [year, setYear] = useState(album?.year ?? '');
+  const [genre, setGenre] = useState(album?.genre ?? '');
+  const [art, setArt] = useState(album?.art === 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Compact_Disc.jpg' ? '' : album?.art ?? '');
   const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
@@ -37,7 +43,7 @@ const AlbumForm = ({ album, formType }) => {
       }
 
       if (album.errors) {
-        setErrors(album.errors)
+        setErrors(serverErrors(album.errors, ALBUM_FIELDS))
       } else {
         history.push(`/albums/${album.payload.id}`);
       }
@@ -138,11 +144,13 @@ const AlbumForm = ({ album, formType }) => {
           </button>
           <button
             id="cancel-button"
+            type="button"
             onClick={handleCancelClick}>
             Cancel
           </button>
         </div>
         {errors.empty ? <p className="errors empty-error">{errors.empty}</p> : null}
+        {errors.server ? <p className="errors empty-error">{errors.server}</p> : null}
       </form>
     </div>
   )

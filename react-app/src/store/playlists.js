@@ -1,4 +1,5 @@
 import { csrfHeaders } from '../csrf';
+import { REQUEST_FAILED } from '../helpers';
 
 //                                           Action Types
 const LOAD_PLAYLISTS = 'playlists/LOAD_PLAYLISTS';
@@ -88,8 +89,9 @@ export const createPlaylistThunk = (formData) => async (dispatch) => {
         }
         dispatch(receivePlaylistAction(newPlaylist));
         return newPlaylist;
-    } catch (err) {
-        return err
+    } catch {
+        // Returning the Error itself sent the form on to /playlists/undefined
+        return REQUEST_FAILED
     }
 };
 
@@ -107,9 +109,12 @@ export const updatePlaylistThunk = (playlistId, formData) => async (dispatch) =>
         if (!response.ok) {
             return updatedPlaylist;
         }
-        return dispatch(receivePlaylistAction(updatedPlaylist));
-    } catch (err) {
-        return err;
+        dispatch(receivePlaylistAction(updatedPlaylist));
+        // The playlist, like createPlaylistThunk, not the action: the form
+        // reads .id off whatever comes back
+        return updatedPlaylist;
+    } catch {
+        return REQUEST_FAILED;
     }
 }
 

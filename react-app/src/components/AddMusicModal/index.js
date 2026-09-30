@@ -4,6 +4,7 @@ import { useModal } from '../../context/Modal';
 import { createSongThunk, updateSongThunk } from '../../store/songs';
 import "./AddMusicModal.css"
 import { getAlbumByIdThunk } from '../../store/albums';
+import { serverErrors } from '../../helpers';
 
 // Keep these in step with the server: ALLOWED_EXTENSIONS in
 // app/forms/song_form.py and MAX_CONTENT_LENGTH in app/config.py
@@ -11,23 +12,12 @@ const AUDIO_EXTENSIONS = ['mp3', 'm4a', 'wav'];
 const MAX_UPLOAD_MB = 50;
 
 // The server names errors after its form fields, this modal after its state
-const SERVER_FIELDS = { name: 'songName', track_number: 'trackNumber', song: 'file1' };
-
-function serverErrors(errors) {
-  // Some errors are one message for the whole request ('Album not found')
-  if (typeof errors === 'string') return { server: errors };
-
-  const mapped = {};
-  for (const [field, message] of Object.entries(errors)) {
-    mapped[SERVER_FIELDS[field] || 'server'] = message;
-  }
-  return mapped;
-}
+const SONG_FIELDS = { name: 'songName', track_number: 'trackNumber', song: 'file1' };
 
 function AddMusicModal({ album, type, song }) {
   const dispatch = useDispatch();
-  const [songName, setSongName] = useState(song?.name);
-  const [trackNumber, setTrackNumber] = useState(song?.track_number)
+  const [songName, setSongName] = useState(song?.name ?? '');
+  const [trackNumber, setTrackNumber] = useState(song?.track_number ?? '')
   const [file1, setFile1] = useState('')
   const [disableButton, setDisableButton] = useState(false)
   const [errors, setErrors] = useState({});
@@ -68,7 +58,7 @@ function AddMusicModal({ album, type, song }) {
 
     // Stay open so the user can see what went wrong and try again
     if (result.errors) {
-      setErrors(serverErrors(result.errors))
+      setErrors(serverErrors(result.errors, SONG_FIELDS))
       setDisableButton(false)
       return
     }
@@ -81,6 +71,7 @@ function AddMusicModal({ album, type, song }) {
     <div className='add-music-container'>
       <form id="add-music-form"
         encType="multipart/form-data"
+        onSubmit={handleSubmit}
         aria-busy={disableButton}>
         {type === 'create' ? <h2>Add some music to your album</h2> : <h2>Update your song's info</h2>}
 
@@ -132,7 +123,7 @@ function AddMusicModal({ album, type, song }) {
           }
         </div>
 
-        <button id="submit-song-button" onClick={handleSubmit} disabled={disableButton}>
+        <button id="submit-song-button" type="submit" disabled={disableButton}>
           {disableButton
             ? <><span className="upload-spinner" aria-hidden="true" /> {type === 'create' ? 'Uploading…' : 'Saving…'}</>
             : type === 'create' ? 'Add Song' : 'Update'}

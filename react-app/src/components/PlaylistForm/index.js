@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { createPlaylistThunk, updatePlaylistThunk } from "../../store/playlists";
-import { playlistValidation } from "../../helpers";
+import { playlistValidation, serverErrors } from "../../helpers";
 import './PlaylistForm.css';
+
+const PLAYLIST_FIELDS = { title: 'title', art: 'art', description: 'description' };
 
 const PlaylistForm = ({ playlist, formType }) => {
     const history = useHistory();
@@ -31,7 +33,7 @@ const PlaylistForm = ({ playlist, formType }) => {
             }
 
             if (playlist?.errors) {
-                setErrors({ ...playlist.errors, flag: true } );
+                setErrors({ ...serverErrors(playlist.errors, PLAYLIST_FIELDS), flag: true });
             } else {
                 history.push(`/playlists/${playlist.id}`);
             }
@@ -93,10 +95,12 @@ const PlaylistForm = ({ playlist, formType }) => {
                     </button>
                     <button
                     id="cancel-button"
+                    type="button"
                     onClick={() => history.goBack()}>
                         Cancel
                     </button>
                 </div>
+                {errors.server ? <p className="errors">{errors.server}</p> : null}
             </form>
         </div>
     )
