@@ -36,9 +36,22 @@ a {
   margin-left: 2px;
 }
 
+/* A creator's links show while the pointer is over their name, or while one
+   of the links has keyboard focus. The links stay in the tab order when
+   hidden, because display: none is on the icon, not on the <a>. */
 .creator-link-icon {
   display: none;
   color: rgba(255, 255, 255, 0.465);
+}
+
+.creator:hover .creator-link-icon,
+.creator:focus-within .creator-link-icon {
+  display: block;
+}
+
+.creator:hover .creator-text,
+.creator:focus-within .creator-text {
+  color: white;
 }
 
 .creator-link-icon:hover,
@@ -46,9 +59,8 @@ a {
   color: white;
 }
 
-.creator-text:hover {
-  color: white;
-  cursor: default
+.creator-text {
+  cursor: default;
 }
 
 .linkedin-image {
