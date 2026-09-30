@@ -1,63 +1,68 @@
-import React, { useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import './AudioPlayer.css';
-import { setIsPlaying, setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
+import { setIsPlaying, setCurrentSongIndex, clearQueue } from '../../store/player';
+
+// Pressing Previous later than this into a song starts it over, as in most
+// music players; pressing it again straight away goes back a song
+const RESTART_THRESHOLD_SECONDS = 3;
 
 const AudioPlayerComponent = () => {
   const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
   const currentSongIndex = useSelector((state) => state.player.currentSongIndex);
-  const isPlaying = useSelector((state) => state.player.isPlaying);
+  const player = useRef(null);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (currentPlaylist && currentPlaylist.length > 0) {
-      dispatch(setIsPlaying(true));
-    }
-  }, [currentPlaylist, dispatch]);
-
   const handleNextSong = () => {
     if (currentSongIndex + 1 < currentPlaylist.length) {
-      dispatch(setIsPlaying(true));
       dispatch(setCurrentSongIndex(currentSongIndex + 1));
     } else {
-      dispatch(setIsPlaying(false));
-      dispatch(setCurrentPlaylist({}));
-      dispatch(setCurrentSongIndex(0));
+      dispatch(clearQueue());
     }
   };
 
-  const handlePlayPause = () => {
-    dispatch(setIsPlaying(!isPlaying));
+  const handlePrevSong = () => {
+    const audio = player.current?.audio.current;
+    if (currentSongIndex > 0 && audio && audio.currentTime < RESTART_THRESHOLD_SECONDS) {
+      dispatch(setCurrentSongIndex(currentSongIndex - 1));
+    } else if (audio) {
+      // The first song, or far enough in: the same src, so rewind it by hand
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    }
   };
+
+  const song = currentPlaylist[currentSongIndex];
 
   return (
     <div id="audio-player-container">
-      {currentPlaylist && currentPlaylist.length > 0 && (
+      {song && (
         <AudioPlayer
+          ref={player}
           layout='stacked-reverse'
           autoPlay={true}
           showSkipControls={true}
           showJumpControls={true}
-          hasDefaultKeyBindings={false}
-          src={currentPlaylist[currentSongIndex]?.song_url}
-          header={`${currentPlaylist[currentSongIndex]?.name} - ${currentPlaylist[currentSongIndex]?.artist}`}
+          src={song.song_url}
+          header={`${song.name} - ${song.artist}`}
           customAdditionalControls={[
             <img
               key="album-art"
               className="audio-player-art"
-              src={currentPlaylist[currentSongIndex]?.album_art}
-              alt={currentPlaylist[currentSongIndex]?.name}
+              src={song.album_art}
+              alt={song.name}
             />,
           ]}
           onClickNext={handleNextSong}
-          onClickPrevious={handleNextSong}
-          onClickPlay={handlePlayPause}
-          onClickPause={handlePlayPause}
+          onClickPrevious={handlePrevSong}
           onEnded={handleNextSong}
-          playing={isPlaying}
+          // The player plays and pauses itself; the store only follows it
+          onPlay={() => dispatch(setIsPlaying(true))}
+          onPause={() => dispatch(setIsPlaying(false))}
+          onPlayError={() => dispatch(setIsPlaying(false))}
         />
       )}
     </div>
