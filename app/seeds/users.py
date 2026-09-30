@@ -1,6 +1,18 @@
 from app.models import db, User, environment, SCHEMA
 from sqlalchemy.sql import text
 
+# The account that owns the seeded albums and songs. It has no password and no
+# OAuth link, and .invalid is a reserved domain nobody can receive mail at, so
+# neither login nor "Continue with Google" can ever get into it. That is the
+# point: the public Demo login used to own the library, so any visitor could
+# delete or rewrite it for everyone.
+LIBRARY_USERNAME = 'Fortefy'
+LIBRARY_EMAIL = 'library@fortefy.invalid'
+
+
+def library_user():
+    return User.query.filter(User.email == LIBRARY_EMAIL).one()
+
 
 # Adds a demo user, you can add other users here if you want
 def seed_users():
@@ -14,12 +26,16 @@ def seed_users():
         username='Tune Guru', email='tuneguru@aa.io', password='password')
     musiclvr = User(
         username='Music Lvr', email='musiclvr@aa.io', password='password')
+    # Added last so the people above keep ids 1 to 5, which the playlist seeds
+    # refer to
+    library = User(username=LIBRARY_USERNAME, email=LIBRARY_EMAIL)
 
     db.session.add(demo)
     db.session.add(marnie)
     db.session.add(bobbie)
     db.session.add(tuneguru)
     db.session.add(musiclvr)
+    db.session.add(library)
     db.session.commit()
 
 
