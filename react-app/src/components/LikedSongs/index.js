@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getLikedSongsThunk } from '../../store/songs';
-import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
+import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import LikeButton from '../LikeButton';
 import AddPLSongButton from '../AddPLSongButton';
 import OpenModalButton from '../OpenModalButton';
@@ -55,13 +55,11 @@ const LikedSongs = () => {
         if (!songs.length) return;
         dispatch(setCurrentPlaylist(songs));
         dispatch(setCurrentSongIndex(0));
-        dispatch(setIsPlaying(true));
     };
 
     const handlePlaySong = (song) => {
         dispatch(setCurrentPlaylist([song]));
         dispatch(setCurrentSongIndex(0));
-        dispatch(setIsPlaying(true));
     };
 
     if (!user) {

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchThunk, clearSearchResultsAction } from '../../store/search';
 import { getAllSongsAction } from '../../store/songs';
-import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
+import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import { secsToMins } from '../../helpers';
 import LikeButton from '../LikeButton';
 import AddPLSongButton from '../AddPLSongButton';
@@ -34,7 +34,6 @@ const SearchPage = () => {
         // Queue every song result so playback continues down the list
         dispatch(setCurrentPlaylist(songs));
         dispatch(setCurrentSongIndex(index));
-        dispatch(setIsPlaying(true));
     };
 
     const stopClick = (e) => e.stopPropagation();

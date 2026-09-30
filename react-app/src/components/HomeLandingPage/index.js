@@ -9,7 +9,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import Carousel from '../Carousel';
 import LikedSongsCover from '../LikedSongs/LikedSongsCover';
-import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
+import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 
 const HomeLandingPage = () => {
     const dispatch = useDispatch();
@@ -53,7 +53,6 @@ const HomeLandingPage = () => {
         const selectedSong = allSongs[songId];
         dispatch(setCurrentPlaylist([selectedSong]));
         dispatch(setCurrentSongIndex(0));
-        dispatch(setIsPlaying(true));
     };
 
     const showPlayButton = (songId) => {

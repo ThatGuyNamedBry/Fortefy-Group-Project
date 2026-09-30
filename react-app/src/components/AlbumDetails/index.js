@@ -9,7 +9,7 @@ import LikeButton from '../LikeButton';
 import AddMusicModal from '../AddMusicModal'
 import DeleteModal from '../DeleteModal';
 import './AlbumDetails.css';
-import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
+import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import DeleteMusicButton from '../DeleteMusicButton/DeleteMusicButton';
 import EditSongButton from '../EditSongButton';
 import AddPLSongButton from '../AddPLSongButton';
@@ -52,13 +52,11 @@ const AlbumDetails = () => {
         const albumSongs = albumSongIds.map((songId) => songs[songId]);
         dispatch(setCurrentPlaylist(albumSongs));
         dispatch(setCurrentSongIndex(0));
-        dispatch(setIsPlaying(true));
     };
     const handlePlaySong = (songId) => {
         const selectedSong = songs[songId];
         dispatch(setCurrentPlaylist([selectedSong]));
         dispatch(setCurrentSongIndex(0));
-        dispatch(setIsPlaying(true));
     };
 
     const showPlayButton = (i) => {

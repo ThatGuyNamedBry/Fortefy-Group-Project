@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getPlaylistByIdThunk, removePlaylistSongThunk, loadPlaylistSongsAction } from '../../store/playlists';
 import { getAllSongsAction } from '../../store/songs';
-import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from '../../store/player';
+import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import LikeButton from '../LikeButton';
 import './PlaylistDetails.css';
 
@@ -79,14 +79,12 @@ const PlaylistDetails = () => {
         const playlistSongs = songIds.map((songId) => playerSongsObject[songId]);
         dispatch(setCurrentPlaylist(playlistSongs));
         dispatch(setCurrentSongIndex(0));
-        dispatch(setIsPlaying(true));
     };
 
     const handlePlaySong = (songId) => {
         const selectedSong = playerSongsObject[songId];
         dispatch(setCurrentPlaylist([selectedSong]));
         dispatch(setCurrentSongIndex(0));
-        dispatch(setIsPlaying(true));
     };
 
     const removeSongClick = (e, songId) => {
