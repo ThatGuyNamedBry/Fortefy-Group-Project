@@ -1,8 +1,7 @@
-from .db import db, environment, SCHEMA, add_prefix_for_prod
+from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
 from .user import User
 from .song import Song
 from .playlist import Playlist
-from datetime import datetime
 
 class PlaylistSong(db.Model):
     __tablename__= 'playlist_songs'
@@ -13,8 +12,8 @@ class PlaylistSong(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')), nullable=False)
     playlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('playlists.id')), nullable=False)
-    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    created_at = db.Column(db.DateTime, nullable=False, default=utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=utcnow, onupdate=utcnow)
 
     song= db.relationship('Song', back_populates='playlist_songs')
     playlist = db.relationship('Playlist', back_populates='playlist_songs')
@@ -25,4 +24,6 @@ class PlaylistSong(db.Model):
          'song_id': self.song_id,
          'playlist_id': self.playlist_id,
          'song': self.song.to_dict(),
+         'created_at': to_iso(self.created_at),
+         'updated_at': to_iso(self.updated_at),
      }

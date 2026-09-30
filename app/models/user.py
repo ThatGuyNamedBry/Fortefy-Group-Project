@@ -1,4 +1,4 @@
-from .db import db, environment, SCHEMA, add_prefix_for_prod
+from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -23,6 +23,8 @@ class User(db.Model, UserMixin):
     # own stable id for the user. Both null for plain email/password accounts.
     oauth_provider = db.Column(db.String(20), nullable=True)
     oauth_id = db.Column(db.String(255), nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=utcnow, onupdate=utcnow)
 
     @property
     def password(self):
@@ -53,11 +55,15 @@ class User(db.Model, UserMixin):
     def to_dict_private(self):
         """
         The public shape plus the fields only the account holder may see. Used
-        by /api/auth/* for current_user and nowhere else.
+        by /api/auth/* for current_user and nowhere else. The timestamps live
+        here too: updated_at moves whenever the account row changes, password
+        included, which is nobody else's business.
         """
         return {
             **self.to_dict(),
-            'email': self.email
+            'email': self.email,
+            'created_at': to_iso(self.created_at),
+            'updated_at': to_iso(self.updated_at),
         }
     albums = db.relationship('Album', back_populates='user')
     songs = db.relationship('Song', back_populates='user')

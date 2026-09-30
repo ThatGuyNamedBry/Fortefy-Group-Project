@@ -1,7 +1,6 @@
-from .db import db, environment, SCHEMA, add_prefix_for_prod
+from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
 from .user import User
 from .album import Album
-from datetime import datetime
 
 class Song(db.Model):
     __tablename__ = 'songs'
@@ -16,8 +15,8 @@ class Song(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     song_url = db.Column(db.String(255), nullable=False)
     track_number = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now())
-    updated_at = db.Column(db.DateTime, default=datetime.now())
+    created_at = db.Column(db.DateTime, nullable=False, default=utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=utcnow, onupdate=utcnow)
 
     user = db.relationship('User', back_populates='songs')
     album = db.relationship('Album', back_populates='songs')
@@ -37,7 +36,9 @@ class Song(db.Model):
             'track_number': self.track_number,
             'artist': self.album.artist,
             'album_name': self.album.name,
-            "album_art": self.album.art
+            "album_art": self.album.art,
+            'created_at': to_iso(self.created_at),
+            'updated_at': to_iso(self.updated_at),
         }
 
     def to_dict_likes(self):
