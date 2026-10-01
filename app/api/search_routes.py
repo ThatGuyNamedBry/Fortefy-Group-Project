@@ -51,6 +51,7 @@ def search():
 
     songs = (
         Song.query
+        .options(*Song.to_dict_loads())
         .join(Song.album)
         .filter(or_(
             Song.name.ilike(contains, escape=LIKE_ESCAPE),
@@ -63,6 +64,7 @@ def search():
 
     albums = (
         Album.query
+        .options(*Album.to_dict_loads())
         .filter(or_(
             Album.name.ilike(contains, escape=LIKE_ESCAPE),
             Album.artist.ilike(contains, escape=LIKE_ESCAPE),

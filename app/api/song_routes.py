@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
+from sqlalchemy.orm import joinedload, selectinload
 from app.models import db, Song, Like
 from app.forms import SongForm
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3, remove_file_from_s3
@@ -14,7 +15,7 @@ def get_all_songs():
     """
     Query for all songs and returns them in a list of song dictionaries
     """
-    songs = [song.to_dict() for song in Song.query.all()]
+    songs = [song.to_dict() for song in Song.query.options(*Song.to_dict_loads()).all()]
     return jsonify(songs)
 
 @song_routes.route('/<int:id>')
@@ -22,7 +23,7 @@ def get_song_by_id(id):
     """
     Query for a song by id and returns that song in a dictionary
     """
-    song = Song.query.get(id)
+    song = Song.query.options(*Song.to_dict_loads()).get(id)
 
     if song is None:
         return { 'errors': 'Song not found' }, 404
@@ -35,7 +36,7 @@ def get_user_songs():
     """
     Query for all songs created by the current user and return them in a list of song dictionaries
     """
-    user_songs = Song.query.filter(Song.user_id == current_user.id)
+    user_songs = Song.query.options(*Song.to_dict_loads()).filter(Song.user_id == current_user.id)
     songs_dict = [song.to_dict() for song in user_songs]
     return jsonify(songs_dict)
 
@@ -45,7 +46,11 @@ def get_liked_songs():
     """
     Query for all songs the current user has liked and return them in a list of song dictionaries, most recently liked first
     """
-    user_likes = Like.query.filter(Like.user_id == current_user.id).order_by(Like.id.desc()).all()
+    user_likes = (Like.query
+                  .options(joinedload(Like.song).options(*Song.to_dict_loads()))
+                  .filter(Like.user_id == current_user.id)
+                  .order_by(Like.id.desc())
+                  .all())
     songs_dict = [like.song.to_dict() for like in user_likes]
     return jsonify(songs_dict)
 
@@ -55,12 +60,14 @@ def get_song_likes(id):
     """
     Query for a song by id and return a list of like dictionaries for that song
     """
-    song = Song.query.get(id)
+    song = Song.query.options(selectinload(Song.likes).joinedload(Like.user)).get(id)
 
     if song is None:
         return { 'errors': 'Song not found' }, 404
 
-    return jsonify(song.to_dict()["likes"])
+    # The full likes, users included: songs themselves only carry each like's
+    # id and user_id now
+    return jsonify([like.to_dict() for like in song.likes])
 
 @song_routes.route('/<int:id>/add-like', methods=['POST'])
 @login_required

@@ -23,7 +23,8 @@ def get_all_albums():
     """
     Query for all albums and returns them in a list of album dictionaries
     """
-    return jsonify([album.to_dict() for album in Album.query.all()])
+    albums = Album.query.options(*Album.to_dict_loads()).all()
+    return jsonify([album.to_dict() for album in albums])
 
 
 @album_routes.route('/<int:id>')
@@ -31,7 +32,7 @@ def get_album_by_id(id):
     """
     Query for an album by id and returns that album in a dictionary
     """
-    album = Album.query.get(id)
+    album = Album.query.options(*Album.to_dict_loads()).get(id)
 
     if album is None:
         return { 'errors': 'Album not found' }, 404
@@ -45,7 +46,7 @@ def get_user_albums():
     """
     Query for all albums created by the current user and return them in a list of album dictionaries
     """
-    user_albums = Album.query.filter(Album.user_id == current_user.id)
+    user_albums = Album.query.options(*Album.to_dict_loads()).filter(Album.user_id == current_user.id)
     albums_dict = [album.to_dict() for album in user_albums]
     return jsonify(albums_dict)
 

@@ -26,3 +26,15 @@ class Like(db.Model):
          'created_at': to_iso(self.created_at),
          'updated_at': to_iso(self.updated_at),
      }
+
+    def to_dict_brief(self):
+        """
+        What a song carries for each of its likes: whose it is, so the
+        frontend can tell whether the current user liked the song, and its id,
+        to remove it. The full to_dict() added the liker's user object and two
+        timestamps to every like of every song in every list.
+        """
+        return {
+         'id': self.id,
+         'user_id': self.user_id,
+     }

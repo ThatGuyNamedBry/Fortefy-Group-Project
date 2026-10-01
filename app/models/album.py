@@ -1,3 +1,4 @@
+from sqlalchemy.orm import joinedload, selectinload
 from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
 from .user import User
 
@@ -33,3 +34,17 @@ class Album(db.Model):
             'created_at': to_iso(self.created_at),
             'updated_at': to_iso(self.updated_at),
         }
+
+    @staticmethod
+    def to_dict_loads():
+        """
+        Loader options for everything to_dict() reads, for .options(): the
+        owner, and the songs with theirs. A song's album is the album being
+        serialised, already in the session, so it costs no query.
+        """
+        # Imported here: song.py imports this module
+        from .song import Song
+        return (
+            joinedload(Album.user),
+            selectinload(Album.songs).options(joinedload(Song.user), selectinload(Song.likes)),
+        )

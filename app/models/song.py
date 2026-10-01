@@ -1,3 +1,4 @@
+from sqlalchemy.orm import joinedload, selectinload
 from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
 from .user import User
 from .album import Album
@@ -31,7 +32,7 @@ class Song(db.Model):
             'album_id': self.album_id,
             'duration': self.duration,
             'user': self.user.to_dict(),
-            'likes': [like.to_dict() for like in self.likes],
+            'likes': [like.to_dict_brief() for like in self.likes],
             'song_url': self.song_url,
             'track_number': self.track_number,
             'artist': self.album.artist,
@@ -40,6 +41,15 @@ class Song(db.Model):
             'created_at': to_iso(self.created_at),
             'updated_at': to_iso(self.updated_at),
         }
+
+    @staticmethod
+    def to_dict_loads():
+        """
+        Loader options for everything to_dict() reads, for .options(). Without
+        them each song lazily loads its user, album and likes one query at a
+        time, so a list of songs cost about three queries per song.
+        """
+        return (joinedload(Song.user), joinedload(Song.album), selectinload(Song.likes))
 
     def to_dict_likes(self):
         return {
