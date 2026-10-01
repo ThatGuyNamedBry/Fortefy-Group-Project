@@ -65,7 +65,10 @@ class User(db.Model, UserMixin):
             'created_at': to_iso(self.created_at),
             'updated_at': to_iso(self.updated_at),
         }
-    albums = db.relationship('Album', back_populates='user')
-    songs = db.relationship('Song', back_populates='user')
-    likes = db.relationship('Like', back_populates='user')
-    playlists = db.relationship('Playlist', back_populates='user')
+    # Deleting a user deletes everything they made or liked. Without the
+    # cascade the ORM tried to null out user_id on each of those rows instead,
+    # which the NOT NULL columns refuse.
+    albums = db.relationship('Album', back_populates='user', cascade="all, delete")
+    songs = db.relationship('Song', back_populates='user', cascade="all, delete")
+    likes = db.relationship('Like', back_populates='user', cascade="all, delete")
+    playlists = db.relationship('Playlist', back_populates='user', cascade="all, delete")
