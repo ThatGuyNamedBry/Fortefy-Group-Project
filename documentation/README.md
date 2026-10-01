@@ -67,6 +67,14 @@ the root directory.
 Make sure the Environment field is set set to "Python 3", the Region is set to
 the location closest to you, and the Branch is set to "main".
 
+Render takes the Python version from `.python-version` in the repository root
+(3.11, the version the app is developed on). Without that file, a service
+created before November 2023 falls back to Python 3.7.10, which is
+end-of-life: cryptography and boto3 warn on every build that they are dropping
+it, and pip installs a urllib3 that botocore does not support there. A
+`PYTHON_VERSION` environment variable on the service would override the file,
+so leave it unset.
+
 Next, add your Build command. This is a script that should include everything
 that needs to happen _before_ starting the server.
 
