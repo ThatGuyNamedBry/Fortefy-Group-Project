@@ -5,12 +5,18 @@ from .song import Song
 class Like(db.Model):
     __tablename__ = 'likes'
 
+    # One like per user per song. The route checks first, but two requests at
+    # once could both pass the check and both insert.
+    __table_args__ = (
+        db.UniqueConstraint('song_id', 'user_id', name='uq_likes_song_user'),
+    )
+
     if environment == "production":
-        __table_args__ = {'schema': SCHEMA}
+        __table_args__ = __table_args__ + ({'schema': SCHEMA},)
 
     id = db.Column(db.Integer, primary_key=True)
-    song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id')), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('songs.id'), ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=utcnow, onupdate=utcnow)
 

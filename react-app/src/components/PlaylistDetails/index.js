@@ -81,10 +81,12 @@ const PlaylistDetails = () => {
         dispatch(setCurrentSongIndex(0));
     };
 
-    const removeSongClick = (e, songId) => {
+    // By the row's own playlist_song id: looking the entry up by song id
+    // removed the first copy of a song that is on the playlist twice, not
+    // the one clicked
+    const removeSongClick = (e, playlistSongId) => {
         e.stopPropagation();
-        const removeSong = playlist.playlist_songs.find(song => song.song_id === songId);
-        dispatch(removePlaylistSongThunk(playlistId, removeSong.id));
+        dispatch(removePlaylistSongThunk(playlistId, playlistSongId));
     }
     // singlePlaylist is whichever playlist loaded last, which is the previous
     // page's until this one arrives, and stays so if this one never does
@@ -138,7 +140,7 @@ const PlaylistDetails = () => {
                                 />
                             </div>
                             <div className='playlist-songs-buttons'>
-                                {user && user?.id === playlist?.user_id && <i className="fa-solid fa-circle-minus" onClick={(e) => removeSongClick(e, song?.id)}></i>}
+                                {user && user?.id === playlist?.user_id && <i className="fa-solid fa-circle-minus" onClick={(e) => removeSongClick(e, song.playlistSongId)}></i>}
                             </div>
                             <p className='playlist-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
                         </div>

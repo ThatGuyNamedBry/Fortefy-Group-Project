@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import joinedload, selectinload
 from app.models import db, Song, Like
 from app.forms import SongForm
@@ -54,8 +55,8 @@ def get_liked_songs():
     songs_dict = [like.song.to_dict() for like in user_likes]
     return jsonify(songs_dict)
 
+# Public, like the likes every song already carries
 @song_routes.route("/<int:id>/likes")
-@login_required
 def get_song_likes(id):
     """
     Query for a song by id and return a list of like dictionaries for that song
@@ -75,25 +76,25 @@ def add_song_like(id):
     """
     Add a like to a selected song and return likes for the song in a list of like dictionaries
     """
-    song = Song.query.get(id)
-
-    if song is None:
+    if Song.query.get(id) is None:
         return { 'errors': 'Song not found' }, 404
 
-    song = song.to_dict()
-    # If song already has user's like, return error
-    for like in song["likes"]:
-        if like["user_id"] == current_user.id:
-            return { "errors": "User has already liked song" }, 405
+    if Like.query.filter_by(song_id=id, user_id=current_user.id).first():
+        return { "errors": "User has already liked song" }, 409
 
-    # Else create and add new like to song
     like = Like(
         song_id=id,
         user_id=current_user.id
     )
 
     db.session.add(like)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except IntegrityError:
+        # Another request liked it between the check above and this insert,
+        # and uq_likes_song_user turned the second like away
+        db.session.rollback()
+        return { "errors": "User has already liked song" }, 409
     return like.to_dict()
 
 @song_routes.route('/<int:id>/remove-like', methods=['DELETE'])
@@ -102,25 +103,16 @@ def remove_song_like(id):
     """
     Remove a like from a selected song and return likes for the song in a list of like dictionaries
     """
-    song = Song.query.get(id)
-
-    if song is None:
+    if Song.query.get(id) is None:
         return { 'errors': 'Song not found' }, 404
 
-    # Iterate through list of like dictionaries which CANNOT be deleted from the db
-    ind = 0
-    for like in song.to_dict()["likes"]:
-        # find user's like, and ind will now equal it's index in the list
-        if like["user_id"] == current_user.id:
-            # use **to_dict_likes** method to get a list of like INSTANCES that CAN be deleted from the db
-            delete_like = song.to_dict_likes()["likes"][ind]
-            # use corresponding index to delete the like instance from db
-            db.session.delete(delete_like)
-            db.session.commit()
-            return {"message": "Like successfully deleted"}
-        ind += 1
+    like = Like.query.filter_by(song_id=id, user_id=current_user.id).first()
+    if like is None:
+        return { "errors": "User has not liked this song" }, 404
 
-    return { "errors": "User has not liked this song" }, 405
+    db.session.delete(like)
+    db.session.commit()
+    return {"message": "Like successfully deleted"}
 
 
 

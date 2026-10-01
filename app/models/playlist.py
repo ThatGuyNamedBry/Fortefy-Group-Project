@@ -9,7 +9,7 @@ class Playlist(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
     title = db.Column(db.String, nullable=False)
     art = db.Column(db.String, default= '')
     description = db.Column(db.String)
@@ -17,7 +17,10 @@ class Playlist(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=utcnow, onupdate=utcnow)
 
     user = db.relationship('User', back_populates='playlists')
-    playlist_songs = db.relationship('PlaylistSong', back_populates='playlist', cascade="all, delete")
+    # In the order they were added. Without an ORDER BY the database may hand
+    # them back in any order it likes; Postgres does not promise insertion order.
+    playlist_songs = db.relationship('PlaylistSong', back_populates='playlist', cascade="all, delete",
+                                     order_by='PlaylistSong.id')
 
     def to_dict(self):
         return {

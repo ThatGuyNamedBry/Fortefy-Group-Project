@@ -11,8 +11,8 @@ class Song(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
-    album_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('albums.id')), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
+    album_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('albums.id'), ondelete='CASCADE'), nullable=False)
     duration = db.Column(db.Integer, nullable=False)
     song_url = db.Column(db.String(255), nullable=False)
     track_number = db.Column(db.Integer, nullable=False)
@@ -50,14 +50,3 @@ class Song(db.Model):
         time, so a list of songs cost about three queries per song.
         """
         return (joinedload(Song.user), joinedload(Song.album), selectinload(Song.likes))
-
-    def to_dict_likes(self):
-        return {
-            # 'id': self.id,
-            # 'name': self.name,
-            # 'user_id': self.user_id,
-            # 'album_id': self.album_id,
-            # 'duration': self.duration,
-            # 'user': self.user.to_dict(),
-            'likes': self.likes,
-        }
