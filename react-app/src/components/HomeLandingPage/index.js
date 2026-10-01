@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { getAllAlbumsThunk } from '../../store/albums';
 import { getAllSongsThunk } from '../../store/songs';
@@ -19,8 +19,6 @@ const HomeLandingPage = () => {
     const userPlaylists = useSelector(selectUserPlaylists, shallowEqual);
     const user = useSelector(state => state.session.user)
     const [songOrder, setSongOrder] = useState([]);
-    const [showMenu, setShowMenu] = useState(false);
-    const ulRef = useRef();
     const [hoveredSong, setHoveredSong] = useState(null);
     const [loadFailed, setLoadFailed] = useState(false);
 
@@ -47,22 +45,6 @@ const HomeLandingPage = () => {
         });
     }, [allSongs]);
     const sortedSongs = songOrder.map(id => allSongs[id]);
-
-    useEffect(() => {
-        if (!showMenu) return;
-
-        const closeMenu = (e) => {
-            if (!ulRef.current.contains(e.target)) {
-                setShowMenu(false);
-            }
-        };
-
-        document.addEventListener("click", closeMenu);
-
-        return () => document.removeEventListener("click", closeMenu);
-    }, [showMenu]);
-
-    const closeMenu = () => setShowMenu(false);
 
     const handlePlaySong = (songId, e) => {
         e.stopPropagation();
@@ -104,11 +86,10 @@ const HomeLandingPage = () => {
                         </div>
                     ) : (
                         <div className='loginbuttonlibrary'>
-                            {<OpenModalButton
+                            <OpenModalButton
                                 buttonText="Log in to see your playlists!"
-                                onItemClick={closeMenu}
                                 modalComponent={<LoginFormModal />}
-                            />}
+                            />
                         </div>
                     )}
                 </div>

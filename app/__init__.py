@@ -1,8 +1,8 @@
 import os
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, request, redirect
 from flask_cors import CORS
 from flask_migrate import Migrate
-from flask_wtf.csrf import CSRFProtect, generate_csrf
+from flask_wtf.csrf import generate_csrf
 from flask_login import LoginManager
 from .models import db, User
 from .api import user_routes, auth_routes, album_routes, playlist_routes, song_routes, search_routes
@@ -103,16 +103,11 @@ def is_api_request():
 @app.route('/<path:path>')
 def react_root(path):
     """
-    This route will direct to the public directory in our
-    react builds in the production environment for favicon
-    or index.html requests
+    Serves the React app's index.html. Only / ever lands here: the static
+    route (static_url_path='/') matches every other path first and serves the
+    file if the build has one, such as favicon.ico, and the 404 handler below
+    answers the rest, in JSON under /api
     """
-    if path == 'favicon.ico':
-        return app.send_from_directory('public', 'favicon.ico')
-    # This catch-all sits in front of the 404 handler, so without this an
-    # unknown /api/... route would be answered with the React app
-    if is_api_request():
-        return {'errors': 'Not found'}, 404
     return app.send_static_file('index.html')
 
 

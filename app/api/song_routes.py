@@ -1,10 +1,10 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import joinedload, selectinload
 from app.models import db, Song, Like
 from app.forms import SongForm
-from app.api.aws_helper import get_unique_filename, upload_file_to_s3, remove_file_from_s3
+from app.api.aws_helper import remove_file_from_s3
 
 from app.api.auth_routes import validation_errors_to_error_object
 from app.api.csrf import csrf_token_from_request

@@ -1,7 +1,4 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
-from .user import User
-from .song import Song
-from .playlist import Playlist
 
 class PlaylistSong(db.Model):
     __tablename__= 'playlist_songs'
