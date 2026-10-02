@@ -10,6 +10,7 @@ import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import LikedSongsCover from './LikedSongsCover';
 import SongPlayButton from '../SongPlayButton';
+import Artwork from '../Artwork';
 import './LikedSongs.css';
 
 /**
@@ -120,7 +121,7 @@ const LikedSongs = () => {
                     <li key={song.id} className='albums-songs-button' onClick={() => handlePlaySong(song)}>
                         <div className='number-name-container'>
                             <SongPlayButton song={song} number={i + 1} onPlay={() => handlePlaySong(song)} />
-                            <img className='liked-songs-row-art' src={song.album_art} alt="" />
+                            <Artwork className='liked-songs-row-art' src={song.album_art} alt="" />
                             <div className='liked-songs-row-text'>
                                 <p className='song-row-name'>{song.name}</p>
                                 <Link

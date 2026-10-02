@@ -17,7 +17,8 @@ const AlbumForm = ({ album, formType }) => {
   const [name, setName] = useState(album?.name ?? '');
   const [year, setYear] = useState(album?.year ?? '');
   const [genre, setGenre] = useState(album?.genre ?? '');
-  const [art, setArt] = useState(album?.art === 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Compact_Disc.jpg' ? '' : album?.art ?? '');
+  // An album without art has none stored, rather than a default image's URL
+  const [art, setArt] = useState(album?.art ?? '');
   const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {

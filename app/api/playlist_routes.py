@@ -39,7 +39,7 @@ def create_new_playlist():
         new_playlist = Playlist(
             user_id = current_user.id,
             title = form.data['title'],
-            art = form.data['art'],
+            art = form.data['art'] or None,
             description = form.data['description']
         )
 
@@ -119,7 +119,7 @@ def edit_playlist(id):
             return { 'errors': 'Playlist does not belong to user' }, 403
 
         playlist.title = form.data['title']
-        playlist.art = form.data['art']
+        playlist.art = form.data['art'] or None
         playlist.description = form.data['description']
 
         db.session.commit()

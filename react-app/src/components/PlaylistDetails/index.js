@@ -7,6 +7,7 @@ import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import LikeButton from '../LikeButton';
 import PageStatus, { useLoadStatus } from '../PageStatus';
 import SongPlayButton from '../SongPlayButton';
+import Artwork, { DEFAULT_PLAYLIST_ART, playlistArt } from '../Artwork';
 import './PlaylistDetails.css';
 
 const PlaylistDetails = () => {
@@ -88,7 +89,7 @@ const PlaylistDetails = () => {
     return (
         <div className='playlist-details-container'>
             <div className='playlist-header-container'>
-                <img className='playlist-details-art' src={playlist?.art ? playlist.art : 'https://i0.wp.com/olumuse.org/wp-content/uploads/2020/09/unnamed.jpg'} alt={`${playlist.title} playlist cover`}></img>
+                <Artwork className='playlist-details-art' src={playlistArt(playlist)} fallback={DEFAULT_PLAYLIST_ART} alt={`${playlist.title} playlist cover`} />
                 <div className='playlist-info-container'>
                     <p>Playlist</p>
                     <h1 className='playlist-name-header'>{playlist.title}</h1>

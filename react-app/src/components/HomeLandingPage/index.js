@@ -9,6 +9,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import Carousel from '../Carousel';
 import LikedSongsCover from '../LikedSongs/LikedSongsCover';
+import Artwork, { DEFAULT_PLAYLIST_ART, playlistArt } from '../Artwork';
 import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 
 const HomeLandingPage = () => {
@@ -66,7 +67,7 @@ const HomeLandingPage = () => {
                             </Link>
                             {userPlaylists.map(playlist => (
                                 <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
-                                    <img src={playlist.art} alt="" className="playlist-image" />
+                                    <Artwork src={playlistArt(playlist)} fallback={DEFAULT_PLAYLIST_ART} alt="" className="playlist-image" />
                                     <h3>{playlist.title}</h3>
                                 </Link>
                             ))}
@@ -97,7 +98,7 @@ const HomeLandingPage = () => {
                     items={Object.values(allAlbums)}
                     renderItem={album => (
                         <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
-                            <img src={album.art} alt="" className="album-image" />
+                            <Artwork src={album.art} alt="" className="album-image" />
                             <h3>{album.name}</h3>
                             <p className='owner-text'>{album.artist}</p>
                         </Link>
@@ -109,7 +110,7 @@ const HomeLandingPage = () => {
                     renderItem={song => (
                         <div className="album-tile link-as-text">
                             <Link to={`/albums/${song.album_id}`} className="song-link">
-                                <img src={song.album_art} alt={song.album_name} className="album-image" />
+                                <Artwork src={song.album_art} alt={song.album_name} className="album-image" />
                                 <h3>{song.name}</h3>
                                 <p className="owner-text">{song.artist}</p>
                             </Link>
@@ -129,7 +130,7 @@ const HomeLandingPage = () => {
                     items={Object.values(allPlaylists)}
                     renderItem={playlist => (
                         <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
-                            <img src={playlist.art} alt="" className="album-image" />
+                            <Artwork src={playlistArt(playlist)} fallback={DEFAULT_PLAYLIST_ART} alt="" className="album-image" />
                             <h3>{playlist.title}</h3>
                             <p className='owner-text'>{playlist.user.username}</p>
                         </Link>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <title>No playlist art</title>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a3a3a"/>
+      <stop offset="1" stop-color="#181818"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="url(#background)"/>
+  <!-- Two beamed eighth notes -->
+  <g fill="#b3b3b3">
+    <polygon points="132,102 210,82 210,102 132,122"/>
+    <rect x="132" y="102" width="10" height="94"/>
+    <rect x="200" y="82" width="10" height="94"/>
+    <ellipse cx="119" cy="196" rx="24" ry="17" transform="rotate(-20 119 196)"/>
+    <ellipse cx="187" cy="176" rx="24" ry="17" transform="rotate(-20 187 176)"/>
+  </g>
+</svg>
