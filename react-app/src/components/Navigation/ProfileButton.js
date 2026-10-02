@@ -10,6 +10,7 @@ function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const buttonRef = useRef();
   const history = useHistory();
 
   const openMenu = () => {
@@ -25,10 +26,27 @@ function ProfileButton({ user }) {
         setShowMenu(false);
       }
     };
+    // Escape, or tabbing past the last item, closes it too
+    const closeOnEscape = (e) => {
+      if (e.key !== "Escape") return;
+      setShowMenu(false);
+      buttonRef.current.focus();
+    };
+    const closeOnFocusOut = (e) => {
+      if (!ulRef.current.contains(e.target) && e.target !== buttonRef.current) {
+        setShowMenu(false);
+      }
+    };
 
     document.addEventListener("click", closeMenu);
+    document.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("focusin", closeOnFocusOut);
 
-    return () => document.removeEventListener("click", closeMenu);
+    return () => {
+      document.removeEventListener("click", closeMenu);
+      document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("focusin", closeOnFocusOut);
+    };
   }, [showMenu]);
 
   const handleLogout = async (e) => {
@@ -40,13 +58,25 @@ function ProfileButton({ user }) {
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
   const closeMenu = () => setShowMenu(false);
+  // The Log In and Sign Up buttons disappear with the menu, so the modal they
+  // open returns focus here when it closes
+  const closeMenuForModal = () => {
+    closeMenu();
+    buttonRef.current.focus();
+  };
 
   return (
     <>
-      <button id='profile-bttn' onClick={openMenu} className="fas fa-user-circle">
-        {/* <i className="fas fa-user-circle" /> */}
-      </button>
-      <ul className={ulClassName} ref={ulRef}>
+      <button
+        id='profile-bttn'
+        ref={buttonRef}
+        onClick={openMenu}
+        className="fas fa-user-circle"
+        aria-label="Account menu"
+        aria-expanded={showMenu}
+        aria-controls="profile-dropdown"
+      ></button>
+      <ul className={ulClassName} ref={ulRef} id="profile-dropdown">
         {user ? (
           <>
             <li>{user.username}</li>
@@ -63,14 +93,14 @@ function ProfileButton({ user }) {
             <li className="loginbutton">
               <OpenModalButton
                 buttonText="Log In"
-                onButtonClick={closeMenu}
+                onButtonClick={closeMenuForModal}
                 modalComponent={<LoginFormModal />}
               />
             </li>
             <li className="signupbutton">
               <OpenModalButton
                 buttonText="Sign Up"
-                onButtonClick={closeMenu}
+                onButtonClick={closeMenuForModal}
                 modalComponent={<SignupFormModal />}
               />
             </li>

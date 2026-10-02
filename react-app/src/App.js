@@ -74,6 +74,7 @@ function App() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
+        <main>
         <ErrorBoundary resetKey={pathname}>
           <Switch>
             <Route exact path="/" component={HomeLandingPage} />
@@ -93,6 +94,7 @@ function App() {
             <Route path="/playlists/:playlistId" component={PlaylistDetails} />
           </Switch>
         </ErrorBoundary>
+        </main>
       )}
       <Footer />
       <AudioPlayerComponent />

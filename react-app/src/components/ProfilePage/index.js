@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { useHistory, Link, NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { getCurrentUserAllAlbumsThunk, selectUserAlbums } from '../../store/albums';
 import { getCurrentUserAllSongsThunk, selectUserSongs } from '../../store/songs';
 import { getCurrentUserAllPlaylistsThunk, selectUserPlaylists } from '../../store/playlists';
@@ -13,7 +13,6 @@ import './ProfilePage.css';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const user = useSelector((state) => state.session.user);
   // Each filtered to this user. The stores hold everyone's albums, songs and
@@ -35,10 +34,6 @@ const ProfilePage = () => {
   const LIKED_SONGS_TILE = { id: 'liked' };
   const playlistTiles = [LIKED_SONGS_TILE, ...userPlaylists];
 
-  const handleUpdateAlbum = (album) => {
-    history.push(`/albums/${album.id}/edit`);
-  };
-
   const editPlaylistClick = (e) => {
     e.stopPropagation();
     alert('Edit Playlist Feature Coming Soon!');
@@ -51,20 +46,23 @@ const ProfilePage = () => {
         title="Your Albums"
         titleAddon={user && (
           <NavLink to="/albums/new" className="create-album-button">
-            <i className="fa-solid fa-circle-plus"></i>
+            <i className="fa-solid fa-circle-plus" aria-hidden="true"></i>
+            <span className="visually-hidden">Create an album</span>
           </NavLink>
         )}
         items={userAlbums}
         renderItem={(album) => (
           <div className="profile-tile-container">
             <div className="profile-tile-buttons">
-              <div onClick={() => handleUpdateAlbum(album)} className='update-delete-music-buttons fa-solid fa-pen-to-square'></div>
-              <OpenModalButton className="icon-button update-delete-music-buttons" aria-label="Delete album" modalComponent={<DeleteModal type='album' id={album.id} />}>
+              <Link to={`/albums/${album.id}/edit`} className='icon-button update-delete-music-buttons' aria-label={`Edit ${album.name}`}>
+                <i className="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+              </Link>
+              <OpenModalButton className="icon-button update-delete-music-buttons" aria-label={`Delete ${album.name}`} modalComponent={<DeleteModal type='album' id={album.id} />}>
                 <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
               </OpenModalButton>
             </div>
             <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
-              <img src={album.art} alt={album.name} className="album-image" />
+              <img src={album.art} alt="" className="album-image" />
               <h3>{album.name.length > 22 ? album.name.slice(0, 22) + '...' : album.name}</h3>
               <p className="owner-text">{album.artist}</p>
             </Link>
@@ -79,10 +77,10 @@ const ProfilePage = () => {
           return (
             <div className="profile-tile-container">
               <div className="profile-tile-buttons">
-                <OpenModalButton className="icon-button update-delete-music-buttons" aria-label="Edit song" modalComponent={<AddMusicModal album={album} song={song} type="update" />}>
+                <OpenModalButton className="icon-button update-delete-music-buttons" aria-label={`Edit ${song.name}`} modalComponent={<AddMusicModal album={album} song={song} type="update" />}>
                   <i className="fa-solid fa-pen-to-square" aria-hidden="true"></i>
                 </OpenModalButton>
-                <OpenModalButton className="icon-button update-delete-music-buttons" aria-label="Delete song" modalComponent={<DeleteModal type='song' id={song.id} />}>
+                <OpenModalButton className="icon-button update-delete-music-buttons" aria-label={`Delete ${song.name}`} modalComponent={<DeleteModal type='song' id={song.id} />}>
                   <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
                 </OpenModalButton>
               </div>
@@ -99,7 +97,8 @@ const ProfilePage = () => {
         title="Your Playlists"
         titleAddon={(
           <NavLink to="/playlists/new" className="create-playlist-button">
-            <i className="fa-solid fa-circle-plus"></i>
+            <i className="fa-solid fa-circle-plus" aria-hidden="true"></i>
+            <span className="visually-hidden">Create a playlist</span>
           </NavLink>
         )}
         items={playlistTiles}
@@ -118,13 +117,15 @@ const ProfilePage = () => {
           return (
             <div className="profile-tile-container">
               <div className="profile-tile-buttons">
-                <div className='update-delete-music-buttons fa-solid fa-pen-to-square' onClick={editPlaylistClick}></div>
-                <OpenModalButton className="icon-button update-delete-music-buttons" aria-label="Delete playlist" modalComponent={<DeleteModal type='playlist' id={playlist.id} />}>
+                <button type="button" className='icon-button update-delete-music-buttons' aria-label={`Edit ${playlist.title}`} onClick={editPlaylistClick}>
+                  <i className="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                </button>
+                <OpenModalButton className="icon-button update-delete-music-buttons" aria-label={`Delete ${playlist.title}`} modalComponent={<DeleteModal type='playlist' id={playlist.id} />}>
                   <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
                 </OpenModalButton>
               </div>
               <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
-                <img src={playlist.art} alt={playlist.title} className="album-image" />
+                <img src={playlist.art} alt="" className="album-image" />
                 <h3>{playlist?.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
                 <p className='owner-text'>{playlist.user.username}</p>
               </Link>

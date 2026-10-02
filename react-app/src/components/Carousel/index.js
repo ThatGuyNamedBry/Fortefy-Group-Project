@@ -56,6 +56,18 @@ const Carousel = ({
     const goPrev = () => setStartIndex(Math.max(0, start - perPage));
     const goNext = () => setStartIndex(Math.min(maxStart, start + perPage));
 
+    // Tabbing onto a card that is off to the side pages it into view. Left to
+    // itself the browser scrolls the clipped viewport to show it instead,
+    // which leaves the cards out of step with the arrows' paging.
+    const showSlide = (index) => {
+        const viewport = viewportRef.current;
+        const unscroll = () => { if (viewport) viewport.scrollLeft = 0; };
+        unscroll();
+        requestAnimationFrame(unscroll);
+        if (index < start) setStartIndex(index);
+        else if (index >= start + perPage) setStartIndex(index - perPage + 1);
+    };
+
     const offset = Math.round(start * (cardWidth + gap));
 
     return (
@@ -73,7 +85,7 @@ const Carousel = ({
                         disabled={!canGoPrev}
                         aria-label={`Previous ${title}`}
                     >
-                        <i className="fa-solid fa-angles-left" />
+                        <i className="fa-solid fa-angles-left" aria-hidden="true" />
                     </button>
                     <button
                         type="button"
@@ -82,7 +94,7 @@ const Carousel = ({
                         disabled={!canGoNext}
                         aria-label={`Next ${title}`}
                     >
-                        <i className="fa-solid fa-angles-right" />
+                        <i className="fa-solid fa-angles-right" aria-hidden="true" />
                     </button>
                 </div>
             </div>
@@ -96,6 +108,7 @@ const Carousel = ({
                             key={getKey(item, index)}
                             className="carousel-slide"
                             style={{ flex: `0 0 ${cardWidth}px` }}
+                            onFocus={() => showSlide(index)}
                         >
                             {renderItem(item, index)}
                         </div>

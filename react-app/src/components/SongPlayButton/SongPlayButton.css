@@ -1,0 +1,28 @@
+.song-track-number {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgb(160, 160, 160);
+    font: inherit;
+}
+
+/* Footer.css colours every span on the site ("#for > a, span") */
+.song-track-number-text {
+    color: inherit;
+}
+
+/* Two classes, so this outranks Font Awesome's own display rule */
+.song-track-number .song-track-play {
+    display: none;
+    color: white;
+}
+
+.albums-songs-button:hover .song-track-number-text,
+.albums-songs-button:focus-within .song-track-number-text {
+    display: none;
+}
+
+.albums-songs-button:hover .song-track-number .song-track-play,
+.albums-songs-button:focus-within .song-track-number .song-track-play {
+    display: inline-block;
+}

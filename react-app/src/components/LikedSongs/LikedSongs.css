@@ -44,8 +44,10 @@
 
 .liked-songs-name-header {
     font-size: 400%;
-    margin-top: 0%;
-    margin-bottom: 0%;
+    /* An h1, which AlbumForm.css's global h1 rule would centre and give a
+       5px margin */
+    margin: 0;
+    text-align: left;
 }
 
 #liked-songs-description {
@@ -76,12 +78,6 @@
 .liked-songs-list {
     padding-left: 0%;
     margin-top: 1%;
-}
-
-/* The shared song-row class sizes itself as width: 100% plus padding, which
-   overflows on an <li> (content-box). Keep the row inside the page. */
-.liked-songs-list .albums-songs-button {
-    box-sizing: border-box;
 }
 
 .liked-songs-list-header {
@@ -170,8 +166,10 @@
     padding: 40px 3%;
 }
 
-.liked-songs-login h2 {
-    margin-bottom: 4px;
+/* The page's only heading when logged out, sized like the h2 it used to be */
+.liked-songs-login h1 {
+    font-size: 1.5em;
+    margin: 0.83em 0 4px;
 }
 
 .liked-songs-login p {
@@ -193,4 +191,28 @@
 .liked-songs-login button:hover {
     background-color: rgb(233, 233, 233);
     color: rgb(12, 147, 0);
+}
+
+/* Phones: the cover goes above the title, which shrinks and wraps rather than
+   pushing the page wider than the screen */
+@media (max-width: 600px) {
+    .liked-songs-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .liked-songs-details-art {
+        width: 200px;
+        height: 200px;
+    }
+
+    .liked-songs-info-container {
+        min-width: 0;
+        padding-left: 0;
+    }
+
+    .liked-songs-name-header {
+        font-size: 250%;
+        overflow-wrap: anywhere;
+    }
 }

@@ -25,3 +25,9 @@
   height: fit-content;
   border-radius: 25px;
 }
+
+/* The dialog takes focus when it opens so Tab starts inside it; a ring around
+   the whole dialog would only get in the way */
+#modal-content:focus {
+  outline: none;
+}

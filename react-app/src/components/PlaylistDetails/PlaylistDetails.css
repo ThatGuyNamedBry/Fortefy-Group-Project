@@ -32,8 +32,10 @@
 
 .playlist-name-header {
     font-size: 400%;
-    margin-top: 0%;
-    margin-bottom: 0%;
+    /* An h1, which AlbumForm.css's global h1 rule would centre and give a
+       5px margin */
+    margin: 0;
+    text-align: left;
 }
 
 #playlist-artists {
@@ -70,4 +72,28 @@
 .playlist-song-time {
     color: rgb(160, 160, 160);
 
+}
+
+/* Phones: the cover goes above the title, which shrinks and wraps rather than
+   pushing the page wider than the screen */
+@media (max-width: 600px) {
+    .playlist-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .playlist-details-art {
+        width: 200px;
+        height: 200px;
+    }
+
+    .playlist-info-container {
+        min-width: 0;
+        padding-left: 0;
+    }
+
+    .playlist-name-header {
+        font-size: 250%;
+        overflow-wrap: anywhere;
+    }
 }

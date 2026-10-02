@@ -33,8 +33,10 @@
 
 .album-name-header {
     font-size: 400%;
-    margin-top: 0%;
-    margin-bottom: 0%;
+    /* An h1, which AlbumForm.css's global h1 rule would centre and give a
+       5px margin */
+    margin: 0;
+    text-align: left;
 }
 
 #album-clock-icon {
@@ -65,22 +67,54 @@
 
 }
 
+/* A song row on the album, playlist and Liked Songs pages. Clicking anywhere
+   on it plays the song. */
 .albums-songs-button {
+    box-sizing: border-box;
     background-color: transparent;
     color: rgb(160, 160, 160);
-    border: 0px;
-    box-shadow: 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     padding-right: 5%;
     margin-top: 17px;
+    cursor: pointer;
 }
 
-.albums-songs-button:hover {
+.albums-songs-button:hover,
+.albums-songs-button:focus-within {
     background-color: rgb(45, 45, 45);
     border-radius: 10px;
+}
+
+.song-list-heading {
+    color: rgb(160, 160, 160);
+}
+
+.song-row-name {
+    color: white;
+}
+
+/* The owner's edit and delete. Always in the page so the keyboard can reach
+   them, but only shown on the row being hovered or focused, and always on
+   touch screens, which have no hover. */
+.song-row-owner-buttons {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    opacity: 0;
+}
+
+.albums-songs-button:hover .song-row-owner-buttons,
+.albums-songs-button:focus-within .song-row-owner-buttons {
+    opacity: 1;
+}
+
+@media (hover: none) {
+    .song-row-owner-buttons {
+        opacity: 1;
+    }
 }
 
 .number-name-container {
@@ -91,13 +125,6 @@
 .heart-time-container {
     display: flex;
     align-items: center;
-}
-
-.song-track-number {
-    background-color: transparent;
-    color: rgb(160, 160, 160);
-    border: 0px;
-    box-shadow: 0px;
 }
 
 .album-buttons-container {
@@ -136,6 +163,7 @@
 }
 
 .album-update-button {
+    display: flex;
     color: rgb(160, 160, 160);
     font-size: 150%;
     margin-left: 50%;
@@ -149,4 +177,28 @@
 
 .fa-solid.fa-pen-to-square:hover {
     color: white;
+}
+
+/* Phones: the cover goes above the title, which shrinks and wraps rather than
+   pushing the page wider than the screen */
+@media (max-width: 600px) {
+    .album-header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .album-details-art {
+        width: 200px;
+        height: 200px;
+    }
+
+    .album-info-container {
+        min-width: 0;
+        padding-left: 0;
+    }
+
+    .album-name-header {
+        font-size: 250%;
+        overflow-wrap: anywhere;
+    }
 }

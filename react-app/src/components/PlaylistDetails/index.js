@@ -6,13 +6,13 @@ import { getPlaylistByIdThunk, removePlaylistSongThunk, loadPlaylistSongsAction 
 import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import LikeButton from '../LikeButton';
 import PageStatus, { useLoadStatus } from '../PageStatus';
+import SongPlayButton from '../SongPlayButton';
 import './PlaylistDetails.css';
 
 const PlaylistDetails = () => {
     const dispatch = useDispatch();
     const { playlistId } = useParams();
 
-    // const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
     const user = useSelector(state => state.session.user);
     const playlist = useSelector((state) => state.playlists.singlePlaylist);
     const songsObject = useSelector((state) => state.playlists.playlistSongs);
@@ -20,18 +20,9 @@ const PlaylistDetails = () => {
 
     const [artistsText, setArtistsText] = useState('');
     const [playlistDuration, setPlaylistDuration] = useState(0);
-    const [hoveredSong, setHoveredSong] = useState(-1);
 
     //for audio player use only
     const [playerSongsObject, setPlayerSongsObject] = useState({});
-
-    const showPlayButton = (i) => {
-        setHoveredSong(i);
-    }
-
-    const hidePlayButton = () => {
-        setHoveredSong(-1);
-    }
 
     const status = useLoadStatus(useCallback(
         () => dispatch(getPlaylistByIdThunk(playlistId)), [dispatch, playlistId]));
@@ -97,10 +88,10 @@ const PlaylistDetails = () => {
     return (
         <div className='playlist-details-container'>
             <div className='playlist-header-container'>
-                <img className='playlist-details-art' src={playlist?.art ? playlist.art : 'https://i0.wp.com/olumuse.org/wp-content/uploads/2020/09/unnamed.jpg'} alt='Playlist Cover'></img>
+                <img className='playlist-details-art' src={playlist?.art ? playlist.art : 'https://i0.wp.com/olumuse.org/wp-content/uploads/2020/09/unnamed.jpg'} alt={`${playlist.title} playlist cover`}></img>
                 <div className='playlist-info-container'>
                     <p>Playlist</p>
-                    <h3 className='playlist-name-header'>{playlist.title}</h3>
+                    <h1 className='playlist-name-header'>{playlist.title}</h1>
                     <div className='playlist-info-wrapper'>
                         <p id="playlist-description">{playlist?.description}</p>
                         <p id="playlist-artists">{songs.length ? `Featuring artists including ${artistsText}` : 'No tracks yet.'}</p>
@@ -109,38 +100,38 @@ const PlaylistDetails = () => {
                 </div>
             </div>
             <div className='playlist-buttons-container'>
-                <button className='album-play-button' onClick={handlePlayPlaylist}>
-                    <i className="fa-sharp fa-solid fa-circle-play"></i>
+                <button className='album-play-button' onClick={handlePlayPlaylist} aria-label={`Play ${playlist.title}`}>
+                    <i className="fa-sharp fa-solid fa-circle-play" aria-hidden="true"></i>
                 </button>
             </div>
             <ul className='playlist-songs-container'>
                 <li className='playlist-songs-header'>
-                    <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
-                    <i className="fa-regular fa-clock" id="playlist-clock-icon"></i>
+                    <p className='song-list-heading'> &nbsp; # &nbsp; &nbsp; Title</p>
+                    <i className="fa-regular fa-clock" id="playlist-clock-icon" aria-hidden="true"></i><span className="visually-hidden">Duration</span>
                 </li>
                 {songs.map((song, i) => (
-                    <li key={song.playlistSongId} className='albums-songs-button'
-                        onMouseEnter={(e) => showPlayButton(i)}
-                        onMouseLeave={() => hidePlayButton()}
-                        onClick={() => handlePlaySong(song.id)}
-                    >
+                    <li key={song.playlistSongId} className='albums-songs-button' onClick={() => handlePlaySong(song.id)}>
                         <div className='number-name-container'>
-                            <div className='song-track-number'>
-                                <div style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{i + 1}</div>
-                                <div style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
-                                    <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
-                                </div>
-                            </div>
-                            <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
+                            <SongPlayButton song={song} number={i + 1} onPlay={() => handlePlaySong(song.id)} />
+                            <p className='song-row-name'> &nbsp; &nbsp; {song.name}</p>
                         </div>
                         <div className='heart-time-container'>
-                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { color: "rgb(19, 19, 19)" }}>
+                            <div className='heart-container'>
                                 <LikeButton
                                     songId={song.id}
                                 />
                             </div>
                             <div className='playlist-songs-buttons'>
-                                {user && user?.id === playlist?.user_id && <i className="fa-solid fa-circle-minus" onClick={(e) => removeSongClick(e, song.playlistSongId)}></i>}
+                                {user && user?.id === playlist?.user_id && (
+                                    <button
+                                        type='button'
+                                        className='icon-button'
+                                        aria-label={`Remove ${song.name} from this playlist`}
+                                        onClick={(e) => removeSongClick(e, song.playlistSongId)}
+                                    >
+                                        <i className="fa-solid fa-circle-minus" aria-hidden="true"></i>
+                                    </button>
+                                )}
                             </div>
                             <p className='playlist-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)}</p>
                         </div>

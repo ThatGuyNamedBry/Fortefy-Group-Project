@@ -9,6 +9,7 @@ import AddPLSongButton from '../AddPLSongButton';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import LikedSongsCover from './LikedSongsCover';
+import SongPlayButton from '../SongPlayButton';
 import './LikedSongs.css';
 
 /**
@@ -29,7 +30,6 @@ const LikedSongs = () => {
     // Order in which the API returned the liked songs (most recent like first).
     const [likedSongIds, setLikedSongIds] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [hoveredSong, setHoveredSong] = useState(-1);
 
     const userId = user?.id;
 
@@ -66,7 +66,7 @@ const LikedSongs = () => {
         return (
             <div className='liked-songs-container liked-songs-login'>
                 <LikedSongsCover className='liked-songs-details-art' />
-                <h2>Log in to see your Liked Songs</h2>
+                <h1>Log in to see your Liked Songs</h1>
                 <p>Every song you like is collected here, in one playlist.</p>
                 <OpenModalButton
                     buttonText="Log In"
@@ -82,7 +82,7 @@ const LikedSongs = () => {
                 <LikedSongsCover className='liked-songs-details-art' />
                 <div className='liked-songs-info-container'>
                     <p>Playlist</p>
-                    <h3 className='liked-songs-name-header'>Liked Songs</h3>
+                    <h1 className='liked-songs-name-header'>Liked Songs</h1>
                     <div className='liked-songs-info-wrapper'>
                         <p id="liked-songs-description">Every song you like, all in one place.</p>
                         <p id="liked-songs-artists">
@@ -101,37 +101,28 @@ const LikedSongs = () => {
                     disabled={!songs.length}
                     aria-label="Play Liked Songs"
                 >
-                    <i className="fa-sharp fa-solid fa-circle-play"></i>
+                    <i className="fa-sharp fa-solid fa-circle-play" aria-hidden="true"></i>
                 </button>
             </div>
             <ul className='liked-songs-list'>
                 <li className='liked-songs-list-header'>
-                    <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
-                    <i className="fa-regular fa-clock" id="liked-songs-clock-icon"></i>
+                    <p className='song-list-heading'> &nbsp; # &nbsp; &nbsp; Title</p>
+                    <i className="fa-regular fa-clock" id="liked-songs-clock-icon" aria-hidden="true"></i><span className="visually-hidden">Duration</span>
                 </li>
                 {isLoaded && !songs.length && (
                     <li className='liked-songs-empty'>
                         <p>Songs you like will show up here.</p>
-                        <p>Tap the <i className="fa-sharp fa-regular fa-heart"></i> on any song to save it to Liked Songs.</p>
+                        <p>Tap the <i className="fa-sharp fa-regular fa-heart" aria-hidden="true"></i><span className="visually-hidden">heart</span> on any song to save it to Liked Songs.</p>
                         <Link to="/" className='liked-songs-discover-link'>Discover Songs</Link>
                     </li>
                 )}
                 {songs.map((song, i) => (
-                    <li key={song.id} className='albums-songs-button'
-                        onMouseEnter={() => setHoveredSong(i)}
-                        onMouseLeave={() => setHoveredSong(-1)}
-                        onClick={() => handlePlaySong(song)}
-                    >
+                    <li key={song.id} className='albums-songs-button' onClick={() => handlePlaySong(song)}>
                         <div className='number-name-container'>
-                            <div className='song-track-number'>
-                                <div style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{i + 1}</div>
-                                <div style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
-                                    <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
-                                </div>
-                            </div>
+                            <SongPlayButton song={song} number={i + 1} onPlay={() => handlePlaySong(song)} />
                             <img className='liked-songs-row-art' src={song.album_art} alt="" />
                             <div className='liked-songs-row-text'>
-                                <p style={{ color: "white" }}>{song.name}</p>
+                                <p className='song-row-name'>{song.name}</p>
                                 <Link
                                     to={`/albums/${song.album_id}`}
                                     className='liked-songs-row-artist'

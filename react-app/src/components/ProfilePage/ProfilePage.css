@@ -36,9 +36,19 @@
     z-index: 98;
 }
 
-.profile-tile-container:hover .profile-tile-buttons {
+/* Also while the keyboard is on the tile, and always on touch screens, which
+   have no hover */
+.profile-tile-container:hover .profile-tile-buttons,
+.profile-tile-container:focus-within .profile-tile-buttons {
     opacity: 1;
     transform: translateY(0);
+}
+
+@media (hover: none) {
+    .profile-tile-buttons {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 .profile-tile-buttons > * + * {
