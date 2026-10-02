@@ -26,6 +26,7 @@
 
 .profile-tile-buttons {
     display: flex;
+    gap: 2px;
     position: absolute;
     right: 5px;
     top: 5px;

@@ -1,4 +1,4 @@
-from app.models import db, User, environment, SCHEMA, Song
+from app.models import db, environment, SCHEMA, Song
 from .users import library_user
 from sqlalchemy.sql import text
 

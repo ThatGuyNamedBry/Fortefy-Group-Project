@@ -1,6 +1,5 @@
 from sqlalchemy.orm import joinedload, selectinload
 from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
-from .user import User
 
 class Album(db.Model):
     __tablename__ = 'albums'

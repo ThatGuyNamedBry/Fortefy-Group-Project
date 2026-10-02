@@ -1,0 +1,22 @@
+/* An OpenModalButton that shows only an icon: no button chrome, and the icon
+   takes its size and colour from wherever the button sits */
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+}
+
+/* The edit and delete controls on album, song and playlist tiles and rows.
+   After .icon-button so its colour wins over the reset. */
+.update-delete-music-buttons {
+    color: rgb(160, 160, 160);
+}
+
+.update-delete-music-buttons:hover {
+    cursor: pointer;
+    color: white;
+}

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, current_app
+from flask import Blueprint, jsonify, current_app
 from flask_login import login_required, current_user
 from app.models import Album, db, Song
 from app.forms import AlbumForm, CreateSongForm
@@ -80,7 +80,6 @@ def create_new_album():
     form = AlbumForm()
     form['csrf_token'].data = csrf_token_from_request()
 
-    form.data['user_id'] = current_user.id
     if form.validate_on_submit():
 
         new_album = Album (

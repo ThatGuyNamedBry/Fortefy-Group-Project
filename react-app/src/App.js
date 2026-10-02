@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, useLocation, useHistory } from "react-router-dom";
-import SignupFormPage from "./components/SignupFormPage";
-import LoginFormPage from "./components/LoginFormPage";
 import LoginFormModal from "./components/LoginFormModal";
+import SignupFormModal from "./components/SignupFormModal";
 import { useModal } from "./context/Modal";
 import { authenticate } from "./store/session";
 import { getCurrentUserAllPlaylistsThunk } from "./store/playlists";
@@ -20,6 +19,22 @@ import LikedSongs from "./components/LikedSongs";
 import Footer from "./components/Footer";
 import SearchPage from "./components/SearchPage";
 import ErrorBoundary from "./components/ErrorBoundary";
+
+// /login and /signup open the same modal as the Log In and Sign Up buttons,
+// over the home page. They used to be separate, unstyled copies of the forms
+// with weaker validation.
+function AuthModalRedirect({ modal: ModalForm }) {
+  const { setModalContent } = useModal();
+  const history = useHistory();
+  const loggedIn = useSelector((state) => Boolean(state.session.user));
+
+  useEffect(() => {
+    if (!loggedIn) setModalContent(<ModalForm />);
+    history.replace("/");
+  }, [ModalForm, loggedIn, setModalContent, history]);
+
+  return null;
+}
 
 function App() {
   const dispatch = useDispatch();
@@ -64,8 +79,12 @@ function App() {
             <Route exact path="/" component={HomeLandingPage} />
             <Route exact path="/profile" component={ProfilePage} />
             <Route exact path="/search" component={SearchPage} />
-            <Route path="/login" component={LoginFormPage} />
-            <Route path="/signup" component={SignupFormPage} />
+            <Route path="/login">
+              <AuthModalRedirect modal={LoginFormModal} />
+            </Route>
+            <Route path="/signup">
+              <AuthModalRedirect modal={SignupFormModal} />
+            </Route>
             <Route path="/albums/new" component={AlbumCreate} />
             <Route path="/playlists/new" component={PlaylistCreate} />
             <Route exact path="/playlists/liked" component={LikedSongs} />

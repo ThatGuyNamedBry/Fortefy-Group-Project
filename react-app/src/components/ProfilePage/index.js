@@ -4,10 +4,9 @@ import { useHistory, Link, NavLink } from 'react-router-dom';
 import { getCurrentUserAllAlbumsThunk, selectUserAlbums } from '../../store/albums';
 import { getCurrentUserAllSongsThunk, selectUserSongs } from '../../store/songs';
 import { getCurrentUserAllPlaylistsThunk, selectUserPlaylists } from '../../store/playlists';
-import EditSongButton from '../EditSongButton';
+import OpenModalButton from '../OpenModalButton';
 import AddMusicModal from '../AddMusicModal';
 import DeleteModal from '../DeleteModal';
-import DeleteMusicButton from '../DeleteMusicButton/DeleteMusicButton';
 import Carousel from '../Carousel';
 import LikedSongsCover from '../LikedSongs/LikedSongsCover';
 import './ProfilePage.css';
@@ -59,8 +58,10 @@ const ProfilePage = () => {
         renderItem={(album) => (
           <div className="profile-tile-container">
             <div className="profile-tile-buttons">
-              <div onClick={() => handleUpdateAlbum(album)} className='update-delte-music-buttons fa-solid fa-pen-to-square'></div>
-              <DeleteMusicButton className="delete-song-modal" modalComponent={<DeleteModal type='album' id={album.id} />} />
+              <div onClick={() => handleUpdateAlbum(album)} className='update-delete-music-buttons fa-solid fa-pen-to-square'></div>
+              <OpenModalButton className="icon-button update-delete-music-buttons" aria-label="Delete album" modalComponent={<DeleteModal type='album' id={album.id} />}>
+                <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
+              </OpenModalButton>
             </div>
             <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
               <img src={album.art} alt={album.name} className="album-image" />
@@ -78,8 +79,12 @@ const ProfilePage = () => {
           return (
             <div className="profile-tile-container">
               <div className="profile-tile-buttons">
-                <EditSongButton modalComponent={<AddMusicModal className="add-music-modal" album={album} song={song} type="update" />} />
-                <DeleteMusicButton modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />} />
+                <OpenModalButton className="icon-button update-delete-music-buttons" aria-label="Edit song" modalComponent={<AddMusicModal album={album} song={song} type="update" />}>
+                  <i className="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                </OpenModalButton>
+                <OpenModalButton className="icon-button update-delete-music-buttons" aria-label="Delete song" modalComponent={<DeleteModal type='song' id={song.id} />}>
+                  <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
+                </OpenModalButton>
               </div>
               <Link to={`/albums/${album?.id}`} className="album-tile link-as-text">
                 <img src={album?.art} alt={album?.name} className="album-image" />
@@ -113,13 +118,13 @@ const ProfilePage = () => {
           return (
             <div className="profile-tile-container">
               <div className="profile-tile-buttons">
-                <div className='update-delte-music-buttons fa-solid fa-pen-to-square' onClick={editPlaylistClick}>
-                  {/* Edit Playlist Modal Here (Optional) */}
-                </div>
-                <DeleteMusicButton className="delete-song-modal" modalComponent={<DeleteModal type='playlist' id={playlist.id} />} />
+                <div className='update-delete-music-buttons fa-solid fa-pen-to-square' onClick={editPlaylistClick}></div>
+                <OpenModalButton className="icon-button update-delete-music-buttons" aria-label="Delete playlist" modalComponent={<DeleteModal type='playlist' id={playlist.id} />}>
+                  <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
+                </OpenModalButton>
               </div>
               <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
-                <img src={playlist?.art} alt={playlist?.name} className="album-image" />
+                <img src={playlist.art} alt={playlist.title} className="album-image" />
                 <h3>{playlist?.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
                 <p className='owner-text'>{playlist.user.username}</p>
               </Link>

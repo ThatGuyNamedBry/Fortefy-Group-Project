@@ -1,9 +1,8 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from app.models import db, Playlist, PlaylistSong, Song
 from app.forms import PlaylistForm
 from app.api.auth_routes import validation_errors_to_error_object
-from app.api.aws_helper import get_unique_filename, upload_file_to_s3
 from app.api.csrf import csrf_token_from_request
 
 playlist_routes = Blueprint('playlists', __name__)
@@ -48,7 +47,6 @@ def create_new_playlist():
         db.session.commit()
         return jsonify(new_playlist.to_dict())
 
-    # print(validation_errors_to_error_object(form.errors))
     return { 'errors': validation_errors_to_error_object(form.errors)}, 400
 
 # Add a Song to a Playlist with Playlist Id and **SONG** ID

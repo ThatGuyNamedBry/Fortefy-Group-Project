@@ -4,14 +4,12 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getAlbumByIdThunk } from '../../store/albums';
 import { selectAlbumSongs } from '../../store/songs';
-import AddMusicButton from '../AddMusicButton';
+import OpenModalButton from '../OpenModalButton';
 import LikeButton from '../LikeButton';
 import AddMusicModal from '../AddMusicModal'
 import DeleteModal from '../DeleteModal';
 import './AlbumDetails.css';
 import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
-import DeleteMusicButton from '../DeleteMusicButton/DeleteMusicButton';
-import EditSongButton from '../EditSongButton';
 import AddPLSongButton from '../AddPLSongButton';
 import PageStatus, { useLoadStatus } from '../PageStatus';
 
@@ -29,7 +27,6 @@ const AlbumDetails = () => {
     const songsArray = useSelector(state => selectAlbumSongs(state, albumId), shallowEqual);
     const albumTime = songsArray.reduce((acc, song) => acc + song.duration, 0);
 
-    // const currentPlaylist = useSelector((state) => state.player.currentPlaylist);
     const [hoveredSong, setHoveredSong] = useState(-1);
     const [userOwned, setUserOwned] = useState(false);
 
@@ -39,10 +36,6 @@ const AlbumDetails = () => {
     useEffect(() => {
         setUserOwned(singleAlbum?.user?.id === user?.id);
     }, [dispatch, singleAlbum, user]);
-
-    const deleteHandleClick = async () => {
-        await dispatch(getAlbumByIdThunk(singleAlbum?.id));
-    };
 
     const handlePlayAlbum = () => {
         dispatch(setCurrentPlaylist(songsArray));
@@ -82,9 +75,15 @@ const AlbumDetails = () => {
                 </button>
                 <div className="add-music-button-container">
 
-                    {user && singleAlbum.user.id === user.id ? <AddMusicButton
-                        modalComponent={<AddMusicModal className="add-music-modal" album={singleAlbum} type="create" />}
-                    /> : null}
+                    {user && singleAlbum.user.id === user.id ? (
+                        <OpenModalButton
+                            className="icon-button"
+                            aria-label="Add a song"
+                            modalComponent={<AddMusicModal album={singleAlbum} type="create" />}
+                        >
+                            <i style={{ fontSize: "35px" }} className="fa-solid fa-plus" aria-hidden="true"></i>
+                        </OpenModalButton>
+                    ) : null}
                 </div>
 
                 <div className='edit-music-button-container'>
@@ -119,14 +118,22 @@ const AlbumDetails = () => {
                                 />
                             </div>
                             {userOwned && hoveredSong === i && (
-                                <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
-                                    <EditSongButton
-                                        modalComponent={<AddMusicModal className="add-music-modal" song={song} album={singleAlbum} type="update" />}
-                                    />
-                                    <DeleteMusicButton
-                                        modalComponent={<DeleteModal className="delete-song-modal" type='song' id={song.id} />}
-                                        onClick={deleteHandleClick}
-                                    />
+                                // Inside the row, which plays the song when clicked
+                                <div style={{ display: "flex", alignItems: "center", gap: "3px" }} onClick={(e) => e.stopPropagation()}>
+                                    <OpenModalButton
+                                        className="icon-button update-delete-music-buttons"
+                                        aria-label="Edit song"
+                                        modalComponent={<AddMusicModal song={song} album={singleAlbum} type="update" />}
+                                    >
+                                        <i className="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                                    </OpenModalButton>
+                                    <OpenModalButton
+                                        className="icon-button update-delete-music-buttons"
+                                        aria-label="Delete song"
+                                        modalComponent={<DeleteModal type='song' id={song.id} />}
+                                    >
+                                        <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
+                                    </OpenModalButton>
                                 </div>
                             )}
                             <p className='album-song-time'> &nbsp; &nbsp; {secsToMins(song.duration)} &nbsp; &nbsp; &nbsp; &nbsp; </p>
