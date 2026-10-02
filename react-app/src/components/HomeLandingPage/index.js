@@ -19,7 +19,6 @@ const HomeLandingPage = () => {
     const userPlaylists = useSelector(selectUserPlaylists, shallowEqual);
     const user = useSelector(state => state.session.user)
     const [songOrder, setSongOrder] = useState([]);
-    const [hoveredSong, setHoveredSong] = useState(null);
     const [loadFailed, setLoadFailed] = useState(false);
 
     useEffect(() => {
@@ -53,16 +52,9 @@ const HomeLandingPage = () => {
         dispatch(setCurrentSongIndex(0));
     };
 
-    const showPlayButton = (songId) => {
-        setHoveredSong(songId);
-    };
-
-    const hidePlayButton = () => {
-        setHoveredSong(null);
-    };
-
     return (
         <div className="home-container">
+            <h1 className="visually-hidden">ƒorteƒy home</h1>
             <div className="your-library-container">
                 <h2>Your Library</h2>
                 <div>
@@ -74,7 +66,7 @@ const HomeLandingPage = () => {
                             </Link>
                             {userPlaylists.map(playlist => (
                                 <Link key={playlist.id} to={`/playlists/${playlist.id}`} className="playlist-tile">
-                                    <img src={playlist.art} alt={playlist.title} className="playlist-image" />
+                                    <img src={playlist.art} alt="" className="playlist-image" />
                                     <h3>{playlist.title}</h3>
                                 </Link>
                             ))}
@@ -105,7 +97,7 @@ const HomeLandingPage = () => {
                     items={Object.values(allAlbums)}
                     renderItem={album => (
                         <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
-                            <img src={album.art} alt={album.name} className="album-image" />
+                            <img src={album.art} alt="" className="album-image" />
                             <h3>{album.name}</h3>
                             <p className='owner-text'>{album.artist}</p>
                         </Link>
@@ -115,21 +107,20 @@ const HomeLandingPage = () => {
                     title="Discover Songs"
                     items={sortedSongs}
                     renderItem={song => (
-                        <div
-                            className="album-tile link-as-text"
-                            onMouseEnter={() => showPlayButton(song.id)}
-                            onMouseLeave={hidePlayButton}
-                        >
+                        <div className="album-tile link-as-text">
                             <Link to={`/albums/${song.album_id}`} className="song-link">
                                 <img src={song.album_art} alt={song.album_name} className="album-image" />
                                 <h3>{song.name}</h3>
                                 <p className="owner-text">{song.artist}</p>
                             </Link>
-                            {hoveredSong === song.id && (
-                                <div className="play-button" onClick={(e) => handlePlaySong(song.id, e)}>
-                                    <i className="fa-sharp fa-solid fa-circle-play" />
-                                </div>
-                            )}
+                            <button
+                                type="button"
+                                className="play-button"
+                                aria-label={`Play ${song.name}`}
+                                onClick={(e) => handlePlaySong(song.id, e)}
+                            >
+                                <i className="fa-sharp fa-solid fa-circle-play" aria-hidden="true" />
+                            </button>
                         </div>
                     )}
                 />
@@ -138,7 +129,7 @@ const HomeLandingPage = () => {
                     items={Object.values(allPlaylists)}
                     renderItem={playlist => (
                         <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
-                            <img src={playlist.art} alt={playlist.title} className="album-image" />
+                            <img src={playlist.art} alt="" className="album-image" />
                             <h3>{playlist.title}</h3>
                             <p className='owner-text'>{playlist.user.username}</p>
                         </Link>

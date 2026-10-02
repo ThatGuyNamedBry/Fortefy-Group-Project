@@ -114,13 +114,17 @@
 
     margin-top: 50px;
 }
-.sign-up-link a {
+.sign-up-link .link-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
     text-decoration: underline;
     color: inherit;
     font-weight: bold;
 }
 
-.sign-up-link a:hover {
+.sign-up-link .link-button:hover {
     color: rgb(33, 204, 6)
 }
 

@@ -20,3 +20,23 @@ body {
 button {
     cursor: pointer;
 }
+
+/* A visible ring on whatever the keyboard is on. :focus-visible leaves mouse
+   clicks alone, so buttons don't keep a ring after being clicked. */
+:focus-visible {
+    outline: 2px solid rgb(33, 204, 6);
+    outline-offset: 2px;
+}
+
+/* Read by screen readers, not shown */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}

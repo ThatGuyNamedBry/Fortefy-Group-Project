@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
 import { getAlbumByIdThunk } from '../../store/albums';
@@ -12,11 +12,11 @@ import './AlbumDetails.css';
 import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import AddPLSongButton from '../AddPLSongButton';
 import PageStatus, { useLoadStatus } from '../PageStatus';
+import SongPlayButton from '../SongPlayButton';
 
 const AlbumDetails = () => {
 
     const dispatch = useDispatch();
-    const history = useHistory();
     const { albumId } = useParams();
 
     const singleAlbum = useSelector(state => state.albums.allAlbums[albumId]);
@@ -27,15 +27,10 @@ const AlbumDetails = () => {
     const songsArray = useSelector(state => selectAlbumSongs(state, albumId), shallowEqual);
     const albumTime = songsArray.reduce((acc, song) => acc + song.duration, 0);
 
-    const [hoveredSong, setHoveredSong] = useState(-1);
-    const [userOwned, setUserOwned] = useState(false);
+    const userOwned = Boolean(user) && singleAlbum?.user?.id === user.id;
 
     const status = useLoadStatus(useCallback(
         () => dispatch(getAlbumByIdThunk(albumId)), [dispatch, albumId]));
-
-    useEffect(() => {
-        setUserOwned(singleAlbum?.user?.id === user?.id);
-    }, [dispatch, singleAlbum, user]);
 
     const handlePlayAlbum = () => {
         dispatch(setCurrentPlaylist(songsArray));
@@ -47,13 +42,6 @@ const AlbumDetails = () => {
         dispatch(setCurrentSongIndex(0));
     };
 
-    const showPlayButton = (i) => {
-        setHoveredSong(i);
-    }
-    const hidePlayButton = () => {
-        setHoveredSong(-1);
-    }
-
     // An album seen before shows from the store while it reloads, unless the
     // reload says it has since been deleted
     if (status === 'missing' || !singleAlbum) return <PageStatus status={status} thing="album" />
@@ -61,21 +49,21 @@ const AlbumDetails = () => {
     return (
         <div className='album-details-container page-wrapper'>
             <div className='album-header-container'>
-                <img className='album-details-art' src={singleAlbum.art} alt='Album Cover'></img>
+                <img className='album-details-art' src={singleAlbum.art} alt={`${singleAlbum.name} album cover`}></img>
                 <div className='album-info-container'>
                     <p>Album</p>
-                    <h3 className='album-name-header'>{singleAlbum.name}</h3>
+                    <h1 className='album-name-header'>{singleAlbum.name}</h1>
                     <p id="album-info">{singleAlbum.artist} · {singleAlbum.year} · {singleAlbum.genre}</p>
                     <p id="album-length">{songsArray.length} {songsArray.length === 1 ? `song` : `songs`}, {secsToHrs(albumTime)}</p>
                 </div>
             </div>
             <div className='album-buttons-container'>
-                <button className='album-play-button' onClick={handlePlayAlbum}>
-                    <i className="fa-sharp fa-solid fa-circle-play"></i>
+                <button className='album-play-button' onClick={handlePlayAlbum} aria-label={`Play ${singleAlbum.name}`}>
+                    <i className="fa-sharp fa-solid fa-circle-play" aria-hidden="true"></i>
                 </button>
                 <div className="add-music-button-container">
 
-                    {user && singleAlbum.user.id === user.id ? (
+                    {userOwned ? (
                         <OpenModalButton
                             className="icon-button"
                             aria-label="Add a song"
@@ -87,49 +75,46 @@ const AlbumDetails = () => {
                 </div>
 
                 <div className='edit-music-button-container'>
-                    {userOwned && <div onClick={() => history.push(`/albums/${albumId}/edit`)} className='album-update-button fa-solid fa-pen-to-square'></div>}
+                    {userOwned && (
+                        <Link to={`/albums/${albumId}/edit`} className='album-update-button' aria-label={`Edit ${singleAlbum.name}`}>
+                            <i className='fa-solid fa-pen-to-square' aria-hidden='true'></i>
+                        </Link>
+                    )}
                 </div>
 
             </div>
             <ul className='album-songs-container'>
                 <li className='album-songs-header'>
-                    <p style={{ color: "rgb(160, 160, 160)" }}> &nbsp; # &nbsp; &nbsp; Title</p>
-                    <i className="fa-regular fa-clock" id="album-clock-icon"></i>
+                    <p className='song-list-heading'> &nbsp; # &nbsp; &nbsp; Title</p>
+                    <i className="fa-regular fa-clock" id="album-clock-icon" aria-hidden="true"></i><span className="visually-hidden">Duration</span>
                 </li>
-                {songsArray.map((song, i) => (
-                    <button key={song.id} className='albums-songs-button'
-                        onMouseEnter={(e) => showPlayButton(i)}
-                        onMouseLeave={() => hidePlayButton()}
-                        onClick={() => handlePlaySong(song.id)}
-                    >
+                {songsArray.map((song) => (
+                    // Clicking anywhere on the row plays the song; the number
+                    // is the button that does it from the keyboard
+                    <li key={song.id} className='albums-songs-button' onClick={() => handlePlaySong(song.id)}>
                         <div className='number-name-container'>
-                            <div className='song-track-number'>
-                                <div style={hoveredSong !== i ? { display: "block" } : { display: "none" }}>{song.track_number}</div>
-                                <div style={hoveredSong === i ? { display: "block" } : { display: "none" }}>
-                                    <i className="fa-sharp fa-solid fa-play" style={{ color: "white" }}></i>
-                                </div>
-                            </div>
-                            <p style={{ color: "white" }}> &nbsp; &nbsp; {song.name}</p>
+                            <SongPlayButton song={song} number={song.track_number} onPlay={() => handlePlaySong(song.id)} />
+                            <p className='song-row-name'> &nbsp; &nbsp; {song.name}</p>
                         </div>
                         <div className='heart-time-container'>
-                            <div className='heart-container' style={hoveredSong === i ? { display: "block" } : { backgroundColor: "transparent" }}>
+                            <div className='heart-container'>
                                 <LikeButton
                                     songId={song.id}
                                 />
                             </div>
-                            {userOwned && hoveredSong === i && (
-                                // Inside the row, which plays the song when clicked
-                                <div style={{ display: "flex", alignItems: "center", gap: "3px" }} onClick={(e) => e.stopPropagation()}>
+                            {userOwned && (
+                                // Clicks here open a modal rather than play the song
+                                <div className='song-row-owner-buttons' onClick={(e) => e.stopPropagation()}>
                                     <OpenModalButton
                                         className="icon-button update-delete-music-buttons"
-                                        aria-label="Edit song"
+                                        aria-label={`Edit ${song.name}`}
                                         modalComponent={<AddMusicModal song={song} album={singleAlbum} type="update" />}
                                     >
                                         <i className="fa-solid fa-pen-to-square" aria-hidden="true"></i>
                                     </OpenModalButton>
                                     <OpenModalButton
                                         className="icon-button update-delete-music-buttons"
-                                        aria-label="Delete song"
+                                        aria-label={`Delete ${song.name}`}
                                         modalComponent={<DeleteModal type='song' id={song.id} />}
                                     >
                                         <i className="fa-regular fa-trash-can" aria-hidden="true"></i>
@@ -144,7 +129,7 @@ const AlbumDetails = () => {
                                 />
                             </div>}
                         </div>
-                    </button>
+                    </li>
                 ))}
             </ul>
         </div>

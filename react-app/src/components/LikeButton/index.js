@@ -30,9 +30,15 @@ const LikeButton = ({ songId }) => {
     }
 
     return (
-        <button className="like-button" onClick={likeClick}>
-            {userLike ? <i id='filled-like-heart' className="fa-sharp fa-solid fa-heart" style={{color: "#f96262"}}></i>
-            : <i className="fa-sharp fa-regular fa-heart"></i>}
+        <button
+            type="button"
+            className="like-button"
+            onClick={likeClick}
+            aria-label={song ? `Like ${song.name}` : 'Like'}
+            aria-pressed={Boolean(userLike)}
+        >
+            {userLike ? <i className="filled-like-heart fa-sharp fa-solid fa-heart" style={{color: "#f96262"}} aria-hidden="true"></i>
+            : <i className="fa-sharp fa-regular fa-heart" aria-hidden="true"></i>}
         </button>
     );
 };

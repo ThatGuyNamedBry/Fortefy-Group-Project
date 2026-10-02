@@ -4,10 +4,16 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { addPlaylistSongThunk, selectUserPlaylists } from '../../store/playlists';
 import './AddPLSong.css';
 
+// For each menu's id; React 17 has no useId
+let nextMenuId = 0;
+
 const AddPLSongButton = ({ songId, userId }) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const menuRef = useRef();
+    const toggleRef = useRef();
+    const menuIdRef = useRef(null);
+    if (menuIdRef.current === null) menuIdRef.current = `add-plsong-options-${++nextMenuId}`;
 
     // Loaded once per login by App. This button is rendered on every song
     // row, so fetching here sent one identical request per row.
@@ -26,14 +32,23 @@ const AddPLSongButton = ({ songId, userId }) => {
             if (!menuRef.current?.contains(e.target)) setIsOpen(false);
         };
         const closeOnEscape = (e) => {
-            if (e.key === 'Escape') setIsOpen(false);
+            if (e.key !== 'Escape') return;
+            // Back to the toggle if the keyboard was in the menu
+            if (menuRef.current?.contains(document.activeElement)) toggleRef.current.focus();
+            setIsOpen(false);
+        };
+        // Tabbing out of the menu closes it, like clicking outside does
+        const closeOnFocusOut = (e) => {
+            if (!menuRef.current?.contains(e.target)) setIsOpen(false);
         };
 
         document.addEventListener('click', closeOnOutsideClick, true);
         document.addEventListener('keydown', closeOnEscape);
+        document.addEventListener('focusin', closeOnFocusOut);
         return () => {
             document.removeEventListener('click', closeOnOutsideClick, true);
             document.removeEventListener('keydown', closeOnEscape);
+            document.removeEventListener('focusin', closeOnFocusOut);
         };
     }, [isOpen]);
 
@@ -45,6 +60,7 @@ const AddPLSongButton = ({ songId, userId }) => {
     const onPlaylistSelect = (e, playlistId) => {
         e.stopPropagation();
         setIsOpen(false);
+        toggleRef.current.focus();
 
         if (playlistId === 'new') {
             history.push('/playlists/new');
@@ -59,25 +75,40 @@ const AddPLSongButton = ({ songId, userId }) => {
 
     return (
         <div className='add-plsong' ref={menuRef}>
-            <i
-                className={`add-plsong-toggle fa-solid fa-circle-plus${isOpen ? ' is-open' : ''}`}
+            <button
+                type='button'
+                ref={toggleRef}
+                className={`add-plsong-toggle${isOpen ? ' is-open' : ''}`}
                 title='Add to playlist'
+                aria-label='Add to playlist'
+                aria-expanded={isOpen}
+                aria-controls={menuIdRef.current}
                 onClick={onPlusClick}
-            ></i>
+            >
+                <i className='fa-solid fa-circle-plus' aria-hidden='true'></i>
+            </button>
 
-            <ul className='add-plsong-options' style={{ display: isOpen ? 'block' : 'none' }}>
-                <li
-                    className='playlist-options add-plsong-create'
-                    onClick={(e) => onPlaylistSelect(e, 'new')}
-                    >Create Playlist
+            <ul
+                className='add-plsong-options'
+                id={menuIdRef.current}
+                style={{ display: isOpen ? 'block' : 'none' }}
+            >
+                <li>
+                    <button
+                        type='button'
+                        className='playlist-options add-plsong-create'
+                        onClick={(e) => onPlaylistSelect(e, 'new')}
+                    >Create Playlist</button>
                 </li>
                 {playlists.map(playlist => (
-                    <li
-                        key={playlist.id}
-                        className='playlist-options'
-                        title={playlist.title}
-                        onClick={(e) => onPlaylistSelect(e, playlist.id)}
-                    >{playlist.title}</li>
+                    <li key={playlist.id}>
+                        <button
+                            type='button'
+                            className='playlist-options'
+                            title={playlist.title}
+                            onClick={(e) => onPlaylistSelect(e, playlist.id)}
+                        >{playlist.title}</button>
+                    </li>
                 ))}
             </ul>
         </div>

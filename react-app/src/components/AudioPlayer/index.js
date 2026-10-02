@@ -38,7 +38,7 @@ const AudioPlayerComponent = () => {
   const song = currentPlaylist[currentSongIndex];
 
   return (
-    <div id="audio-player-container">
+    <section id="audio-player-container" aria-label="Player">
       {song && (
         <AudioPlayer
           ref={player}
@@ -53,7 +53,7 @@ const AudioPlayerComponent = () => {
               key="album-art"
               className="audio-player-art"
               src={song.album_art}
-              alt={song.name}
+              alt=""
             />,
           ]}
           onClickNext={handleNextSong}
@@ -65,7 +65,7 @@ const AudioPlayerComponent = () => {
           onPlayError={() => dispatch(setIsPlaying(false))}
         />
       )}
-    </div>
+    </section>
   );
 };
 

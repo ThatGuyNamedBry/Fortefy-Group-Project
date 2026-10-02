@@ -163,14 +163,30 @@
     color: rgb(12, 147, 0);
 }
 
+/* On a song tile, shown while the tile is hovered or has keyboard focus, and
+   always on touch screens, which have no hover */
 .play-button {
     position: absolute;
     bottom: 10px;
     right: 10px;
     background-color: transparent;
+    border: 0;
     padding: 2px;
+    font: inherit;
     transition: 0.1s;
     color: rgb(33, 204, 6);
+    opacity: 0;
+}
+
+.album-tile:hover .play-button,
+.album-tile:focus-within .play-button {
+    opacity: 1;
+}
+
+@media (hover: none) {
+    .play-button {
+        opacity: 1;
+    }
 }
 
 .play-button:hover {

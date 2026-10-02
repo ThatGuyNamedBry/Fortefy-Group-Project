@@ -9,6 +9,7 @@
     color: white;
 }
 
-#filled-like-heart {
+/* A class, not an id: every liked song on the page has one */
+.filled-like-heart {
     color: rgb(251, 139, 139);
 }

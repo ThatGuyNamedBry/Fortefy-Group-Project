@@ -9,6 +9,11 @@
 
 /* The circle-plus trigger. */
 .add-plsong-toggle {
+    display: inline-flex;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
     color: rgb(160, 160, 160);
     font-size: 18px;
     line-height: 1;
@@ -42,8 +47,13 @@
 }
 
 .playlist-options {
+    display: block;
     box-sizing: border-box;
     width: 100%;
+    border: 0;
+    background: none;
+    font: inherit;
+    text-align: left;
     padding: 8px 10px;
     border-radius: 6px;
     color: rgb(233, 233, 233);
@@ -56,7 +66,8 @@
     transition: background-color 0.15s ease;
 }
 
-.playlist-options:hover {
+.playlist-options:hover,
+.playlist-options:focus-visible {
     background-color: rgba(255, 255, 255, 0.1);
 }
 

@@ -41,8 +41,7 @@ function LoginFormModal({ errors: initialErrors = {} }) {
       });
   };
 
-  const openSignupModal = (e) => {
-    e.preventDefault();
+  const openSignupModal = () => {
     setModalContent(<SignupFormModal />);
   };
 
@@ -81,7 +80,7 @@ function LoginFormModal({ errors: initialErrors = {} }) {
       </form>
       <p className="sign-up-link">
         Don't have an account?{" "}
-        <a href="" onClick={openSignupModal}>Sign up for ƒorteƒy</a>
+        <button type="button" className="link-button" onClick={openSignupModal}>Sign up for ƒorteƒy</button>
       </p>
     </div>
   );

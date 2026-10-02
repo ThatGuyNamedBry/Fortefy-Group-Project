@@ -112,7 +112,7 @@ const SearchPage = () => {
                     <div className="search-album-grid">
                         {albums.map((album) => (
                             <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
-                                <img src={album.art} alt={album.name} className="album-image" />
+                                <img src={album.art} alt="" className="album-image" />
                                 <h3>{album.name}</h3>
                                 <p className="owner-text">{album.artist} &middot; {album.year}</p>
                             </Link>
