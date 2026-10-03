@@ -20,8 +20,10 @@ def seed():
     # already has users in it, leave everything alone. To start over from
     # fresh seed data, run `flask seed undo` first and then `flask seed all`.
     if User.query.first() is not None:
-        print("Database already has data; skipping seeding. "
-              "Run `flask seed undo` first if you want to reset it.")
+        print(
+            'Database already has data; skipping seeding. '
+            'Run `flask seed undo` first if you want to reset it.'
+        )
         return
 
     seed_users()

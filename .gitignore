@@ -5,3 +5,7 @@ __pycache__/
 .DS_Store
 .vscode/
 *.db
+
+# Test coverage
+.coverage
+htmlcov/

@@ -1,16 +1,25 @@
 from sqlalchemy.orm import joinedload, selectinload
 from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
 
+
 class Song(db.Model):
     __tablename__ = 'songs'
 
-    if environment == "production":
-        __table_args__ = {"schema": SCHEMA}
+    if environment == 'production':
+        __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
-    album_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('albums.id'), ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'),
+        nullable=False,
+    )
+    album_id = db.Column(
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod('albums.id'), ondelete='CASCADE'),
+        nullable=False,
+    )
     duration = db.Column(db.Integer, nullable=False)
     song_url = db.Column(db.String(255), nullable=False)
     track_number = db.Column(db.Integer, nullable=False)
@@ -19,8 +28,8 @@ class Song(db.Model):
 
     user = db.relationship('User', back_populates='songs')
     album = db.relationship('Album', back_populates='songs')
-    likes = db.relationship('Like', back_populates='song', cascade="all, delete")
-    playlist_songs = db.relationship('PlaylistSong', back_populates='song', cascade="all, delete")
+    likes = db.relationship('Like', back_populates='song', cascade='all, delete')
+    playlist_songs = db.relationship('PlaylistSong', back_populates='song', cascade='all, delete')
 
     def to_dict(self):
         return {
@@ -35,7 +44,7 @@ class Song(db.Model):
             'track_number': self.track_number,
             'artist': self.album.artist,
             'album_name': self.album.name,
-            "album_art": self.album.art,
+            'album_art': self.album.art,
             'created_at': to_iso(self.created_at),
             'updated_at': to_iso(self.updated_at),
         }

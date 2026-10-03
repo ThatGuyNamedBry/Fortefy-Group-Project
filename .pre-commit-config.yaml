@@ -1,0 +1,26 @@
+# Runs the same linters and formatters as CI on every commit.
+# Set up once per clone: pip install -r requirements-dev.txt && pre-commit install
+# Run on everything: pre-commit run --all-files
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.10
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  # Prettier and ESLint come from react-app's own node_modules, so they are the
+  # versions package-lock.json pins. Run `npm install --prefix react-app` first.
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        entry: npm --prefix react-app exec -- prettier --write
+        language: system
+        files: ^react-app/src/.*\.(js|css)$
+      - id: eslint
+        name: eslint
+        entry: npm --prefix react-app run lint
+        language: system
+        files: ^react-app/src/.*\.js$
+        pass_filenames: false

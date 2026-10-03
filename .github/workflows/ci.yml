@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend (ruff, pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          # The version Render runs
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: pytest --cov --cov-report=term-missing
+
+  migrations:
+    # The tests run on SQLite; production runs Postgres with every table in a
+    # schema, which is where migrations have broken before
+    name: Migrations and seeds on Postgres
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      FLASK_APP: app
+      FLASK_ENV: production
+      SCHEMA: fortefy_schema
+      SECRET_KEY: ci-only-secret
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      # Render installs psycopg2 separately too
+      - run: pip install -r requirements.txt psycopg2-binary
+      - run: flask db upgrade
+      - run: flask seed all
+      - run: flask seed undo
+      - run: flask db downgrade base
+      - run: flask db upgrade
+
+  frontend:
+    name: Frontend (eslint, prettier, jest, build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: react-app
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: react-app/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm test -- --watchAll=false
+        env:
+          CI: true
+      - run: npm run build
+        env:
+          # react-scripts 4's webpack needs the old OpenSSL hashes on Node 17+
+          NODE_OPTIONS: --openssl-legacy-provider

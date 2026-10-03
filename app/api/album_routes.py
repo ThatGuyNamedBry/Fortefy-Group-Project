@@ -18,6 +18,7 @@ album_routes = Blueprint('albums', __name__)
 # returns None for a real WAV, and for an MP3 without an ID3 tag.
 AUDIO_READERS = {'mp3': MP3, 'm4a': MP4, 'wav': WAVE}
 
+
 @album_routes.route('')
 def get_all_albums():
     """
@@ -35,7 +36,7 @@ def get_album_by_id(id):
     album = Album.query.options(*Album.to_dict_loads()).get(id)
 
     if album is None:
-        return { 'errors': 'Album not found' }, 404
+        return {'errors': 'Album not found'}, 404
 
     return jsonify(album.to_dict())
 
@@ -46,7 +47,9 @@ def get_user_albums():
     """
     Query for all albums created by the current user and return them in a list of album dictionaries
     """
-    user_albums = Album.query.options(*Album.to_dict_loads()).filter(Album.user_id == current_user.id)
+    user_albums = Album.query.options(*Album.to_dict_loads()).filter(
+        Album.user_id == current_user.id
+    )
     albums_dict = [album.to_dict() for album in user_albums]
     return jsonify(albums_dict)
 
@@ -57,8 +60,10 @@ def get_user_albums():
 def delete_album(id):
     album = Album.query.get(id)
 
-    if album is None or album.user_id != current_user.id:
+    if album is None:
         return {'errors': 'Album not found'}, 404
+    if album.user_id != current_user.id:
+        return {'errors': 'Album does not belong to user'}, 403
 
     # Below the check, not above it: reading songs off a missing album was
     # raising first, so the check under it could never run
@@ -70,7 +75,7 @@ def delete_album(id):
     for song_url in song_urls:
         remove_file_from_s3(song_url)
 
-    return { 'message': 'Successfully Deleted'}
+    return {'message': 'Successfully Deleted'}
 
 
 # Creating a new Album
@@ -81,14 +86,13 @@ def create_new_album():
     form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
-
-        new_album = Album (
-            user_id = current_user.id,
-            name = form.data['name'],
-            art = form.data['art'] or None,
-            artist = form.data['artist'],
-            year = form.data['year'],
-            genre = form.data['genre']
+        new_album = Album(
+            user_id=current_user.id,
+            name=form.data['name'],
+            art=form.data['art'] or None,
+            artist=form.data['artist'],
+            year=form.data['year'],
+            genre=form.data['genre'],
         )
 
         db.session.add(new_album)
@@ -96,7 +100,7 @@ def create_new_album():
 
         return jsonify(new_album.to_dict())
 
-    return { 'errors': validation_errors_to_error_object(form.errors) }, 400
+    return {'errors': validation_errors_to_error_object(form.errors)}, 400
 
 
 # Create a Song for an album
@@ -110,8 +114,10 @@ def create_album_song(id):
     if form.validate_on_submit():
         album = Album.query.get(id)
 
-        if album is None or album.user_id != current_user.id:
-            return { 'errors': 'Album not found'}, 404
+        if album is None:
+            return {'errors': 'Album not found'}, 404
+        if album.user_id != current_user.id:
+            return {'errors': 'Album does not belong to user'}, 403
 
         song = form.data['song']
         extension = song.filename.rsplit('.', 1)[1].lower()
@@ -124,7 +130,7 @@ def create_album_song(id):
         except MutagenError:
             playable = False
         if not playable:
-            return { 'errors': { 'song': f'File is not a playable .{extension} file' } }, 400
+            return {'errors': {'song': f'File is not a playable .{extension} file'}}, 400
 
         song.filename = get_unique_filename(song.filename)
         song.seek(0)
@@ -134,16 +140,18 @@ def create_album_song(id):
         # the logs; the browser only needs to know the file was not stored
         if 'url' not in upload:
             current_app.logger.error('Song upload to S3 failed: %s', upload['errors'])
-            return { 'errors': { 'song': 'The file could not be stored. Please try again later.' } }, 502
+            return {
+                'errors': {'song': 'The file could not be stored. Please try again later.'}
+            }, 502
 
-        newSong = Song (
-            name = form.data['name'],
-            track_number = form.data['track_number'],
-            song_url = upload['url'],
-            user_id = album.user_id,
-            album_id = album.id,
+        newSong = Song(
+            name=form.data['name'],
+            track_number=form.data['track_number'],
+            song_url=upload['url'],
+            user_id=album.user_id,
+            album_id=album.id,
             # mutagen measures in fractional seconds; the column holds whole ones
-            duration = round(audio.info.length)
+            duration=round(audio.info.length),
         )
 
         db.session.add(newSong)
@@ -151,7 +159,7 @@ def create_album_song(id):
 
         return jsonify(newSong.to_dict())
 
-    return { 'errors': validation_errors_to_error_object(form.errors)}, 400
+    return {'errors': validation_errors_to_error_object(form.errors)}, 400
 
 
 # Editing an Album a user already created
@@ -164,8 +172,10 @@ def edit_album(id):
     if form.validate_on_submit():
         album = Album.query.get(id)
 
-        if album is None or album.user_id != current_user.id:
-            return { 'errors': 'Album not found'}, 404
+        if album is None:
+            return {'errors': 'Album not found'}, 404
+        if album.user_id != current_user.id:
+            return {'errors': 'Album does not belong to user'}, 403
 
         album.name = form.data['name']
         album.artist = form.data['artist']
@@ -177,4 +187,4 @@ def edit_album(id):
 
         return jsonify(album.to_dict())
 
-    return { 'errors': validation_errors_to_error_object(form.errors) }, 400
+    return {'errors': validation_errors_to_error_object(form.errors)}, 400

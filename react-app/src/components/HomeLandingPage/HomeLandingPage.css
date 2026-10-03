@@ -38,7 +38,9 @@
     text-align: center;
     background-color: rgb(28, 28, 28);
     border-radius: 8px;
-    transition: background-color 0.4s, color 0.4s;
+    transition:
+        background-color 0.4s,
+        color 0.4s;
     position: relative;
 }
 
@@ -127,7 +129,9 @@
     border-radius: 30px;
     margin-top: 20px;
     height: 50px;
-    transition: background-color 0.4s, color 0.4s;
+    transition:
+        background-color 0.4s,
+        color 0.4s;
 }
 
 .create-playlist-link:hover {
@@ -154,7 +158,9 @@
     border-radius: 30px;
     margin-top: 20px;
     height: 50px;
-    transition: background-color 0.4s, color 0.4s;
+    transition:
+        background-color 0.4s,
+        color 0.4s;
     width: 92%;
 }
 
@@ -190,9 +196,9 @@
 }
 
 .play-button:hover {
-    transform: scale(1.45)
+    transform: scale(1.45);
 }
 
 .play-button:active {
-    transform: scale(1.30)
+    transform: scale(1.3);
 }

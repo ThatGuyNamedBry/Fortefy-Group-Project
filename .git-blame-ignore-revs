@@ -1,0 +1,6 @@
+# Commits git blame should look past: mechanical reformatting with no
+# behaviour change. GitHub reads this file by itself; locally, run once:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Format Python with ruff and JavaScript/CSS with Prettier
+6ead8040760341e70c0d1c6593c734d5d6cd4257

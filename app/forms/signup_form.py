@@ -26,7 +26,7 @@ class SignUpForm(FlaskForm):
     # the db.String(n) on each column, so an oversized value is a 400 rather
     # than a StringDataRightTruncation 500 on Postgres.
     username = StringField(
-        'username', validators=[DataRequired(), Length(min=4, max=40), username_exists])
-    email = StringField(
-        'email', validators=[DataRequired(), Email(), Length(max=255), user_exists])
+        'username', validators=[DataRequired(), Length(min=4, max=40), username_exists]
+    )
+    email = StringField('email', validators=[DataRequired(), Email(), Length(max=255), user_exists])
     password = StringField('password', validators=[DataRequired(), Length(min=6)])

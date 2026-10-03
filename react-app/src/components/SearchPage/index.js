@@ -38,7 +38,8 @@ const SearchPage = () => {
             <div className="search-page">
                 <h1>Search</h1>
                 <p className="search-status">
-                    Type in the search bar above to find songs by name or artist, and albums by name or artist.
+                    Type in the search bar above to find songs by name or artist, and albums by name
+                    or artist.
                 </p>
             </div>
         );
@@ -51,7 +52,9 @@ const SearchPage = () => {
             <h1>Results for &ldquo;{query}&rdquo;</h1>
 
             {error && (
-                <p className="search-status">Something went wrong while searching. Please try again.</p>
+                <p className="search-status">
+                    Something went wrong while searching. Please try again.
+                </p>
             )}
             {!error && isLoading && !hasResults && (
                 <p className="search-status">Searching&hellip;</p>
@@ -74,7 +77,11 @@ const SearchPage = () => {
                                 onClick={() => handlePlaySong(index)}
                             >
                                 <div className="search-song-art-wrapper">
-                                    <Artwork className="search-song-art" src={song.album_art} alt="" />
+                                    <Artwork
+                                        className="search-song-art"
+                                        src={song.album_art}
+                                        alt=""
+                                    />
                                     <button
                                         type="button"
                                         className="search-song-play"
@@ -98,7 +105,9 @@ const SearchPage = () => {
                                 </div>
                                 <div className="search-song-actions" onClick={stopClick}>
                                     <LikeButton songId={song.id} />
-                                    <span className="search-song-duration">{secsToMins(song.duration)}</span>
+                                    <span className="search-song-duration">
+                                        {secsToMins(song.duration)}
+                                    </span>
                                     {user && <AddPLSongButton songId={song.id} userId={user.id} />}
                                 </div>
                             </li>
@@ -112,10 +121,16 @@ const SearchPage = () => {
                     <h2>Albums</h2>
                     <div className="search-album-grid">
                         {albums.map((album) => (
-                            <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
+                            <Link
+                                key={album.id}
+                                to={`/albums/${album.id}`}
+                                className="album-tile link-as-text"
+                            >
                                 <Artwork src={album.art} alt="" className="album-image" />
                                 <h3>{album.name}</h3>
-                                <p className="owner-text">{album.artist} &middot; {album.year}</p>
+                                <p className="owner-text">
+                                    {album.artist} &middot; {album.year}
+                                </p>
                             </Link>
                         ))}
                     </div>

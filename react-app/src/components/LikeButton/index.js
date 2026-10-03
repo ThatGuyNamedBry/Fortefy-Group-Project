@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLikeThunk, removeLikeThunk } from '../../store/songs';
-import './LikeButton.css'
+import './LikeButton.css';
 
 const LikeButton = ({ songId }) => {
     const dispatch = useDispatch();
-    const songs = useSelector(state => state.songs.allSongs);
+    const songs = useSelector((state) => state.songs.allSongs);
     const song = songs[songId];
-    const user = useSelector(state => state.session.user);
+    const user = useSelector((state) => state.session.user);
     const [userLike, setUserLike] = useState(false);
 
     useEffect(() => {
         if (user?.id && song?.id) {
-            setUserLike(song.likes.find(like => like.user_id === user.id));
+            setUserLike(song.likes.find((like) => like.user_id === user.id));
         }
-    }, [song, user, userLike])
+    }, [song, user, userLike]);
 
     const likeClick = (e) => {
         e.stopPropagation();
@@ -37,8 +37,15 @@ const LikeButton = ({ songId }) => {
             aria-label={song ? `Like ${song.name}` : 'Like'}
             aria-pressed={Boolean(userLike)}
         >
-            {userLike ? <i className="filled-like-heart fa-sharp fa-solid fa-heart" style={{color: "#f96262"}} aria-hidden="true"></i>
-            : <i className="fa-sharp fa-regular fa-heart" aria-hidden="true"></i>}
+            {userLike ? (
+                <i
+                    className="filled-like-heart fa-sharp fa-solid fa-heart"
+                    style={{ color: '#f96262' }}
+                    aria-hidden="true"
+                ></i>
+            ) : (
+                <i className="fa-sharp fa-regular fa-heart" aria-hidden="true"></i>
+            )}
         </button>
     );
 };

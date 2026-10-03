@@ -16,16 +16,11 @@ def library_user():
 
 # Adds a demo user, you can add other users here if you want
 def seed_users():
-    demo = User(
-        username='Demo', email='demo@aa.io', password='password')
-    marnie = User(
-        username='Marnie', email='marnie@aa.io', password='password')
-    bobbie = User(
-        username='Bobbie', email='bobbie@aa.io', password='password')
-    tuneguru = User(
-        username='Tune Guru', email='tuneguru@aa.io', password='password')
-    musiclvr = User(
-        username='Music Lvr', email='musiclvr@aa.io', password='password')
+    demo = User(username='Demo', email='demo@aa.io', password='password')
+    marnie = User(username='Marnie', email='marnie@aa.io', password='password')
+    bobbie = User(username='Bobbie', email='bobbie@aa.io', password='password')
+    tuneguru = User(username='Tune Guru', email='tuneguru@aa.io', password='password')
+    musiclvr = User(username='Music Lvr', email='musiclvr@aa.io', password='password')
     # Added last so the people above keep ids 1 to 5, which the playlist seeds
     # refer to
     library = User(username=LIBRARY_USERNAME, email=LIBRARY_EMAIL)
@@ -46,9 +41,9 @@ def seed_users():
 # sqlite3 in development you need to instead use DELETE to remove all data and
 # it will reset the primary keys for you as well.
 def undo_users():
-    if environment == "production":
-        db.session.execute(text(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;"))
+    if environment == 'production':
+        db.session.execute(text(f'TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;'))
     else:
-        db.session.execute(text("DELETE FROM users"))
-        
+        db.session.execute(text('DELETE FROM users'))
+
     db.session.commit()

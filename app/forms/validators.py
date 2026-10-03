@@ -22,12 +22,10 @@ class ImageUrl:
 
         parsed = urlparse(url)
         if parsed.scheme not in ('http', 'https') or not parsed.netloc:
-            raise ValidationError(
-                'Image URL must be a valid URL that starts with "https://"')
+            raise ValidationError('Image URL must be a valid URL that starts with "https://"')
 
         if not parsed.path.lower().endswith(IMAGE_EXTENSIONS):
-            raise ValidationError(
-                'Image URL must end in .jpg, .png, .gif, .bmp, .svg, or .jpeg')
+            raise ValidationError('Image URL must end in .jpg, .png, .gif, .bmp, .svg, or .jpeg')
 
 
 class NumberRequired:
@@ -50,5 +48,4 @@ class NumberRequired:
         if field.raw_data and str(field.raw_data[0]).strip() != '':
             return
         field.errors[:] = []
-        raise StopValidation(
-            self.message or field.gettext('This field is required.'))
+        raise StopValidation(self.message or field.gettext('This field is required.'))

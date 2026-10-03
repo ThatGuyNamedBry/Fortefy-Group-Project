@@ -7,13 +7,16 @@ from app.api.csrf import csrf_token_from_request
 
 playlist_routes = Blueprint('playlists', __name__)
 
+
 # Get All Playlists
 @playlist_routes.route('')
 def get_all_playlists():
     """
     Query for all playlists and returns them in a list of playlist dictionaries
     """
-    playlists = [playlist.to_dict() for playlist in Playlist.query.options(*Playlist.to_dict_loads()).all()]
+    playlists = [
+        playlist.to_dict() for playlist in Playlist.query.options(*Playlist.to_dict_loads()).all()
+    ]
     return jsonify(playlists)
 
 
@@ -24,9 +27,12 @@ def get_user_playlists():
     """
     Query for all playlists created by the current user and return them in a list of playlist dictionaries
     """
-    user_playlists = Playlist.query.options(*Playlist.to_dict_loads()).filter(Playlist.user_id == current_user.id)
+    user_playlists = Playlist.query.options(*Playlist.to_dict_loads()).filter(
+        Playlist.user_id == current_user.id
+    )
     playlists_dict = [playlist.to_dict() for playlist in user_playlists]
     return jsonify(playlists_dict)
+
 
 # Create a New Playlist
 @playlist_routes.route('/new', methods=['POST'])
@@ -37,17 +43,18 @@ def create_new_playlist():
 
     if form.validate_on_submit():
         new_playlist = Playlist(
-            user_id = current_user.id,
-            title = form.data['title'],
-            art = form.data['art'] or None,
-            description = form.data['description']
+            user_id=current_user.id,
+            title=form.data['title'],
+            art=form.data['art'] or None,
+            description=form.data['description'],
         )
 
         db.session.add(new_playlist)
         db.session.commit()
         return jsonify(new_playlist.to_dict())
 
-    return { 'errors': validation_errors_to_error_object(form.errors)}, 400
+    return {'errors': validation_errors_to_error_object(form.errors)}, 400
+
 
 # Add a Song to a Playlist with Playlist Id and **SONG** ID
 @playlist_routes.route('/<int:playlist_id>/playlist-songs/<int:song_id>/new', methods=['POST'])
@@ -59,49 +66,50 @@ def add_playlist_song(playlist_id, song_id):
     updated_playlist = Playlist.query.get(playlist_id)
 
     if updated_playlist is None:
-        return {"errors": "Playlist could not be found"}, 404
+        return {'errors': 'Playlist could not be found'}, 404
     elif updated_playlist.user_id != current_user.id:
-        return {"errors": "Playlist does not belong to user"}, 403
+        return {'errors': 'Playlist does not belong to user'}, 403
 
     # Without this the insert either violates the foreign key (a 500 on
     # Postgres) or, on SQLite where foreign keys are off, stores a row whose
     # song is missing, which then breaks to_dict() for everyone viewing it
     if Song.query.get(song_id) is None:
-        return {"errors": "Song could not be found"}, 404
+        return {'errors': 'Song could not be found'}, 404
 
-    playlist_song = PlaylistSong(
-        song_id = song_id,
-        playlist_id = playlist_id
-    )
+    playlist_song = PlaylistSong(song_id=song_id, playlist_id=playlist_id)
 
     db.session.add(playlist_song)
     db.session.commit()
 
     return jsonify(updated_playlist.to_dict())
 
+
 # Remove a Song from a Playlist By **PLAYLISTSONG** ID
-@playlist_routes.route('/<int:playlist_id>/playlist-songs/<int:playlist_song_id>/delete', methods=['DELETE'])
+@playlist_routes.route(
+    '/<int:playlist_id>/playlist-songs/<int:playlist_song_id>/delete', methods=['DELETE']
+)
 @login_required
 def remove_playlist_song(playlist_id, playlist_song_id):
     """Query for a playlist_song by it's playlist_song_id, delete it from the db and return the altered playlist as a dictionary"""
     updated_playlist = Playlist.query.get(playlist_id)
 
     if updated_playlist is None:
-        return {"errors": "Playlist could not be found"}, 404
+        return {'errors': 'Playlist could not be found'}, 404
     elif updated_playlist.user_id != current_user.id:
-        return {"errors": "Playlist does not belong to user"}, 403
+        return {'errors': 'Playlist does not belong to user'}, 403
 
     playlist_song = PlaylistSong.query.get(playlist_song_id)
 
     # The second half stops a row being deleted out of playlist B through a URL
     # that names playlist A
     if playlist_song is None or playlist_song.playlist_id != playlist_id:
-        return {"errors": "Song cannot be found in Playlist"}, 404
+        return {'errors': 'Song cannot be found in Playlist'}, 404
 
     db.session.delete(playlist_song)
     db.session.commit()
 
     return jsonify(updated_playlist.to_dict())
+
 
 # Edit a User-Created Playlist
 @playlist_routes.route('/<int:id>/edit', methods=['PUT'])
@@ -114,9 +122,9 @@ def edit_playlist(id):
         playlist = Playlist.query.get(id)
 
         if playlist is None:
-            return { 'errors': 'Playlist not found'}, 404
+            return {'errors': 'Playlist not found'}, 404
         elif playlist.user_id != current_user.id:
-            return { 'errors': 'Playlist does not belong to user' }, 403
+            return {'errors': 'Playlist does not belong to user'}, 403
 
         playlist.title = form.data['title']
         playlist.art = form.data['art'] or None
@@ -125,7 +133,8 @@ def edit_playlist(id):
         db.session.commit()
 
         return jsonify(playlist.to_dict())
-    return { 'errors': validation_errors_to_error_object(form.errors) }, 400
+    return {'errors': validation_errors_to_error_object(form.errors)}, 400
+
 
 # Delete a Playlist By Id
 @playlist_routes.route('/<int:id>/delete', methods=['DELETE'])
@@ -136,7 +145,7 @@ def delete_playlist(id):
     if playlist is None:
         return {'errors': 'Playlist not found'}, 404
     elif playlist.user_id != current_user.id:
-        return {"errors": "Playlist does not belong to user"}, 403
+        return {'errors': 'Playlist does not belong to user'}, 403
 
     db.session.delete(playlist)
     db.session.commit()
@@ -152,6 +161,6 @@ def get_playlist_by_id(id):
     playlist = Playlist.query.options(*Playlist.to_dict_loads()).get(id)
 
     if playlist is None:
-        return { 'errors': 'Playlist not found' }, 404
+        return {'errors': 'Playlist not found'}, 404
 
     return jsonify(playlist.to_dict())

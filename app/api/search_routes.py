@@ -17,8 +17,8 @@ def escape_like(term):
     """
     return (
         term.replace(LIKE_ESCAPE, LIKE_ESCAPE * 2)
-            .replace('%', LIKE_ESCAPE + '%')
-            .replace('_', LIKE_ESCAPE + '_')
+        .replace('%', LIKE_ESCAPE + '%')
+        .replace('_', LIKE_ESCAPE + '_')
     )
 
 
@@ -50,31 +50,35 @@ def search():
     starts_with = f'{escaped}%'
 
     songs = (
-        Song.query
-        .options(*Song.to_dict_loads())
+        Song.query.options(*Song.to_dict_loads())
         .join(Song.album)
-        .filter(or_(
-            Song.name.ilike(contains, escape=LIKE_ESCAPE),
-            Album.artist.ilike(contains, escape=LIKE_ESCAPE),
-        ))
+        .filter(
+            or_(
+                Song.name.ilike(contains, escape=LIKE_ESCAPE),
+                Album.artist.ilike(contains, escape=LIKE_ESCAPE),
+            )
+        )
         .order_by(*rank_by_name(Song.name, starts_with))
         .limit(MAX_RESULTS)
         .all()
     )
 
     albums = (
-        Album.query
-        .options(*Album.to_dict_loads())
-        .filter(or_(
-            Album.name.ilike(contains, escape=LIKE_ESCAPE),
-            Album.artist.ilike(contains, escape=LIKE_ESCAPE),
-        ))
+        Album.query.options(*Album.to_dict_loads())
+        .filter(
+            or_(
+                Album.name.ilike(contains, escape=LIKE_ESCAPE),
+                Album.artist.ilike(contains, escape=LIKE_ESCAPE),
+            )
+        )
         .order_by(*rank_by_name(Album.name, starts_with))
         .limit(MAX_RESULTS)
         .all()
     )
 
-    return jsonify({
-        'songs': [song.to_dict() for song in songs],
-        'albums': [album.to_dict() for album in albums],
-    })
+    return jsonify(
+        {
+            'songs': [song.to_dict() for song in songs],
+            'albums': [album.to_dict() for album in albums],
+        }
+    )

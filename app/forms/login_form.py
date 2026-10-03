@@ -24,7 +24,8 @@ def password_matches(form, field):
         # seed library's account has neither, and falls through to the
         # ordinary refusal below.
         raise ValidationError(
-            'This account signs in with Google. Use "Continue with Google" instead.')
+            'This account signs in with Google. Use "Continue with Google" instead.'
+        )
     if not user.check_password(password):
         raise ValidationError('Password was incorrect.')
 

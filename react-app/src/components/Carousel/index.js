@@ -42,9 +42,8 @@ const Carousel = ({
     }, []);
 
     const perPage = Math.max(1, Math.floor((viewportWidth + gap) / (minCardWidth + gap)));
-    const cardWidth = viewportWidth > 0
-        ? (viewportWidth - (perPage - 1) * gap) / perPage
-        : minCardWidth;
+    const cardWidth =
+        viewportWidth > 0 ? (viewportWidth - (perPage - 1) * gap) / perPage : minCardWidth;
 
     // Clamp so the last page is always full, and so we recover if the item
     // list shrinks or the window grows while we are scrolled to the end.
@@ -61,7 +60,9 @@ const Carousel = ({
     // which leaves the cards out of step with the arrows' paging.
     const showSlide = (index) => {
         const viewport = viewportRef.current;
-        const unscroll = () => { if (viewport) viewport.scrollLeft = 0; };
+        const unscroll = () => {
+            if (viewport) viewport.scrollLeft = 0;
+        };
         unscroll();
         requestAnimationFrame(unscroll);
         if (index < start) setStartIndex(index);
