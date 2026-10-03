@@ -18,7 +18,9 @@
     font-size: 18px;
     line-height: 1;
     cursor: pointer;
-    transition: color 0.15s ease, transform 0.15s ease;
+    transition:
+        color 0.15s ease,
+        transform 0.15s ease;
 }
 
 .add-plsong-toggle:hover,

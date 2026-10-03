@@ -16,7 +16,9 @@ afterEach(() => {
 });
 
 it('is not shown to a visitor who is not logged in', () => {
-    const { container } = renderWithStore(<LikeButton songId={3} />, { preloadedState: stateWith(null) });
+    const { container } = renderWithStore(<LikeButton songId={3} />, {
+        preloadedState: stateWith(null),
+    });
     expect(container).toBeEmptyDOMElement();
 });
 
@@ -30,7 +32,9 @@ it("is not shown on the user's own song", () => {
 it('likes the song, sending the CSRF token', async () => {
     document.cookie = 'csrf_token=token-123';
     const fetchMock = mockFetch({ id: 50, user_id: 1, song_id: 3 });
-    const { store } = renderWithStore(<LikeButton songId={3} />, { preloadedState: stateWith({ id: 1 }) });
+    const { store } = renderWithStore(<LikeButton songId={3} />, {
+        preloadedState: stateWith({ id: 1 }),
+    });
 
     const button = screen.getByRole('button', { name: 'Like Highway' });
     expect(button).toHaveAttribute('aria-pressed', 'false');
@@ -61,7 +65,9 @@ it('unlikes a song the user has liked', async () => {
 
 it('stays as it was when the server refuses', async () => {
     const fetchMock = mockFetch({ errors: 'User has already liked song' }, 409);
-    const { store } = renderWithStore(<LikeButton songId={3} />, { preloadedState: stateWith({ id: 1 }) });
+    const { store } = renderWithStore(<LikeButton songId={3} />, {
+        preloadedState: stateWith({ id: 1 }),
+    });
 
     fireEvent.click(screen.getByRole('button', { name: 'Like Highway' }));
 

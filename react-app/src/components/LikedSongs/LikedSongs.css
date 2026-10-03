@@ -85,7 +85,7 @@
     justify-content: space-between;
     align-items: center;
     height: fit-content;
-    border-bottom: .5px solid rgb(74, 74, 74);
+    border-bottom: 0.5px solid rgb(74, 74, 74);
 }
 
 #liked-songs-clock-icon {
@@ -150,7 +150,9 @@
     color: white;
     font-weight: bold;
     text-decoration: none;
-    transition: background-color 0.4s, color 0.4s;
+    transition:
+        background-color 0.4s,
+        color 0.4s;
 }
 
 .liked-songs-discover-link:hover {
@@ -185,7 +187,9 @@
     font-size: 18px;
     padding: 12px 40px;
     border-radius: 30px;
-    transition: background-color 0.4s, color 0.4s;
+    transition:
+        background-color 0.4s,
+        color 0.4s;
 }
 
 .liked-songs-login button:hover {

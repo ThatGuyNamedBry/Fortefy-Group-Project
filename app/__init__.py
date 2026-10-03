@@ -67,26 +67,31 @@ def inject_csrf_token(response):
         'csrf_token',
         generate_csrf(),
         secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
-        samesite='Strict' if os.environ.get(
-            'FLASK_ENV') == 'production' else None,
+        samesite='Strict' if os.environ.get('FLASK_ENV') == 'production' else None,
         # Readable by our own JavaScript on purpose: it has to copy the token
         # into the X-CSRFToken header, which is the half of the double submit
         # another origin cannot forge. The token is not a credential, so there
         # is nothing here worth hiding from the page that already has the
         # session
-        httponly=False)
+        httponly=False,
+    )
     return response
 
 
-@app.route("/api/docs")
+@app.route('/api/docs')
 def api_help():
     """
     Returns all API routes and their doc strings
     """
     acceptable_methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
-    route_list = { rule.rule: [[ method for method in rule.methods if method in acceptable_methods ],
-                    app.view_functions[rule.endpoint].__doc__ ]
-                    for rule in app.url_map.iter_rules() if rule.endpoint != 'static' }
+    route_list = {
+        rule.rule: [
+            [method for method in rule.methods if method in acceptable_methods],
+            app.view_functions[rule.endpoint].__doc__,
+        ]
+        for rule in app.url_map.iter_rules()
+        if rule.endpoint != 'static'
+    }
     return route_list
 
 

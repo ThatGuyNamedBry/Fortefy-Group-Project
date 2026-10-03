@@ -32,7 +32,7 @@
 
 .signup-form::before,
 .signup-form::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     right: 0;
@@ -85,7 +85,6 @@
     border-radius: 20px;
 }
 
-
 .signup-button:hover {
     transform: scale(1.05);
 }
@@ -112,12 +111,12 @@
 
 .signup-error {
     /* margin-left: 5px; */
-    color:red;
+    color: red;
     font-size: smaller;
 }
 
 .signup-form li {
     margin-top: 1px;
-    color:red;
-    font-size:small;
+    color: red;
+    font-size: small;
 }

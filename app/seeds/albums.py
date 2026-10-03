@@ -2,6 +2,7 @@ from app.models import db, environment, SCHEMA, Album
 from .users import library_user
 from sqlalchemy.sql import text
 
+
 def seed_albums():
     library = library_user()
 
@@ -11,15 +12,15 @@ def seed_albums():
         art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/King+Gizzard+and+the+Lizard+Wizard/Polygondwanaland/Polygondwanaland.jpg',
         artist='King Gizzard and the Lizard Wizard',
         year=2017,
-        genre='Progressive Rock'
+        genre='Progressive Rock',
     )
     album2 = Album(
-        name="Dazed and Confused",
+        name='Dazed and Confused',
         user_id=library.id,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Razors/Dazed+and+Confused/Dazed+and+Confused.jpg",
+        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Razors/Dazed+and+Confused/Dazed+and+Confused.jpg',
         artist='The Razors',
         year=1975,
-        genre='Funk'
+        genre='Funk',
     )
     album3 = Album(
         name='Indestructable Sun',
@@ -27,47 +28,47 @@ def seed_albums():
         art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Elixir/Indestructable+Sun/Indestructable+Sun.jpg',
         artist='Elixir',
         year=2011,
-        genre='Afrobeat'
+        genre='Afrobeat',
     )
     album4 = Album(
-        name="Roadhouse",
+        name='Roadhouse',
         user_id=library.id,
         art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Glass+Suburban/Roadhouse/Roadhouse.jpg',
         artist='Glass Suburban',
         year=2013,
-        genre='Rock'
+        genre='Rock',
     )
     album5 = Album(
-        name="Ganges",
+        name='Ganges',
         user_id=library.id,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Prashant+Bidkar/Ganges/Ganges.jpg",
+        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Prashant+Bidkar/Ganges/Ganges.jpg',
         artist='Prashant Bidkar',
         year=2017,
-        genre='Instrumental Hip Hop'
+        genre='Instrumental Hip Hop',
     )
     album6 = Album(
-        name="El corazón",
+        name='El corazón',
         user_id=library.id,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Rosa+de+Torres/El+corazo%CC%81n/El+corazo%CC%81n.jpg",
+        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Rosa+de+Torres/El+corazo%CC%81n/El+corazo%CC%81n.jpg',
         artist='Rosa de Torres',
         year=2009,
-        genre='Flamenco'
+        genre='Flamenco',
     )
     album7 = Album(
-        name="Things Gonna Change",
+        name='Things Gonna Change',
         user_id=library.id,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Climbers/Things+Gonna+Change/Things+Gonna+Change.jpg",
+        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Climbers/Things+Gonna+Change/Things+Gonna+Change.jpg',
         artist='The Climbers',
         year=1978,
-        genre='Reggae'
+        genre='Reggae',
     )
     album8 = Album(
-        name="Blue Moods",
+        name='Blue Moods',
         user_id=library.id,
-        art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Dylan+Grelli+Band/Blue+Moods/Blue+Moods.jpg",
+        art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Dylan+Grelli+Band/Blue+Moods/Blue+Moods.jpg',
         artist='The Dylan Grelli Band',
         year=2011,
-        genre='Jazz'
+        genre='Jazz',
     )
     album9 = Album(
         name="The Heapin' Helpins",
@@ -75,7 +76,7 @@ def seed_albums():
         art="https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/The+Heapin'+Helpins/The+Heapin'+Helpins/The+Heapin'+Helpins.jpg",
         artist="The Heapin' Helpins",
         year=2014,
-        genre='Bluegrass'
+        genre='Bluegrass',
     )
     album10 = Album(
         name='Mimic Harbor',
@@ -83,17 +84,19 @@ def seed_albums():
         art='https://fortefy-song-url.s3.us-east-2.amazonaws.com/free/Deep+Owls/Mimic+Harbor/Mimic+Harbor.jpg',
         artist='Deep Owls',
         year=2021,
-        genre='Electronic'
+        genre='Electronic',
     )
 
-
-    db.session.add_all([album1, album2, album3, album4, album5, album6, album7, album8, album9, album10])
+    db.session.add_all(
+        [album1, album2, album3, album4, album5, album6, album7, album8, album9, album10]
+    )
     db.session.commit()
 
+
 def undo_albums():
-    if environment == "production":
-        db.session.execute(text(f"TRUNCATE table {SCHEMA}.albums RESTART IDENTITY CASCADE;"))
+    if environment == 'production':
+        db.session.execute(text(f'TRUNCATE table {SCHEMA}.albums RESTART IDENTITY CASCADE;'))
     else:
-        db.session.execute(text("DELETE FROM albums"))
+        db.session.execute(text('DELETE FROM albums'))
 
     db.session.commit()

@@ -4,19 +4,19 @@ export const secsToHrs = (time) => {
     time = time - hours * 3600;
 
     const minutes = Math.floor(time / 60);
-    return hours ? `${hours} hr ${minutes} min` : `${minutes} min`
-}
+    return hours ? `${hours} hr ${minutes} min` : `${minutes} min`;
+};
 
 export const secsToMins = (time) => {
     const minutes = Math.floor(time / 60);
     let seconds = Math.round(time - minutes * 60);
 
     if (seconds < 10) {
-        seconds = `0${seconds}`
-    };
+        seconds = `0${seconds}`;
+    }
 
-    return `${minutes}:${seconds}`
-}
+    return `${minutes}:${seconds}`;
+};
 
 /************       Error Validation        ************/
 
@@ -32,7 +32,7 @@ export const serverErrors = (errors, fields) => {
         mapped[fields[field] || 'server'] = message;
     }
     return mapped;
-}
+};
 
 // What a thunk hands back when there is no usable response at all: the
 // request never got an answer, or the answer was not our JSON
@@ -57,29 +57,29 @@ export const getJson = async (url) => {
 
 //Image Validation
 export const checkImageErrors = (url) => {
-    const isValidUrl = urlString=> {
+    const isValidUrl = (urlString) => {
         try {
             return Boolean(new URL(urlString));
-        }
-        catch(e){
+        } catch (e) {
             return false;
         }
-    }
+    };
 
     if (!isValidUrl(url)) {
-        return 'Image URL must be a valid URL that starts with "https://"'
-    } else if (!url.toLowerCase().endsWith('.png')
-        && !url.toLowerCase().endsWith('.jpg')
-        && !url.toLowerCase().endsWith('.jpeg')
-        && !url.toLowerCase().endsWith('.gif')
-        && !url.toLowerCase().endsWith('.bmp')
-        && !url.toLowerCase().endsWith('.svg')
+        return 'Image URL must be a valid URL that starts with "https://"';
+    } else if (
+        !url.toLowerCase().endsWith('.png') &&
+        !url.toLowerCase().endsWith('.jpg') &&
+        !url.toLowerCase().endsWith('.jpeg') &&
+        !url.toLowerCase().endsWith('.gif') &&
+        !url.toLowerCase().endsWith('.bmp') &&
+        !url.toLowerCase().endsWith('.svg')
     ) {
         return 'Image URL must end in .jpg, .png, .gif, .bmp, .svg, or .jpeg';
     } else {
         return false;
     }
-}
+};
 
 //Playlist Form
 export const playlistValidation = (title, artUrl, description) => {
@@ -98,8 +98,8 @@ export const playlistValidation = (title, artUrl, description) => {
 
     if (description.length > 254) {
         errors.flag = true;
-        errors.description = 'Description cannot exceed 255 characters'
+        errors.description = 'Description cannot exceed 255 characters';
     }
 
     return errors;
-}
+};

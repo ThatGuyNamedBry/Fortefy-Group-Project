@@ -10,7 +10,15 @@ import songReducer, {
     selectUserSongs,
 } from './songs';
 
-const song = (id, fields = {}) => ({ id, name: `Song ${id}`, user_id: 1, album_id: 1, track_number: id, likes: [], ...fields });
+const song = (id, fields = {}) => ({
+    id,
+    name: `Song ${id}`,
+    user_id: 1,
+    album_id: 1,
+    track_number: id,
+    likes: [],
+    ...fields,
+});
 const stateWith = (...songs) => songReducer(undefined, getAllSongsAction(songs));
 
 describe('songs reducer', () => {
@@ -24,9 +32,16 @@ describe('songs reducer', () => {
     });
 
     it("replaces only one user's songs with that user's list", () => {
-        const before = stateWith(song(1, { user_id: 1 }), song(2, { user_id: 1 }), song(3, { user_id: 2 }));
+        const before = stateWith(
+            song(1, { user_id: 1 }),
+            song(2, { user_id: 1 }),
+            song(3, { user_id: 2 }),
+        );
         // Song 2 was deleted somewhere else, so the server no longer lists it
-        const state = songReducer(before, getUserSongsAction(1, [song(1, { user_id: 1, name: 'Renamed' })]));
+        const state = songReducer(
+            before,
+            getUserSongsAction(1, [song(1, { user_id: 1, name: 'Renamed' })]),
+        );
         expect(Object.keys(state.allSongs).sort()).toEqual(['1', '3']);
         expect(state.allSongs[1].name).toBe('Renamed');
     });
@@ -37,8 +52,15 @@ describe('songs reducer', () => {
     });
 
     it('deletes one song, or an album of them', () => {
-        const before = stateWith(song(1, { album_id: 1 }), song(2, { album_id: 2 }), song(3, { album_id: 2 }));
-        expect(Object.keys(songReducer(before, deleteSongAction(1)).allSongs).sort()).toEqual(['2', '3']);
+        const before = stateWith(
+            song(1, { album_id: 1 }),
+            song(2, { album_id: 2 }),
+            song(3, { album_id: 2 }),
+        );
+        expect(Object.keys(songReducer(before, deleteSongAction(1)).allSongs).sort()).toEqual([
+            '2',
+            '3',
+        ]);
         expect(Object.keys(songReducer(before, removeAlbumSongsAction(2)).allSongs)).toEqual(['1']);
     });
 
@@ -59,7 +81,10 @@ describe('songs reducer', () => {
     });
 
     it('leaves the likes alone when removing one the song does not have', () => {
-        const likes = [{ id: 10, user_id: 5 }, { id: 11, user_id: 6 }];
+        const likes = [
+            { id: 10, user_id: 5 },
+            { id: 11, user_id: 6 },
+        ];
         const state = songReducer(stateWith(song(1, { likes })), removeLikeAction(1, 99));
         expect(state.allSongs[1].likes).toEqual(likes);
     });
@@ -67,18 +92,22 @@ describe('songs reducer', () => {
 
 describe('song selectors', () => {
     const state = {
-        songs: stateWith(song(1, { track_number: 2 }), song(2, { track_number: 1 }), song(3, { user_id: 2 })),
+        songs: stateWith(
+            song(1, { track_number: 2 }),
+            song(2, { track_number: 1 }),
+            song(3, { user_id: 2 }),
+        ),
         albums: { allAlbums: { 1: { id: 1, songs: [{ id: 1 }, { id: 2 }, { id: 404 }] } } },
         session: { user: { id: 1 } },
     };
 
     it("lists an album's cached songs in track order", () => {
-        expect(selectAlbumSongs(state, 1).map(s => s.id)).toEqual([2, 1]);
+        expect(selectAlbumSongs(state, 1).map((s) => s.id)).toEqual([2, 1]);
         expect(selectAlbumSongs(state, 999)).toEqual([]);
     });
 
     it("lists the logged-in user's songs", () => {
-        expect(selectUserSongs(state).map(s => s.id)).toEqual([1, 2]);
+        expect(selectUserSongs(state).map((s) => s.id)).toEqual([1, 2]);
         expect(selectUserSongs({ ...state, session: { user: null } })).toEqual([]);
     });
 });

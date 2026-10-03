@@ -7,13 +7,43 @@ from conftest import make_album, make_playlist, make_song
 from app.models import Like, db
 
 USER_KEYS = {'id', 'username'}
-ALBUM_KEYS = {'id', 'name', 'art', 'artist', 'year', 'genre', 'user', 'songs', 'created_at', 'updated_at'}
+ALBUM_KEYS = {
+    'id',
+    'name',
+    'art',
+    'artist',
+    'year',
+    'genre',
+    'user',
+    'songs',
+    'created_at',
+    'updated_at',
+}
 SONG_KEYS = {
-    'id', 'name', 'user_id', 'album_id', 'duration', 'user', 'likes', 'song_url', 'track_number',
-    'artist', 'album_name', 'album_art', 'created_at', 'updated_at',
+    'id',
+    'name',
+    'user_id',
+    'album_id',
+    'duration',
+    'user',
+    'likes',
+    'song_url',
+    'track_number',
+    'artist',
+    'album_name',
+    'album_art',
+    'created_at',
+    'updated_at',
 }
 PLAYLIST_KEYS = {
-    'id', 'user_id', 'title', 'art', 'description', 'user', 'playlist_songs', 'created_at',
+    'id',
+    'user_id',
+    'title',
+    'art',
+    'description',
+    'user',
+    'playlist_songs',
+    'created_at',
     'updated_at',
 }
 PLAYLIST_SONG_KEYS = {'id', 'song_id', 'playlist_id', 'song', 'created_at', 'updated_at'}

@@ -23,7 +23,11 @@ def test_an_oversized_upload_is_a_json_413(app, as_alice, alice):
     try:
         response = as_alice.post(
             f'/api/albums/{album.id}/song',
-            data={'name': 'Big', 'track_number': 1, 'song': (io.BytesIO(b'0' * 2 * 1024 * 1024), 'big.wav')},
+            data={
+                'name': 'Big',
+                'track_number': 1,
+                'song': (io.BytesIO(b'0' * 2 * 1024 * 1024), 'big.wav'),
+            },
         )
     finally:
         app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024

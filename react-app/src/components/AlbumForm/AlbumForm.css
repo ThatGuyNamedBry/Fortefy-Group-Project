@@ -1,95 +1,99 @@
 .album-form-container {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 #album-form {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  gap: 12px;
-  background-color: black;
-  margin-top: 20px;
-  border-radius: 7px;
-  padding: 20px 75px 30px 75px;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    gap: 12px;
+    background-color: black;
+    margin-top: 20px;
+    border-radius: 7px;
+    padding: 20px 75px 30px 75px;
 }
 
 h1 {
-  text-align: center;
-  margin: 5px;
+    text-align: center;
+    margin: 5px;
 }
 
 label {
-  font-size: 15px;
+    font-size: 15px;
 }
 
 .album-field {
-  display: flex;
-  flex-direction: column;
-  gap: 3px
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
 input {
-  width: 97%;
-  padding: 5px;
-  border: 1px solid white;
-  border-radius: 4px;
-  background-color: rgb(45, 43, 43);
-  color: white;
+    width: 97%;
+    padding: 5px;
+    border: 1px solid white;
+    border-radius: 4px;
+    background-color: rgb(45, 43, 43);
+    color: white;
 }
 
 #button-container {
-  display: flex;
-  justify-content: center;
-  gap: 17px;
+    display: flex;
+    justify-content: center;
+    gap: 17px;
 }
 
 .errors {
-  font-size: .7rem;
-  margin: 5px 0px;
-  color: rgb(255, 59, 59);
+    font-size: 0.7rem;
+    margin: 5px 0px;
+    color: rgb(255, 59, 59);
 }
 
 .empty-error {
-  margin-top: 0px;
+    margin-top: 0px;
 }
 
 #submit-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: rgb(33, 204, 6);
-  color: white;
-  cursor: pointer;
-  width: 46%;
-  border-radius: 20px;
-  transition: background-color 0.5s, color 0.5s;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(33, 204, 6);
+    color: white;
+    cursor: pointer;
+    width: 46%;
+    border-radius: 20px;
+    transition:
+        background-color 0.5s,
+        color 0.5s;
 }
 
 #submit-button:hover {
-  /* width: 105%;
+    /* width: 105%;
   height: 85%;
   position: relative;
   bottom: 1.5px; */
-  background-color: rgb(233, 233, 233);
-  color: rgb(12, 147, 0);
+    background-color: rgb(233, 233, 233);
+    color: rgb(12, 147, 0);
 }
 
 #cancel-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: rgb(112, 112, 112);
-  color: white;
-  cursor: pointer;
-  width: 46%;
-  border-radius: 20px;
-  transition: background-color 0.5s, color 0.5s
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(112, 112, 112);
+    color: white;
+    cursor: pointer;
+    width: 46%;
+    border-radius: 20px;
+    transition:
+        background-color 0.5s,
+        color 0.5s;
 }
 
 #cancel-button:hover {
-  color: black;
-  background-color: white;
+    color: black;
+    background-color: white;
 }

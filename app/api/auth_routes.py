@@ -23,8 +23,7 @@ def validation_errors_to_error_object(validation_errors):
     The forms in the browser already read errors this way, keyed by field, so
     this is the shape they can actually render.
     """
-    return {field: errors[0]
-            for field, errors in validation_errors.items() if errors}
+    return {field: errors[0] for field, errors in validation_errors.items() if errors}
 
 
 @auth_routes.route('/')
@@ -73,9 +72,7 @@ def sign_up():
     form['csrf_token'].data = csrf_token_from_request()
     if form.validate_on_submit():
         user = User(
-            username=form.data['username'],
-            email=form.data['email'],
-            password=form.data['password']
+            username=form.data['username'], email=form.data['email'], password=form.data['password']
         )
         db.session.add(user)
         db.session.commit()
@@ -118,8 +115,9 @@ def google_login():
     if not google_enabled():
         return oauth_failure('Google login is not configured on this server.')
 
-    redirect_uri = (current_app.config.get('GOOGLE_REDIRECT_URI')
-                    or url_for('auth.google_callback', _external=True))
+    redirect_uri = current_app.config.get('GOOGLE_REDIRECT_URI') or url_for(
+        'auth.google_callback', _external=True
+    )
     return oauth.google.authorize_redirect(redirect_uri)
 
 
@@ -148,8 +146,7 @@ def google_callback():
     if not userinfo.get('email_verified'):
         return oauth_failure('Your Google email address is not verified.')
 
-    user = User.query.filter(
-        User.oauth_provider == 'google', User.oauth_id == google_id).first()
+    user = User.query.filter(User.oauth_provider == 'google', User.oauth_id == google_id).first()
 
     if not user:
         existing = User.query.filter(User.email == email).first()

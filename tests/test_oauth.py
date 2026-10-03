@@ -73,7 +73,11 @@ def test_a_new_google_user_gets_an_account(client, google):
     assert me['email'] == 'gina@example.com'
     assert me['username'] == 'GinaGoogle'
     user = db.session.get(User, me['id'])
-    assert (user.oauth_provider, user.oauth_id, user.hashed_password) == ('google', 'google-123', None)
+    assert (user.oauth_provider, user.oauth_id, user.hashed_password) == (
+        'google',
+        'google-123',
+        None,
+    )
 
 
 def test_an_existing_email_is_linked_not_duplicated(client, google, alice):
@@ -102,7 +106,10 @@ def test_a_linked_account_logs_straight_in(client, google, alice):
     [
         ({'error': True}, 'Google login was cancelled or failed.'),
         ({'userinfo': userinfo(email=None)}, 'Google did not share an email address with us.'),
-        ({'userinfo': userinfo(email_verified=False)}, 'Your Google email address is not verified.'),
+        (
+            {'userinfo': userinfo(email_verified=False)},
+            'Your Google email address is not verified.',
+        ),
     ],
 )
 def test_google_failures_go_back_with_a_message(client, google, answer, message):

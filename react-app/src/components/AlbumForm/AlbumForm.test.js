@@ -9,7 +9,12 @@ const fill = (fields) => {
     });
 };
 
-const validAlbum = { 'Artist*': 'The Testers', 'Album Name*': 'Debut', 'Genre*': 'Pop', 'Year*': '2024' };
+const validAlbum = {
+    'Artist*': 'The Testers',
+    'Album Name*': 'Debut',
+    'Genre*': 'Pop',
+    'Year*': '2024',
+};
 
 afterEach(() => {
     delete global.fetch;
@@ -42,12 +47,16 @@ it('checks the fields before sending anything', () => {
 
 it("shows the server's errors beside their fields", async () => {
     mockFetch({ errors: { name: 'Field cannot be longer than 255 characters.' } }, 400);
-    const { location } = renderWithStore(<AlbumForm formType="Create Album" />, { history: ['/albums/new'] });
+    const { location } = renderWithStore(<AlbumForm formType="Create Album" />, {
+        history: ['/albums/new'],
+    });
     fill(validAlbum);
 
     fireEvent.click(screen.getByRole('button', { name: 'Create Album' }));
 
-    expect(await screen.findByText('Field cannot be longer than 255 characters.')).toBeInTheDocument();
+    expect(
+        await screen.findByText('Field cannot be longer than 255 characters.'),
+    ).toBeInTheDocument();
     expect(location.pathname).toBe('/albums/new');
 });
 
@@ -76,7 +85,7 @@ it('shows an album without art as an empty art field', () => {
         <AlbumForm
             formType="Update Album"
             album={{ id: 3, artist: 'A', name: 'B', genre: 'C', year: 2020, art: null }}
-        />
+        />,
     );
 
     expect(screen.getByLabelText('Album art')).toHaveValue('');

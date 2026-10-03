@@ -1,15 +1,20 @@
 from sqlalchemy.orm import joinedload, selectinload
 from .db import db, environment, SCHEMA, add_prefix_for_prod, utcnow, to_iso
 
+
 class Album(db.Model):
     __tablename__ = 'albums'
 
-    if environment == "production":
+    if environment == 'production':
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'),
+        nullable=False,
+    )
     # NULL when there is no art; the client shows its own default cover
     art = db.Column(db.String(255))
     artist = db.Column(db.String(50), nullable=False)
@@ -19,7 +24,7 @@ class Album(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=utcnow, onupdate=utcnow)
 
     user = db.relationship('User', back_populates='albums')
-    songs = db.relationship('Song', back_populates='album', cascade="all, delete")
+    songs = db.relationship('Song', back_populates='album', cascade='all, delete')
 
     def to_dict(self):
         return {
@@ -44,6 +49,7 @@ class Album(db.Model):
         """
         # Imported here: song.py imports this module
         from .song import Song
+
         return (
             joinedload(Album.user),
             selectinload(Album.songs).options(joinedload(Song.user), selectinload(Song.likes)),

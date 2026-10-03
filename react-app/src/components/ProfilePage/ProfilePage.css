@@ -32,7 +32,10 @@
     top: 5px;
     opacity: 0;
     transform: translateY(20px);
-    transition: visibility 0s, opacity 0.3s, transform 0.3s;
+    transition:
+        visibility 0s,
+        opacity 0.3s,
+        transform 0.3s;
     z-index: 98;
 }
 
@@ -53,7 +56,7 @@
 
 .profile-tile-buttons > * + * {
     margin-left: 4px;
-    color:rgb(208, 0, 0);
+    color: rgb(208, 0, 0);
 }
 
 .profile-tile-container {

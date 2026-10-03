@@ -15,7 +15,7 @@
 .playlist-field {
     display: flex;
     flex-direction: column;
-    gap: 3px
+    gap: 3px;
 }
 
 #playlist-description-input {

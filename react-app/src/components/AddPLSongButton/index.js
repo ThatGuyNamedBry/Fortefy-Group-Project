@@ -67,52 +67,56 @@ const AddPLSongButton = ({ songId, userId }) => {
         } else {
             dispatch(addPlaylistSongThunk(playlistId, songId));
         }
-    }
+    };
 
     if (!userId) {
         return null;
     }
 
     return (
-        <div className='add-plsong' ref={menuRef}>
+        <div className="add-plsong" ref={menuRef}>
             <button
-                type='button'
+                type="button"
                 ref={toggleRef}
                 className={`add-plsong-toggle${isOpen ? ' is-open' : ''}`}
-                title='Add to playlist'
-                aria-label='Add to playlist'
+                title="Add to playlist"
+                aria-label="Add to playlist"
                 aria-expanded={isOpen}
                 aria-controls={menuIdRef.current}
                 onClick={onPlusClick}
             >
-                <i className='fa-solid fa-circle-plus' aria-hidden='true'></i>
+                <i className="fa-solid fa-circle-plus" aria-hidden="true"></i>
             </button>
 
             <ul
-                className='add-plsong-options'
+                className="add-plsong-options"
                 id={menuIdRef.current}
                 style={{ display: isOpen ? 'block' : 'none' }}
             >
                 <li>
                     <button
-                        type='button'
-                        className='playlist-options add-plsong-create'
+                        type="button"
+                        className="playlist-options add-plsong-create"
                         onClick={(e) => onPlaylistSelect(e, 'new')}
-                    >Create Playlist</button>
+                    >
+                        Create Playlist
+                    </button>
                 </li>
-                {playlists.map(playlist => (
+                {playlists.map((playlist) => (
                     <li key={playlist.id}>
                         <button
-                            type='button'
-                            className='playlist-options'
+                            type="button"
+                            className="playlist-options"
                             title={playlist.title}
                             onClick={(e) => onPlaylistSelect(e, playlist.id)}
-                        >{playlist.title}</button>
+                        >
+                            {playlist.title}
+                        </button>
                     </li>
                 ))}
             </ul>
         </div>
-    )
+    );
 };
 
 export default AddPLSongButton;

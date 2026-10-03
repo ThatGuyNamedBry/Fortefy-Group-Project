@@ -5,12 +5,14 @@ Revises: fb3504bd4d61
 Create Date: 2026-10-02 00:00:00.000000
 
 """
+
 from alembic import op
 import sqlalchemy as sa
 
 import os
-environment = os.getenv("FLASK_ENV")
-SCHEMA = os.environ.get("SCHEMA")
+
+environment = os.getenv('FLASK_ENV')
+SCHEMA = os.environ.get('SCHEMA')
 
 # revision identifiers, used by Alembic.
 revision = '8a01987527ee'
@@ -18,7 +20,7 @@ down_revision = 'fb3504bd4d61'
 branch_labels = None
 depends_on = None
 
-schema = SCHEMA if environment == "production" else None
+schema = SCHEMA if environment == 'production' else None
 
 # What the app used to store when an album or playlist had no art
 OLD_ALBUM_DEFAULT = 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Compact_Disc.jpg'
@@ -39,12 +41,12 @@ playlists = sa.table('playlists', sa.column('art', sa.String()), schema=schema)
 
 def upgrade():
     # No art is now NULL, and the client picks the cover to show in its place
-    op.execute(albums.update()
-               .where(albums.c.art.in_([OLD_ALBUM_DEFAULT, '']))
-               .values(art=None))
-    op.execute(playlists.update()
-               .where(playlists.c.art.in_([OLD_PLAYLIST_DEFAULT, ''] + OLD_SEED_PLAYLIST_ART))
-               .values(art=None))
+    op.execute(albums.update().where(albums.c.art.in_([OLD_ALBUM_DEFAULT, ''])).values(art=None))
+    op.execute(
+        playlists.update()
+        .where(playlists.c.art.in_([OLD_PLAYLIST_DEFAULT, ''] + OLD_SEED_PLAYLIST_ART))
+        .values(art=None)
+    )
 
 
 def downgrade():

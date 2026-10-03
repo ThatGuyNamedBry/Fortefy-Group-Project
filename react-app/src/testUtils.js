@@ -26,7 +26,7 @@ export function renderWithStore(ui, { preloadedState, history = ['/'] } = {}) {
                     }}
                 />
             </MemoryRouter>
-        </Provider>
+        </Provider>,
     );
     return { ...result, store, location };
 }
@@ -34,7 +34,7 @@ export function renderWithStore(ui, { preloadedState, history = ['/'] } = {}) {
 /** A stand-in for fetch that answers with `body` and `status`. */
 export function mockFetch(body, status = 200) {
     const fetchMock = jest.fn(() =>
-        Promise.resolve({ ok: status < 400, status, json: () => Promise.resolve(body) })
+        Promise.resolve({ ok: status < 400, status, json: () => Promise.resolve(body) }),
     );
     global.fetch = fetchMock;
     return fetchMock;

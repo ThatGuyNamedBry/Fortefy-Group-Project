@@ -5,9 +5,9 @@ import { receiveSongsAction } from './songs';
 //                                           Action Types
 const LOAD_PLAYLISTS = 'playlists/LOAD_PLAYLISTS';
 const LOAD_USER_PLAYLISTS = 'playlists/LOAD_USER_PLAYLISTS';
-const RECEIVE_PLAYLIST = 'playlists/RECEIVE_PLAYLIST'
+const RECEIVE_PLAYLIST = 'playlists/RECEIVE_PLAYLIST';
 const DELETE_PLAYLIST = 'playlists/DELETE_PLAYLIST';
-const LOAD_PLAYLIST_SONGS = 'playlists/LOAD_PLAYLIST_SONGS'
+const LOAD_PLAYLIST_SONGS = 'playlists/LOAD_PLAYLIST_SONGS';
 
 //                                         Action Creators
 
@@ -32,11 +32,11 @@ export const getUserPlaylistsAction = (userId, playlists) => {
 export const receivePlaylistAction = (playlist) => {
     return {
         type: RECEIVE_PLAYLIST,
-        payload: playlist
-    }
-}
+        payload: playlist,
+    };
+};
 
-  //Delete a Playlist Action
+//Delete a Playlist Action
 export const deletePlaylistAction = (playlistId) => {
     return {
         type: DELETE_PLAYLIST,
@@ -49,10 +49,10 @@ export const loadPlaylistSongsAction = (songs) => {
     return {
         type: LOAD_PLAYLIST_SONGS,
         payload: songs,
-    }
-}
+    };
+};
 
-  //                                             Thunks
+//                                             Thunks
 //Get All Playlists Thunk
 export const getAllPlaylistsThunk = () => async (dispatch) => {
     const playlists = await getJson('/api/playlists');
@@ -74,7 +74,11 @@ export const getPlaylistByIdThunk = (playlistId) => async (dispatch) => {
         // Cached so the like buttons on the playlist page find their songs.
         // Copies, because PlaylistDetails tags these objects with a
         // playlistSongId that has no business in the songs cache.
-        dispatch(receiveSongsAction(playlist.playlist_songs.map(playlistSong => ({ ...playlistSong.song }))));
+        dispatch(
+            receiveSongsAction(
+                playlist.playlist_songs.map((playlistSong) => ({ ...playlistSong.song })),
+            ),
+        );
         dispatch(receivePlaylistAction(playlist));
     }
     return playlist;
@@ -88,19 +92,19 @@ export const createPlaylistThunk = (formData) => async (dispatch) => {
             method: 'POST',
             headers: csrfHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify(formData),
-          // console.log('After new playlist fetch, this is response : ', response)
+            // console.log('After new playlist fetch, this is response : ', response)
         });
         const newPlaylist = await response.json();
         if (!response.ok) {
             // Hand the { errors: { field: message } } body back so the form can
             // show it, rather than losing it inside an Error
-            return newPlaylist
+            return newPlaylist;
         }
         dispatch(receivePlaylistAction(newPlaylist));
         return newPlaylist;
     } catch {
         // Returning the Error itself sent the form on to /playlists/undefined
-        return REQUEST_FAILED
+        return REQUEST_FAILED;
     }
 };
 
@@ -112,7 +116,7 @@ export const updatePlaylistThunk = (playlistId, formData) => async (dispatch) =>
             method: 'PUT',
             headers: csrfHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify(formData),
-          // console.log('After update playlist fetch, this is response : ', response)
+            // console.log('After update playlist fetch, this is response : ', response)
         });
         const updatedPlaylist = await response.json();
         if (!response.ok) {
@@ -125,7 +129,7 @@ export const updatePlaylistThunk = (playlistId, formData) => async (dispatch) =>
     } catch {
         return REQUEST_FAILED;
     }
-}
+};
 
 //Delete a Playlist Thunk
 export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
@@ -135,14 +139,14 @@ export const deletePlaylistThunk = (playlistId) => async (dispatch) => {
     });
 
     if (response.ok) {
-        const data = await response.json()
+        const data = await response.json();
         dispatch(deletePlaylistAction(playlistId));
         return data;
     }
 };
 
 //Add a Song to a Playlist Thunk
-    // Arguments = playlist Id, **SONG ID**
+// Arguments = playlist Id, **SONG ID**
 export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => {
     const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${songId}/new`, {
         method: 'POST',
@@ -154,22 +158,25 @@ export const addPlaylistSongThunk = (playlistId, songId) => async (dispatch) => 
         dispatch(receivePlaylistAction(updatedPlaylist));
         return updatedPlaylist;
     }
-}
+};
 
 //Remove a Song from a Playlist Thunk
-    // Arguments = playlist Id, **PLAYLISTSONG ID**
+// Arguments = playlist Id, **PLAYLISTSONG ID**
 export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (dispatch) => {
-    const response = await fetch(`/api/playlists/${playlistId}/playlist-songs/${playlistSongId}/delete`, {
-        method: 'DELETE',
-        headers: csrfHeaders(),
-    });
+    const response = await fetch(
+        `/api/playlists/${playlistId}/playlist-songs/${playlistSongId}/delete`,
+        {
+            method: 'DELETE',
+            headers: csrfHeaders(),
+        },
+    );
 
     if (response.ok) {
         const updatedPlaylist = await response.json();
         dispatch(receivePlaylistAction(updatedPlaylist));
         return updatedPlaylist;
     }
-}
+};
 
 //                                            Selectors
 
@@ -179,15 +186,17 @@ export const removePlaylistSongThunk = (playlistId, playlistSongId) => async (di
 // is new each time, but its entries are the same objects until one changes.
 export const selectUserPlaylists = (state) => {
     const userId = state.session.user?.id;
-    return Object.values(state.playlists.allPlaylists).filter(playlist => playlist.user_id === userId);
+    return Object.values(state.playlists.allPlaylists).filter(
+        (playlist) => playlist.user_id === userId,
+    );
 };
 
 //Reducer function
 const initialState = {
     allPlaylists: {},
     singlePlaylist: {},
-    playlistSongs: {}
-}
+    playlistSongs: {},
+};
 
 const playlistReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -203,13 +212,21 @@ const playlistReducer = (state = initialState, action) => {
             const { userId, playlists } = action.payload;
             const merged = {};
             Object.values(state.allPlaylists)
-                .filter(playlist => playlist.user_id !== userId)
-                .forEach(playlist => { merged[playlist.id] = playlist; });
-            playlists.forEach(playlist => { merged[playlist.id] = playlist; });
+                .filter((playlist) => playlist.user_id !== userId)
+                .forEach((playlist) => {
+                    merged[playlist.id] = playlist;
+                });
+            playlists.forEach((playlist) => {
+                merged[playlist.id] = playlist;
+            });
             return { ...state, allPlaylists: merged };
         }
         case RECEIVE_PLAYLIST:
-            return { ...state, allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload }, singlePlaylist: action.payload };
+            return {
+                ...state,
+                allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload },
+                singlePlaylist: action.payload,
+            };
         case DELETE_PLAYLIST:
             const newPlaylists = { ...state.allPlaylists };
             delete newPlaylists[action.payload];

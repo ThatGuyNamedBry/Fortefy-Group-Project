@@ -27,7 +27,7 @@
 }
 
 #playlist-duration {
-    color: rgba(255, 255, 255, 0.701)
+    color: rgba(255, 255, 255, 0.701);
 }
 
 .playlist-name-header {
@@ -56,7 +56,7 @@
     justify-content: space-between;
     align-items: center;
     height: fit-content;
-    border-bottom: .5px solid rgb(74, 74, 74);
+    border-bottom: 0.5px solid rgb(74, 74, 74);
 }
 
 #playlist-clock-icon {
@@ -71,7 +71,6 @@
 
 .playlist-song-time {
     color: rgb(160, 160, 160);
-
 }
 
 /* Phones: the cover goes above the title, which shrinks and wraps rather than

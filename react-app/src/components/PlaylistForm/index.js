@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from "react-redux";
-import { createPlaylistThunk, updatePlaylistThunk } from "../../store/playlists";
-import { playlistValidation, serverErrors } from "../../helpers";
+import { useDispatch } from 'react-redux';
+import { createPlaylistThunk, updatePlaylistThunk } from '../../store/playlists';
+import { playlistValidation, serverErrors } from '../../helpers';
 import './PlaylistForm.css';
 
 const PLAYLIST_FIELDS = { title: 'title', art: 'art', description: 'description' };
@@ -38,7 +38,7 @@ const PlaylistForm = ({ playlist, formType }) => {
                 history.push(`/playlists/${playlist.id}`);
             }
         }
-    }
+    };
 
     return (
         <div className="playlist-form-container">
@@ -88,22 +88,17 @@ const PlaylistForm = ({ playlist, formType }) => {
                 </div>
 
                 <div id="button-container">
-                    <button
-                    id="submit-button"
-                    type="submit"
-                        >{formType}
+                    <button id="submit-button" type="submit">
+                        {formType}
                     </button>
-                    <button
-                    id="cancel-button"
-                    type="button"
-                    onClick={() => history.goBack()}>
+                    <button id="cancel-button" type="button" onClick={() => history.goBack()}>
                         Cancel
                     </button>
                 </div>
                 {errors.server ? <p className="errors">{errors.server}</p> : null}
             </form>
         </div>
-    )
-}
+    );
+};
 
 export default PlaylistForm;

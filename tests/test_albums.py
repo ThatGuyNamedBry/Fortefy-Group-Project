@@ -5,7 +5,14 @@ from app.models import Album, Like, PlaylistSong, Song, db
 
 
 def album_data(**fields):
-    return {'name': 'Debut', 'artist': 'The Testers', 'year': 2024, 'genre': 'Pop', 'art': '', **fields}
+    return {
+        'name': 'Debut',
+        'artist': 'The Testers',
+        'year': 2024,
+        'genre': 'Pop',
+        'art': '',
+        **fields,
+    }
 
 
 def test_create_an_album(as_alice, alice):
@@ -23,11 +30,11 @@ def test_no_art_is_stored_as_null(as_alice):
     assert created['art'] is None
 
     with_art = as_alice.put(
-        f"/api/albums/edit/{created['id']}", data=album_data(art='https://example.com/a.jpg')
+        f'/api/albums/edit/{created["id"]}', data=album_data(art='https://example.com/a.jpg')
     ).get_json()
     assert with_art['art'] == 'https://example.com/a.jpg'
 
-    cleared = as_alice.put(f"/api/albums/edit/{created['id']}", data=album_data(art='')).get_json()
+    cleared = as_alice.put(f'/api/albums/edit/{created["id"]}', data=album_data(art='')).get_json()
     assert cleared['art'] is None
 
 

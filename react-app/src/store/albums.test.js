@@ -7,7 +7,13 @@ import albumReducer, {
     updateAlbumAction,
 } from './albums';
 
-const album = (id, fields = {}) => ({ id, name: `Album ${id}`, user: { id: 1 }, songs: [], ...fields });
+const album = (id, fields = {}) => ({
+    id,
+    name: `Album ${id}`,
+    user: { id: 1 },
+    songs: [],
+    ...fields,
+});
 const stateWith = (...albums) => albumReducer(undefined, getAllAlbumsAction(albums));
 
 describe('albums reducer', () => {

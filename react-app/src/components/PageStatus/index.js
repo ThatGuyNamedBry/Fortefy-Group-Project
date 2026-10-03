@@ -17,10 +17,12 @@ export const useLoadStatus = (load) => {
 
     useEffect(() => {
         let current = true;
-        load().then(response => {
+        load().then((response) => {
             if (current) setResult({ load, status: statusOf(response) });
         });
-        return () => { current = false; };
+        return () => {
+            current = false;
+        };
     }, [load]);
 
     // A status from the previous record's load means this one is still

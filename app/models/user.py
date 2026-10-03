@@ -7,11 +7,9 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     # A given provider account may only ever be linked to one user
-    __table_args__ = (
-        db.UniqueConstraint('oauth_provider', 'oauth_id', name='uq_users_oauth'),
-    )
+    __table_args__ = (db.UniqueConstraint('oauth_provider', 'oauth_id', name='uq_users_oauth'),)
 
-    if environment == "production":
+    if environment == 'production':
         __table_args__ = __table_args__ + ({'schema': SCHEMA},)
 
     id = db.Column(db.Integer, primary_key=True)
@@ -47,10 +45,7 @@ class User(db.Model, UserMixin):
         and playlists, all of which are readable without logging in, so it must
         never carry anything private.
         """
-        return {
-            'id': self.id,
-            'username': self.username
-        }
+        return {'id': self.id, 'username': self.username}
 
     def to_dict_private(self):
         """
@@ -65,10 +60,11 @@ class User(db.Model, UserMixin):
             'created_at': to_iso(self.created_at),
             'updated_at': to_iso(self.updated_at),
         }
+
     # Deleting a user deletes everything they made or liked. Without the
     # cascade the ORM tried to null out user_id on each of those rows instead,
     # which the NOT NULL columns refuse.
-    albums = db.relationship('Album', back_populates='user', cascade="all, delete")
-    songs = db.relationship('Song', back_populates='user', cascade="all, delete")
-    likes = db.relationship('Like', back_populates='user', cascade="all, delete")
-    playlists = db.relationship('Playlist', back_populates='user', cascade="all, delete")
+    albums = db.relationship('Album', back_populates='user', cascade='all, delete')
+    songs = db.relationship('Song', back_populates='user', cascade='all, delete')
+    likes = db.relationship('Like', back_populates='user', cascade='all, delete')
+    playlists = db.relationship('Playlist', back_populates='user', cascade='all, delete')

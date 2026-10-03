@@ -1,4 +1,9 @@
-import playerReducer, { clearQueue, setCurrentPlaylist, setCurrentSongIndex, setIsPlaying } from './player';
+import playerReducer, {
+    clearQueue,
+    setCurrentPlaylist,
+    setCurrentSongIndex,
+    setIsPlaying,
+} from './player';
 
 const initial = playerReducer(undefined, { type: 'unknown' });
 

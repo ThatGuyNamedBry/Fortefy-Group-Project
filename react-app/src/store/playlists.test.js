@@ -7,7 +7,13 @@ import playlistReducer, {
     selectUserPlaylists,
 } from './playlists';
 
-const playlist = (id, fields = {}) => ({ id, title: `Playlist ${id}`, user_id: 1, playlist_songs: [], ...fields });
+const playlist = (id, fields = {}) => ({
+    id,
+    title: `Playlist ${id}`,
+    user_id: 1,
+    playlist_songs: [],
+    ...fields,
+});
 const stateWith = (...playlists) => playlistReducer(undefined, getAllPlaylistsAction(playlists));
 
 describe('playlists reducer', () => {
@@ -27,7 +33,10 @@ describe('playlists reducer', () => {
     });
 
     it('caches a received playlist and makes it the open one', () => {
-        const state = playlistReducer(stateWith(playlist(1)), receivePlaylistAction(playlist(1, { title: 'New' })));
+        const state = playlistReducer(
+            stateWith(playlist(1)),
+            receivePlaylistAction(playlist(1, { title: 'New' })),
+        );
         expect(state.allPlaylists[1].title).toBe('New');
         expect(state.singlePlaylist.title).toBe('New');
     });
@@ -52,5 +61,5 @@ it("selects the logged-in user's playlists", () => {
         playlists: stateWith(playlist(1), playlist(2, { user_id: 2 })),
         session: { user: { id: 1 } },
     };
-    expect(selectUserPlaylists(state).map(p => p.id)).toEqual([1]);
+    expect(selectUserPlaylists(state).map((p) => p.id)).toEqual([1]);
 });

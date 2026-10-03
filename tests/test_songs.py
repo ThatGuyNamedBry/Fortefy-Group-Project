@@ -63,7 +63,8 @@ def test_an_s3_failure_stores_no_song(as_alice, alice, s3):
     s3.fail_uploads = True
 
     response = as_alice.post(
-        f'/api/albums/{album.id}/song', data={'name': 'Hello', 'track_number': 1, 'song': wav_file()}
+        f'/api/albums/{album.id}/song',
+        data={'name': 'Hello', 'track_number': 1, 'song': wav_file()},
     )
 
     assert response.status_code == 502

@@ -15,7 +15,9 @@ const SongPlayButton = ({ song, number, onPlay }) => (
             onPlay();
         }}
     >
-        <span className="song-track-number-text" aria-hidden="true">{number}</span>
+        <span className="song-track-number-text" aria-hidden="true">
+            {number}
+        </span>
         <i className="fa-sharp fa-solid fa-play song-track-play" aria-hidden="true"></i>
     </button>
 );

@@ -17,7 +17,12 @@ def test_seed_all_then_undo(app):
     result = runner.invoke(args=['seed', 'all'])
     assert result.exit_code == 0, result.output
     assert counts() == {
-        'User': 6, 'Album': 10, 'Song': 32, 'Playlist': 5, 'PlaylistSong': 10, 'Like': 0,
+        'User': 6,
+        'Album': 10,
+        'Song': 32,
+        'Playlist': 5,
+        'PlaylistSong': 10,
+        'Like': 0,
     }
 
     # The library belongs to an account nobody can log in as

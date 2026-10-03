@@ -82,7 +82,9 @@ def counts():
     }
 
 
-@pytest.mark.parametrize('method, url, data, owned', ROUTES, ids=[f'{m} {u}' for m, u, *_ in ROUTES])
+@pytest.mark.parametrize(
+    'method, url, data, owned', ROUTES, ids=[f'{m} {u}' for m, u, *_ in ROUTES]
+)
 def test_anonymous_gets_401(client, alices_things, method, url, data, owned):
     before = counts()
 
@@ -111,7 +113,9 @@ def test_someone_elses_resource_gets_403(as_bob, alices_things, s3, method, url,
 WITH_IDS = [route for route in ROUTES if '{' in route[1]]
 
 
-@pytest.mark.parametrize('method, url, data, owned', WITH_IDS, ids=[f'{m} {u}' for m, u, *_ in WITH_IDS])
+@pytest.mark.parametrize(
+    'method, url, data, owned', WITH_IDS, ids=[f'{m} {u}' for m, u, *_ in WITH_IDS]
+)
 def test_missing_id_gets_404(as_alice, alices_things, method, url, data, owned):
     before = counts()
     # Every id in the URL missing at once; the first one checked is the 404

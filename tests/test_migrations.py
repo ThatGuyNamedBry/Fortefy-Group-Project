@@ -50,7 +50,13 @@ def test_upgrade_matches_the_models_and_downgrade_undoes_it(database):
     flask_db(database, 'upgrade')
 
     assert tables(database) == {
-        'alembic_version', 'users', 'albums', 'songs', 'likes', 'playlists', 'playlist_songs',
+        'alembic_version',
+        'users',
+        'albums',
+        'songs',
+        'likes',
+        'playlists',
+        'playlist_songs',
     }
     engine = create_engine(f'sqlite:///{database}')
     try:
