@@ -17,10 +17,10 @@ repos:
         name: prettier
         entry: npm --prefix react-app exec -- prettier --write
         language: system
-        files: ^react-app/src/.*\.(js|css)$
+        files: ^react-app/src/.*\.(js|jsx|css)$
       - id: eslint
         name: eslint
         entry: npm --prefix react-app run lint
         language: system
-        files: ^react-app/src/.*\.js$
+        files: ^react-app/src/.*\.(js|jsx)$
         pass_filenames: false

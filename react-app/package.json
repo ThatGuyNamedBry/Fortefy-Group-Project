@@ -25,9 +25,9 @@
     "start": "react-scripts start",
     "build": "cross-env CI=false react-scripts build",
     "test": "react-scripts test",
-    "lint": "eslint src --max-warnings=0",
-    "format": "prettier --write \"src/**/*.{js,css}\"",
-    "format:check": "prettier --check \"src/**/*.{js,css}\"",
+    "lint": "eslint src --ext .js,.jsx --max-warnings=0",
+    "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css}\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
