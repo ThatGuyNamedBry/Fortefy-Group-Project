@@ -12,7 +12,7 @@ import './index.css';
 
 const store = configureStore();
 
-if (process.env.NODE_ENV !== 'production') {
+if (import.meta.env.DEV) {
     window.store = store;
     window.sessionActions = sessionActions;
 }

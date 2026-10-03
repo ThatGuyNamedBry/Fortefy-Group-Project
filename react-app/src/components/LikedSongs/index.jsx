@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
@@ -132,6 +132,7 @@ const LikedSongs = () => {
                     </li>
                 )}
                 {songs.map((song, i) => (
+                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- a mouse shortcut; SongPlayButton plays it from the keyboard
                     <li
                         key={song.id}
                         className="albums-songs-button"

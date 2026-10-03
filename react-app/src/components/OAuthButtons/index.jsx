@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './OAuthButtons.css';
 
 // The official Google "G", inlined so the button does not depend on an asset

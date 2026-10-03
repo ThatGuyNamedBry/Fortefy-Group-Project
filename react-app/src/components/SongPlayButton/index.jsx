@@ -1,4 +1,3 @@
-import React from 'react';
 import './SongPlayButton.css';
 
 // The number at the start of a song row. It turns into a play icon while the

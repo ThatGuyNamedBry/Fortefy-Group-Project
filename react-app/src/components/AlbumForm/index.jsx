@@ -65,7 +65,7 @@ const AlbumForm = ({ album, formType }) => {
         }
     };
 
-    const handleCancelClick = (e) => {
+    const handleCancelClick = () => {
         if (formType === 'Update Album') {
             history.push(`/profile`);
         } else {

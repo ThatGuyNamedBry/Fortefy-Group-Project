@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchThunk, clearSearchResultsAction } from '../../store/search';
@@ -71,6 +71,7 @@ const SearchPage = () => {
                     <h2>Songs</h2>
                     <ul className="search-song-list">
                         {songs.map((song, index) => (
+                            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- a mouse shortcut; the play button plays it from the keyboard
                             <li
                                 key={song.id}
                                 className="search-song-row"
@@ -103,6 +104,7 @@ const SearchPage = () => {
                                         </Link>
                                     </span>
                                 </div>
+                                {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- not a control: it only keeps clicks off the row */}
                                 <div className="search-song-actions" onClick={stopClick}>
                                     <LikeButton songId={song.id} />
                                     <span className="search-song-duration">

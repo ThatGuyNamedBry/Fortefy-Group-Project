@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLikeThunk, removeLikeThunk } from '../../store/songs';
 import './LikeButton.css';

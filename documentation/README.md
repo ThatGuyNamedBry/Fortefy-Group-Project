@@ -98,6 +98,12 @@ it, and pip installs a urllib3 that botocore does not support there. A
 `PYTHON_VERSION` environment variable on the service would override the file,
 so leave it unset.
 
+The frontend is built with Node.js, whose version comes from `.node-version`
+(24) in the same way. Without it, an older service builds with Node 14, which
+cannot run Vite. A `NODE_VERSION` environment variable would override the file
+too. The deploy log shows which version was used, in a line like
+`Using Node.js version 24.x.x`.
+
 Next, add your Build command. This is a script that should include everything
 that needs to happen _before_ starting the server.
 

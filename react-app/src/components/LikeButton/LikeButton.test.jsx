@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import LikeButton from '.';
 import { mockFetch, renderWithStore } from '../../testUtils';
@@ -11,7 +10,7 @@ const stateWith = (user, songFields) => ({
 });
 
 afterEach(() => {
-    delete global.fetch;
+    delete globalThis.fetch;
     document.cookie = 'csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 });
 

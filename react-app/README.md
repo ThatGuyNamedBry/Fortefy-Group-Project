@@ -1,7 +1,20 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Fortefy frontend: React, built with [Vite](https://vite.dev/).
 
-Your React App will live here.  You will need to run `npm install` to install all your dependencies before starting up the application. While in development, run this application from this location using `npm start`.
+Use Node.js 24, the version pinned in `.node-version` at the repository root.
+Render builds with that version too.
 
-No environment variables are needed to run this application in development, but be sure to set the REACT_APP_BASE_URL environment variable when you deploy!
+| command | what it does |
+|---|---|
+| `npm install` | installs the dependencies |
+| `npm start` | starts the dev server on http://localhost:3000, sending `/api` requests to Flask on port 5000 |
+| `npm run build` | builds the app into `build/`, which Flask serves in production |
+| `npm test` | runs the tests once (`npm run test:watch` keeps them running) |
+| `npm run lint` | ESLint |
+| `npm run format` | Prettier |
 
-This app will be automatically built when you push to your main branch on Github.
+For the dev server, run Flask alongside it (`flask run` from the repository
+root). To send `/api` somewhere other than port 5000, set `API_PROXY_TARGET`,
+for example `API_PROXY_TARGET=http://localhost:5003 npm start`.
+
+`index.html` lives here at the root of `react-app`, not in `public/`. Files in
+`public/` are copied into the build as they are, at the root of the site.

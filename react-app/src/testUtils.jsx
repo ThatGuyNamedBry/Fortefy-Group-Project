@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route } from 'react-router-dom';
@@ -33,9 +32,9 @@ export function renderWithStore(ui, { preloadedState, history = ['/'] } = {}) {
 
 /** A stand-in for fetch that answers with `body` and `status`. */
 export function mockFetch(body, status = 200) {
-    const fetchMock = jest.fn(() =>
+    const fetchMock = vi.fn(() =>
         Promise.resolve({ ok: status < 400, status, json: () => Promise.resolve(body) }),
     );
-    global.fetch = fetchMock;
+    globalThis.fetch = fetchMock;
     return fetchMock;
 }

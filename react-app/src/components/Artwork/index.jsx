@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Served from react-app/public, so nothing depends on another site keeping a
 // file up or allowing it to be hotlinked

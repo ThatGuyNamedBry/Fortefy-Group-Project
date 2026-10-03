@@ -85,7 +85,7 @@ function AddMusicModal({ album, type, song }) {
                 {type === 'create' ? (
                     <h2>Add some music to your album</h2>
                 ) : (
-                    <h2>Update your song's info</h2>
+                    <h2>Update your song&apos;s info</h2>
                 )}
 
                 <div className="song-field-container">

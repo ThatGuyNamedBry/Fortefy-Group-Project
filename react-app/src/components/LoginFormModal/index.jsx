@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { login } from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
@@ -83,7 +83,7 @@ function LoginFormModal({ errors: initialErrors = {} }) {
                 </button>
             </form>
             <p className="sign-up-link">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <button type="button" className="link-button" onClick={openSignupModal}>
                     Sign up for ƒorteƒy
                 </button>

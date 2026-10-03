@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import AlbumForm from '.';
 import { mockFetch, renderWithStore } from '../../testUtils';
@@ -17,7 +16,7 @@ const validAlbum = {
 };
 
 afterEach(() => {
-    delete global.fetch;
+    delete globalThis.fetch;
 });
 
 it('does not submit when Cancel is pressed', () => {

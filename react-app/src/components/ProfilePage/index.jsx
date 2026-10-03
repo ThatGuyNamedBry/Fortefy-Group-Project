@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { getCurrentUserAllAlbumsThunk, selectUserAlbums } from '../../store/albums';

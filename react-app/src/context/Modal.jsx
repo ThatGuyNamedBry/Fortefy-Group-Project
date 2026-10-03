@@ -110,6 +110,7 @@ export function Modal() {
     // Render the following component to the div referenced by the modalRef
     return ReactDOM.createPortal(
         <div id="modal">
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- the keyboard closes the dialog with Escape */}
             <div id="modal-background" onClick={closeModal} />
             <div id="modal-content" ref={contentRef} role="dialog" aria-modal="true" tabIndex={-1}>
                 {modalContent}

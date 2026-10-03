@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { secsToHrs, secsToMins } from '../../helpers';
@@ -112,6 +112,7 @@ const AlbumDetails = () => {
                 {songsArray.map((song) => (
                     // Clicking anywhere on the row plays the song; the number
                     // is the button that does it from the keyboard
+                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- a mouse shortcut; SongPlayButton plays it from the keyboard
                     <li
                         key={song.id}
                         className="albums-songs-button"
@@ -131,6 +132,7 @@ const AlbumDetails = () => {
                             </div>
                             {userOwned && (
                                 // Clicks here open a modal rather than play the song
+                                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- not a control: it only keeps clicks off the row
                                 <div
                                     className="song-row-owner-buttons"
                                     onClick={(e) => e.stopPropagation()}
