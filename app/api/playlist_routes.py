@@ -63,7 +63,7 @@ def add_playlist_song(playlist_id, song_id):
     """
     Create a playlist_song instance and return the altered playlist as a dictionary
     """
-    updated_playlist = Playlist.query.get(playlist_id)
+    updated_playlist = db.session.get(Playlist, playlist_id)
 
     if updated_playlist is None:
         return {'errors': 'Playlist could not be found'}, 404
@@ -73,7 +73,7 @@ def add_playlist_song(playlist_id, song_id):
     # Without this the insert either violates the foreign key (a 500 on
     # Postgres) or, on SQLite where foreign keys are off, stores a row whose
     # song is missing, which then breaks to_dict() for everyone viewing it
-    if Song.query.get(song_id) is None:
+    if db.session.get(Song, song_id) is None:
         return {'errors': 'Song could not be found'}, 404
 
     playlist_song = PlaylistSong(song_id=song_id, playlist_id=playlist_id)
@@ -91,14 +91,14 @@ def add_playlist_song(playlist_id, song_id):
 @login_required
 def remove_playlist_song(playlist_id, playlist_song_id):
     """Query for a playlist_song by it's playlist_song_id, delete it from the db and return the altered playlist as a dictionary"""
-    updated_playlist = Playlist.query.get(playlist_id)
+    updated_playlist = db.session.get(Playlist, playlist_id)
 
     if updated_playlist is None:
         return {'errors': 'Playlist could not be found'}, 404
     elif updated_playlist.user_id != current_user.id:
         return {'errors': 'Playlist does not belong to user'}, 403
 
-    playlist_song = PlaylistSong.query.get(playlist_song_id)
+    playlist_song = db.session.get(PlaylistSong, playlist_song_id)
 
     # The second half stops a row being deleted out of playlist B through a URL
     # that names playlist A
@@ -119,7 +119,7 @@ def edit_playlist(id):
     form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
-        playlist = Playlist.query.get(id)
+        playlist = db.session.get(Playlist, id)
 
         if playlist is None:
             return {'errors': 'Playlist not found'}, 404
@@ -140,7 +140,7 @@ def edit_playlist(id):
 @playlist_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_playlist(id):
-    playlist = Playlist.query.get(id)
+    playlist = db.session.get(Playlist, id)
 
     if playlist is None:
         return {'errors': 'Playlist not found'}, 404
@@ -158,7 +158,7 @@ def get_playlist_by_id(id):
     """
     Query for a playlist by id and returns that playlist in a dictionary
     """
-    playlist = Playlist.query.options(*Playlist.to_dict_loads()).get(id)
+    playlist = db.session.get(Playlist, id, options=Playlist.to_dict_loads())
 
     if playlist is None:
         return {'errors': 'Playlist not found'}, 404

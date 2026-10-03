@@ -33,7 +33,7 @@ def get_album_by_id(id):
     """
     Query for an album by id and returns that album in a dictionary
     """
-    album = Album.query.options(*Album.to_dict_loads()).get(id)
+    album = db.session.get(Album, id, options=Album.to_dict_loads())
 
     if album is None:
         return {'errors': 'Album not found'}, 404
@@ -58,7 +58,7 @@ def get_user_albums():
 @album_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_album(id):
-    album = Album.query.get(id)
+    album = db.session.get(Album, id)
 
     if album is None:
         return {'errors': 'Album not found'}, 404
@@ -112,7 +112,7 @@ def create_album_song(id):
     form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
-        album = Album.query.get(id)
+        album = db.session.get(Album, id)
 
         if album is None:
             return {'errors': 'Album not found'}, 404
@@ -170,7 +170,7 @@ def edit_album(id):
     form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
-        album = Album.query.get(id)
+        album = db.session.get(Album, id)
 
         if album is None:
             return {'errors': 'Album not found'}, 404

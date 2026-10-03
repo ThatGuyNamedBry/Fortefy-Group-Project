@@ -67,7 +67,7 @@ class ApiClient:
         self.get('/api/auth/')
 
     def csrf_token(self):
-        return next(c.value for c in self.client.cookie_jar if c.name == 'csrf_token')
+        return self.client.get_cookie('csrf_token').value
 
     def send(self, method, url, csrf=True, **kwargs):
         headers = dict(kwargs.pop('headers', None) or {})
