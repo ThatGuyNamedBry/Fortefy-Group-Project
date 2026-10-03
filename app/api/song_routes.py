@@ -125,8 +125,8 @@ def delete_song(id):
     if selected_song is None:
         return { 'errors': 'Song not found' }, 404
 
-    if selected_song.to_dict()['user_id'] != current_user.id:
-        return { 'errors': 'Song not found' }, 404
+    if selected_song.user_id != current_user.id:
+        return { 'errors': 'Song does not belong to user' }, 403
 
     song_url = selected_song.song_url
 

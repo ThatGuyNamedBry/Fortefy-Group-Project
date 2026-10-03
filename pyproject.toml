@@ -1,0 +1,35 @@
+# Tool settings only. The app's dependencies are in requirements.txt (what
+# Render installs) and requirements-dev.txt (tests and linting on top).
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# So the tests can import the app package from the repository root
+pythonpath = ["."]
+addopts = "-ra"
+filterwarnings = [
+    # SQLAlchemy 1.4 announces, once, the 2.0 changes it would warn about
+    "ignore::sqlalchemy.exc.MovedIn20Warning",
+    "ignore:Deprecated API features detected:sqlalchemy.exc.SADeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["app/seeds/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["react-app"]
+
+[tool.ruff.lint]
+# pyflakes and the syntax-level pycodestyle errors: real mistakes, not style
+select = ["E4", "E7", "E9", "F"]
+
+[tool.ruff.lint.per-file-ignores]
+# These packages re-export their modules' contents on purpose
+"app/models/__init__.py" = ["F401"]
+"app/forms/__init__.py" = ["F401"]
+
+[tool.ruff.format]
+# Most of the existing code uses single quotes; this keeps the reformat small
+quote-style = "single"

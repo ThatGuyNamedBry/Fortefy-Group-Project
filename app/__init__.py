@@ -14,7 +14,9 @@ app = Flask(__name__, static_folder='../react-app/build', static_url_path='/')
 
 # Setup login manager
 login = LoginManager(app)
-login.login_view = 'auth.unauthorized'
+# A 401 straight away. With a login_view instead, every protected route
+# answered a 302 redirect to that view, which then said 401.
+login.unauthorized_handler(auth_routes.unauthorized)
 
 
 @login.user_loader

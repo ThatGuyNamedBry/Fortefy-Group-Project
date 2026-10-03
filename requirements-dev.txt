@@ -1,0 +1,8 @@
+# Everything requirements.txt installs, plus what the tests and linters need.
+# Render installs only requirements.txt.
+-r requirements.txt
+
+pytest==9.1.1
+pytest-cov==7.1.0
+ruff==0.16.10
+pre-commit==4.6.2

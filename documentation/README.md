@@ -42,6 +42,29 @@ This is the starter for the Flask React project.
 7. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
 
 
+## Tests, linting and formatting
+
+GitHub Actions runs all of this on every pull request and push to `main`
+(`.github/workflows/ci.yml`). To run it locally, install the development tools
+once: `pip install -r requirements-dev.txt`, which includes everything in
+`requirements.txt`, plus `npm install --prefix react-app`. Then:
+
+| what | command |
+|---|---|
+| API tests, with coverage | `pytest --cov` |
+| Python lint / format | `ruff check .` and `ruff format .` |
+| React tests | `npm test --prefix react-app` (add `-- --watchAll=false` to run once) |
+| JavaScript lint | `npm run lint --prefix react-app` |
+| JavaScript / CSS format | `npm run format --prefix react-app` |
+
+The API tests use an in-memory SQLite database and a stand-in for S3, so they
+need no `.env`, network or AWS credentials. CI also runs every migration and
+the seeds against Postgres in production mode, the way Render does.
+
+To have the formatters and linters run on every commit, run `pre-commit install`
+once in your clone. `pre-commit run --all-files` runs them on everything.
+
+
 ## Deployment through Render.com
 
 First, refer to your Render.com deployment articles for more detailed

@@ -57,8 +57,10 @@ def get_user_albums():
 def delete_album(id):
     album = Album.query.get(id)
 
-    if album is None or album.user_id != current_user.id:
+    if album is None:
         return {'errors': 'Album not found'}, 404
+    if album.user_id != current_user.id:
+        return {'errors': 'Album does not belong to user'}, 403
 
     # Below the check, not above it: reading songs off a missing album was
     # raising first, so the check under it could never run
@@ -110,8 +112,10 @@ def create_album_song(id):
     if form.validate_on_submit():
         album = Album.query.get(id)
 
-        if album is None or album.user_id != current_user.id:
+        if album is None:
             return { 'errors': 'Album not found'}, 404
+        if album.user_id != current_user.id:
+            return { 'errors': 'Album does not belong to user'}, 403
 
         song = form.data['song']
         extension = song.filename.rsplit('.', 1)[1].lower()
@@ -164,8 +168,10 @@ def edit_album(id):
     if form.validate_on_submit():
         album = Album.query.get(id)
 
-        if album is None or album.user_id != current_user.id:
+        if album is None:
             return { 'errors': 'Album not found'}, 404
+        if album.user_id != current_user.id:
+            return { 'errors': 'Album does not belong to user'}, 403
 
         album.name = form.data['name']
         album.artist = form.data['artist']

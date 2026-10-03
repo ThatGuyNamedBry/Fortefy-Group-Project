@@ -7,7 +7,8 @@ import playlistReducer from './playlists';
 import playerReducer from './player';
 import searchReducer from './search';
 
-const rootReducer = combineReducers({
+// Exported for the tests, which build a store without the logger
+export const rootReducer = combineReducers({
   session,
   albums: albumReducer,
   songs: songReducer,

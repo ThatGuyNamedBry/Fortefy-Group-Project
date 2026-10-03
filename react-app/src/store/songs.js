@@ -271,11 +271,10 @@ const initialState = {
         return { ...state, allSongs: { ...state.allSongs, [action.songId]: { ...state.allSongs[action.songId], likes: [...songLikesAdded] } } }
       case REMOVE_LIKE:
         if (!state.allSongs[action.songId]) return state;
-        const currentLikes = [...state.allSongs[action.songId].likes];
-        const deleteLike = currentLikes.find(like => like.id === action.likeId);
-        const ind = currentLikes.indexOf(deleteLike);
-        const removedLikes = [...currentLikes.slice(0, ind), ...currentLikes.slice(ind + 1)];
-        return { ...state, allSongs: { ...state.allSongs, [action.songId]: { ...state.allSongs[action.songId], likes: [...removedLikes] } } }
+        // By id. Finding its index and slicing around it turned a like the
+        // song doesn't have (index -1) into a duplicate of the others
+        const removedLikes = state.allSongs[action.songId].likes.filter(like => like.id !== action.likeId);
+        return { ...state, allSongs: { ...state.allSongs, [action.songId]: { ...state.allSongs[action.songId], likes: removedLikes } } }
       default:
         return state;
         }
