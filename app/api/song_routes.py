@@ -26,7 +26,7 @@ def get_song_by_id(id):
     """
     Query for a song by id and returns that song in a dictionary
     """
-    song = Song.query.options(*Song.to_dict_loads()).get(id)
+    song = db.session.get(Song, id, options=Song.to_dict_loads())
 
     if song is None:
         return {'errors': 'Song not found'}, 404
@@ -67,7 +67,7 @@ def get_song_likes(id):
     """
     Query for a song by id and return a list of like dictionaries for that song
     """
-    song = Song.query.options(selectinload(Song.likes).joinedload(Like.user)).get(id)
+    song = db.session.get(Song, id, options=[selectinload(Song.likes).joinedload(Like.user)])
 
     if song is None:
         return {'errors': 'Song not found'}, 404
@@ -83,7 +83,7 @@ def add_song_like(id):
     """
     Add a like to a selected song and return likes for the song in a list of like dictionaries
     """
-    if Song.query.get(id) is None:
+    if db.session.get(Song, id) is None:
         return {'errors': 'Song not found'}, 404
 
     if Like.query.filter_by(song_id=id, user_id=current_user.id).first():
@@ -108,7 +108,7 @@ def remove_song_like(id):
     """
     Remove a like from a selected song and return likes for the song in a list of like dictionaries
     """
-    if Song.query.get(id) is None:
+    if db.session.get(Song, id) is None:
         return {'errors': 'Song not found'}, 404
 
     like = Like.query.filter_by(song_id=id, user_id=current_user.id).first()
@@ -124,7 +124,7 @@ def remove_song_like(id):
 @song_routes.route('/<int:id>/delete', methods=['DELETE'])
 @login_required
 def delete_song(id):
-    selected_song = Song.query.get(id)
+    selected_song = db.session.get(Song, id)
 
     if selected_song is None:
         return {'errors': 'Song not found'}, 404
@@ -150,7 +150,7 @@ def edit_song(id):
     form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
-        current_song = Song.query.get(id)
+        current_song = db.session.get(Song, id)
 
         if current_song is None:
             return {'errors': 'Song not found'}, 404

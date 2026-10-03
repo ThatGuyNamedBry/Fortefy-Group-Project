@@ -52,8 +52,7 @@ jobs:
           python-version-file: .python-version
           cache: pip
           cache-dependency-path: requirements*.txt
-      # Render installs psycopg2 separately too
-      - run: pip install -r requirements.txt psycopg2-binary
+      - run: pip install -r requirements.txt
       - run: flask db upgrade
       - run: flask seed all
       - run: flask seed undo

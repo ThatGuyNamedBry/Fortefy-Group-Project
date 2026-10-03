@@ -91,7 +91,7 @@ Make sure the Environment field is set set to "Python 3", the Region is set to
 the location closest to you, and the Branch is set to "main".
 
 Render takes the Python version from `.python-version` in the repository root
-(3.11, the version the app is developed on). Without that file, a service
+(3.12, the version CI tests on). Without that file, a service
 created before November 2023 falls back to Python 3.7.10, which is
 end-of-life: cryptography and boto3 warn on every build that they are dropping
 it, and pip installs a urllib3 that botocore does not support there. A
@@ -109,9 +109,13 @@ one line:
 npm install --prefix react-app &&
 npm run build --prefix react-app &&
 pip install -r requirements.txt &&
-pip install psycopg2 &&
 flask db upgrade
 ```
+
+`requirements.txt` includes the Postgres driver (psycopg 3), so the build no
+longer needs the separate `pip install psycopg2` it used to have. An older
+service whose build command still has it works too; the extra package just goes
+unused.
 
 This script will install dependencies for the frontend, and run the build
 command in the __package.json__ file for the frontend, which builds the React
@@ -161,7 +165,9 @@ need for the production environment.
 Add the following keys and values in the Render GUI form:
 
 - SECRET_KEY (click "Generate" to generate a secure secret for production)
-- FLASK_ENV production
+- FLASK_ENV production (the app's own switch for production behaviour, such
+  as the Postgres schema and secure cookies. Flask 3 itself ignores it; locally,
+  `.flaskenv` sets `FLASK_DEBUG=1` instead)
 - FLASK_APP app
 - SCHEMA (your unique schema name, in snake_case)
 - REACT_APP_BASE_URL (use render.com url, located at top of page, similar to

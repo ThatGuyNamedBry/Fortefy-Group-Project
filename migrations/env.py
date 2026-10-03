@@ -1,10 +1,5 @@
-from __future__ import with_statement
-
 import logging
 from logging.config import fileConfig
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
 
 from alembic import context
 from flask import current_app
@@ -28,8 +23,13 @@ logger = logging.getLogger('alembic.env')
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+
+# The app's own engine, so migrations connect exactly the way the app does
+engine = current_app.extensions['migrate'].db.engine
+# Only offline mode (--sql) reads this. render_as_string, not str(): since
+# SQLAlchemy 2.0, str() writes the password as ***
 config.set_main_option(
-    'sqlalchemy.url', str(current_app.extensions['migrate'].db.engine.url).replace('%', '%%')
+    'sqlalchemy.url', engine.url.render_as_string(hide_password=False).replace('%', '%%')
 )
 target_metadata = current_app.extensions['migrate'].db.metadata
 
@@ -71,26 +71,21 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
-        prefix='sqlalchemy.',
-        poolclass=pool.NullPool,
-    )
-
-    with connectable.connect() as connection:
+    with engine.connect() as connection:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
             process_revision_directives=process_revision_directives,
             **current_app.extensions['migrate'].configure_args,
         )
-        # Create a schema (only in production)
-        if environment == 'production':
-            connection.execute(f'CREATE SCHEMA IF NOT EXISTS {SCHEMA}')
 
-        # Set search path to your schema (only in production)
         with context.begin_transaction():
+            # Production keeps every table in its own schema. Created inside
+            # the migration's transaction: run on the connection before it,
+            # SQLAlchemy 2's autobegin would open a transaction that Alembic
+            # then defers to and never commits
             if environment == 'production':
+                context.execute(f'CREATE SCHEMA IF NOT EXISTS {SCHEMA}')
                 context.execute(f'SET search_path TO {SCHEMA}')
             context.run_migrations()
 

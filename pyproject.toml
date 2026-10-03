@@ -7,9 +7,11 @@ testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-ra"
 filterwarnings = [
-    # SQLAlchemy 1.4 announces, once, the 2.0 changes it would warn about
-    "ignore::sqlalchemy.exc.MovedIn20Warning",
-    "ignore:Deprecated API features detected:sqlalchemy.exc.SADeprecationWarning",
+    # A deprecated SQLAlchemy API, or one our own code calls, fails the tests,
+    # so it is replaced while its replacement is known instead of breaking at
+    # the next major upgrade
+    "error::sqlalchemy.exc.SADeprecationWarning",
+    "error::DeprecationWarning:app",
 ]
 
 [tool.coverage.run]
@@ -18,7 +20,7 @@ omit = ["app/seeds/*"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py312"
 extend-exclude = ["react-app"]
 
 [tool.ruff.lint]
