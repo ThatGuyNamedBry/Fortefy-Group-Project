@@ -10,7 +10,9 @@ class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
     title = db.Column(db.String, nullable=False)
-    art = db.Column(db.String, default= '')
+    # NULL when there is no art; the client shows the first song's cover, or
+    # its own default
+    art = db.Column(db.String)
     description = db.Column(db.String)
     created_at = db.Column(db.DateTime, nullable=False, default=utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=utcnow, onupdate=utcnow)

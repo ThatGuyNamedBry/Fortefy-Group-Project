@@ -6,6 +6,7 @@ import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import { secsToMins } from '../../helpers';
 import LikeButton from '../LikeButton';
 import AddPLSongButton from '../AddPLSongButton';
+import Artwork from '../Artwork';
 import './SearchPage.css';
 
 const SearchPage = () => {
@@ -73,7 +74,7 @@ const SearchPage = () => {
                                 onClick={() => handlePlaySong(index)}
                             >
                                 <div className="search-song-art-wrapper">
-                                    <img className="search-song-art" src={song.album_art} alt="" />
+                                    <Artwork className="search-song-art" src={song.album_art} alt="" />
                                     <button
                                         type="button"
                                         className="search-song-play"
@@ -112,7 +113,7 @@ const SearchPage = () => {
                     <div className="search-album-grid">
                         {albums.map((album) => (
                             <Link key={album.id} to={`/albums/${album.id}`} className="album-tile link-as-text">
-                                <img src={album.art} alt="" className="album-image" />
+                                <Artwork src={album.art} alt="" className="album-image" />
                                 <h3>{album.name}</h3>
                                 <p className="owner-text">{album.artist} &middot; {album.year}</p>
                             </Link>

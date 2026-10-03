@@ -9,6 +9,7 @@ import AddMusicModal from '../AddMusicModal';
 import DeleteModal from '../DeleteModal';
 import Carousel from '../Carousel';
 import LikedSongsCover from '../LikedSongs/LikedSongsCover';
+import Artwork, { DEFAULT_PLAYLIST_ART, playlistArt } from '../Artwork';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
@@ -62,7 +63,7 @@ const ProfilePage = () => {
               </OpenModalButton>
             </div>
             <Link to={`/albums/${album.id}`} className="album-tile link-as-text">
-              <img src={album.art} alt="" className="album-image" />
+              <Artwork src={album.art} alt="" className="album-image" />
               <h3>{album.name.length > 22 ? album.name.slice(0, 22) + '...' : album.name}</h3>
               <p className="owner-text">{album.artist}</p>
             </Link>
@@ -85,7 +86,7 @@ const ProfilePage = () => {
                 </OpenModalButton>
               </div>
               <Link to={`/albums/${album?.id}`} className="album-tile link-as-text">
-                <img src={album?.art} alt={album?.name} className="album-image" />
+                <Artwork src={album?.art} alt={album?.name} className="album-image" />
                 <h3>{song.name}</h3>
                 <p className="owner-text">{album?.artist}</p>
               </Link>
@@ -125,7 +126,7 @@ const ProfilePage = () => {
                 </OpenModalButton>
               </div>
               <Link to={`/playlists/${playlist.id}`} className="album-tile link-as-text">
-                <img src={playlist.art} alt="" className="album-image" />
+                <Artwork src={playlistArt(playlist)} fallback={DEFAULT_PLAYLIST_ART} alt="" className="album-image" />
                 <h3>{playlist?.title.length > 22 ? playlist.title.slice(0, 22) + '...' : playlist.title}</h3>
                 <p className='owner-text'>{playlist.user.username}</p>
               </Link>

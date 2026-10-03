@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import Artwork from '../Artwork';
 import './AudioPlayer.css';
 import { setIsPlaying, setCurrentSongIndex, clearQueue } from '../../store/player';
 
@@ -49,7 +50,7 @@ const AudioPlayerComponent = () => {
           src={song.song_url}
           header={`${song.name} - ${song.artist}`}
           customAdditionalControls={[
-            <img
+            <Artwork
               key="album-art"
               className="audio-player-art"
               src={song.album_art}

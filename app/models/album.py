@@ -10,7 +10,8 @@ class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id'), ondelete='CASCADE'), nullable=False)
-    art = db.Column(db.String(255), default= 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Compact_Disc.jpg')
+    # NULL when there is no art; the client shows its own default cover
+    art = db.Column(db.String(255))
     artist = db.Column(db.String(50), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     genre = db.Column(db.String(50), nullable=False)

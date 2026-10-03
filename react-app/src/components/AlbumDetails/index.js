@@ -13,6 +13,7 @@ import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';
 import AddPLSongButton from '../AddPLSongButton';
 import PageStatus, { useLoadStatus } from '../PageStatus';
 import SongPlayButton from '../SongPlayButton';
+import Artwork from '../Artwork';
 
 const AlbumDetails = () => {
 
@@ -49,7 +50,7 @@ const AlbumDetails = () => {
     return (
         <div className='album-details-container page-wrapper'>
             <div className='album-header-container'>
-                <img className='album-details-art' src={singleAlbum.art} alt={`${singleAlbum.name} album cover`}></img>
+                <Artwork className='album-details-art' src={singleAlbum.art} alt={`${singleAlbum.name} album cover`} />
                 <div className='album-info-container'>
                     <p>Album</p>
                     <h1 className='album-name-header'>{singleAlbum.name}</h1>
