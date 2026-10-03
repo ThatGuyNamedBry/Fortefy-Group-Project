@@ -264,10 +264,11 @@ const songReducer = (state = initialState, action) => {
                 ...state,
                 allSongs: { ...state.allSongs, [action.payload.id]: action.payload },
             };
-        case DELETE_SONG:
+        case DELETE_SONG: {
             const newSongs = { ...state.allSongs };
             delete newSongs[action.payload];
             return { ...state, allSongs: newSongs };
+        }
         case REMOVE_ALBUM_SONGS:
             return {
                 ...state,
@@ -277,7 +278,7 @@ const songReducer = (state = initialState, action) => {
                     ),
                 ),
             };
-        case ADD_LIKE:
+        case ADD_LIKE: {
             // Every page caches the songs it shows, but a like for one that is not
             // cached should be a no-op rather than a TypeError
             if (!state.allSongs[action.songId]) return state;
@@ -292,7 +293,8 @@ const songReducer = (state = initialState, action) => {
                     },
                 },
             };
-        case REMOVE_LIKE:
+        }
+        case REMOVE_LIKE: {
             if (!state.allSongs[action.songId]) return state;
             // By id. Finding its index and slicing around it turned a like the
             // song doesn't have (index -1) into a duplicate of the others
@@ -306,6 +308,7 @@ const songReducer = (state = initialState, action) => {
                     [action.songId]: { ...state.allSongs[action.songId], likes: removedLikes },
                 },
             };
+        }
         default:
             return state;
     }

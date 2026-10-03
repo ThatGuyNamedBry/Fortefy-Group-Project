@@ -60,7 +60,7 @@ export const checkImageErrors = (url) => {
     const isValidUrl = (urlString) => {
         try {
             return Boolean(new URL(urlString));
-        } catch (e) {
+        } catch {
             return false;
         }
     };

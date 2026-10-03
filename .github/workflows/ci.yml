@@ -60,7 +60,7 @@ jobs:
       - run: flask db upgrade
 
   frontend:
-    name: Frontend (eslint, prettier, jest, build)
+    name: Frontend (eslint, prettier, vitest, build)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -69,16 +69,12 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
-          node-version: 18
+          # The version Render builds with
+          node-version-file: .node-version
           cache: npm
           cache-dependency-path: react-app/package-lock.json
       - run: npm ci
       - run: npm run lint
       - run: npm run format:check
-      - run: npm test -- --watchAll=false
-        env:
-          CI: true
+      - run: npm test
       - run: npm run build
-        env:
-          # react-scripts 4's webpack needs the old OpenSSL hashes on Node 17+
-          NODE_OPTIONS: --openssl-legacy-provider
