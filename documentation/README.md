@@ -1,75 +1,24 @@
-# Flask React Project
+# ƒorteƒy documentation
 
-This is the starter for the Flask React project.
+How to run the app is in the [main README](../README.md#running-locally), and
+how changes get made, tested and merged is in
+[CONTRIBUTING.md](../CONTRIBUTING.md). This folder has the rest:
 
-## Getting started
-1. Clone this repository (only this branch)
-
-2. Install dependencies
-
-      ```bash
-      pipenv install -r requirements.txt
-      ```
-
-3. Create a **.env** file based on the example with proper settings for your
-   development environment
-
-4. Make sure the SQLite3 database connection URL is in the **.env** file
-
-5. This starter organizes all tables inside the `flask_schema` schema, defined
-   by the `SCHEMA` environment variable.  Replace the value for
-   `SCHEMA` with a unique name, **making sure you use the snake_case
-   convention**.
-
-6. Get into your pipenv, migrate your database, seed your database, and run your Flask app
-
-   ```bash
-   pipenv shell
-   ```
-
-   ```bash
-   flask db upgrade
-   ```
-
-   ```bash
-   flask seed all
-   ```
-
-   ```bash
-   flask run
-   ```
-
-7. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
-
-
-## Tests, linting and formatting
-
-GitHub Actions runs all of this on every pull request and push to `main`
-(`.github/workflows/ci.yml`). To run it locally, install the development tools
-once: `pip install -r requirements-dev.txt`, which includes everything in
-`requirements.txt`, plus `npm install --prefix react-app`. Then:
-
-| what | command |
+| document | what it covers |
 |---|---|
-| API tests, with coverage | `pytest --cov` |
-| Python lint / format | `ruff check .` and `ruff format .` |
-| React tests | `npm test --prefix react-app` (add `-- --watchAll=false` to run once) |
-| JavaScript lint | `npm run lint --prefix react-app` |
-| JavaScript / CSS format | `npm run format --prefix react-app` |
-
-The API tests use an in-memory SQLite database and a stand-in for S3, so they
-need no `.env`, network or AWS credentials. CI also runs every migration and
-the seeds against Postgres in production mode, the way Render does.
-
-To have the formatters and linters run on every commit, run `pre-commit install`
-once in your clone. `pre-commit run --all-files` runs them on everything.
+| [api.md](api.md) | every API route, what it takes and what it sends back |
+| [database_schema.md](database_schema.md) | the tables, their columns, and how they relate |
+| [app_structure.md](app_structure.md) | where things live: the Flask app, the React app, the tests |
+| [feature_list.md](feature_list.md) | the features the project set out to build |
+| [user_stories.md](user_stories.md) | the user stories the project was planned from in 2023 |
+| [Deploying to Render](#deploying-to-render) | below |
 
 
-## Deployment through Render.com
+## Deploying to Render
 
-First, refer to your Render.com deployment articles for more detailed
-instructions about getting started with [Render.com], creating a production
-database, and deployment debugging tips.
+Render's own guides cover the basics of [Render.com]: creating a Postgres
+database, creating a web service, and reading deploy logs. This is what
+ƒorteƒy's web service needs.
 
 From the [Dashboard], click on the "New +" button in the navigation bar, and
 click on "Web Service" to create the application that will be deployed.
@@ -87,7 +36,7 @@ Start by giving your application a name.
 Leave the root directory field blank. By default, Render will run commands from
 the root directory.
 
-Make sure the Environment field is set set to "Python 3", the Region is set to
+Make sure the Environment field is set to "Python 3", the Region is set to
 the location closest to you, and the Branch is set to "main".
 
 Render takes the Python version from `.python-version` in the repository root
@@ -107,8 +56,7 @@ too. The deploy log shows which version was used, in a line like
 Next, add your Build command. This is a script that should include everything
 that needs to happen _before_ starting the server.
 
-For your Flask project, enter the following command into the Build field, all in
-one line:
+Enter the following command into the Build field, all in one line:
 
 ```shell
 # build command - enter all in one line
@@ -152,18 +100,11 @@ Now, add your start command in the Start field:
 gunicorn app:app
 ```
 
-_If you are using websockets, use the following start command instead for increased performance:_
-
-`gunicorn --worker-class eventlet -w 1 app:app`
-
 ### Part B: Add the Environment Variables
 
 Click on the "Advanced" button at the bottom of the form to configure the
-environment variables your application needs to access to run properly. In the
-development environment, you have been securing these variables in the __.env__
-file, which has been removed from source control. In this step, you will need to
-input the keys and values for the environment variables you need for production
-into the Render GUI.
+environment variables the application needs. These are the production
+counterparts of your local __.env__ file, which is not in source control.
 
 Click on "Add Environment Variable" to start adding all of the variables you
 need for the production environment.
@@ -176,8 +117,10 @@ Add the following keys and values in the Render GUI form:
   `.flaskenv` sets `FLASK_DEBUG=1` instead)
 - FLASK_APP app
 - SCHEMA (your unique schema name, in snake_case)
-- REACT_APP_BASE_URL (use render.com url, located at top of page, similar to
-  https://this-application-name.onrender.com)
+- S3_BUCKET, S3_KEY and S3_SECRET, for song uploads (see
+  [S3 credentials](../CONTRIBUTING.md#s3-credentials))
+- GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET, only if you want Google login (see
+  [Setting up Google Login](../README.md#setting-up-google-login-optional))
 
 In a new tab, navigate to your dashboard and click on your Postgres database
 instance.
@@ -186,10 +129,8 @@ Add the following keys and values:
 
 - DATABASE_URL (copy value from Internal Database URL field)
 
-_Note: Add any other keys and values that may be present in your local __.env__
-file. As you work to further develop your project, you may need to add more
-environment variables to your local __.env__ file. Make sure you add these
-environment variables to the Render GUI as well for the next deployment._
+_Note: when a change adds a variable to `.env.example`, add it to the Render
+service too, or the next deploy runs without it._
 
 Next, choose "Yes" for the Auto-Deploy field. This will re-deploy your
 application every time you push to main.
