@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { createPlaylistThunk, updatePlaylistThunk } from '../../store/playlists';
 import { playlistValidation, serverErrors } from '../../helpers';
@@ -8,7 +8,7 @@ import './PlaylistForm.css';
 const PLAYLIST_FIELDS = { title: 'title', art: 'art', description: 'description' };
 
 const PlaylistForm = ({ playlist, formType }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
     const [art, setArt] = useState('');
@@ -35,7 +35,7 @@ const PlaylistForm = ({ playlist, formType }) => {
             if (playlist?.errors) {
                 setErrors({ ...serverErrors(playlist.errors, PLAYLIST_FIELDS), flag: true });
             } else {
-                history.push(`/playlists/${playlist.id}`);
+                navigate(`/playlists/${playlist.id}`);
             }
         }
     };
@@ -91,7 +91,7 @@ const PlaylistForm = ({ playlist, formType }) => {
                     <button id="submit-button" type="submit">
                         {formType}
                     </button>
-                    <button id="cancel-button" type="button" onClick={() => history.goBack()}>
+                    <button id="cancel-button" type="button" onClick={() => navigate(-1)}>
                         Cancel
                     </button>
                 </div>

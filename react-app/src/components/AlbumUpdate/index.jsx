@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAlbumByIdThunk } from '../../store/albums';
 import AlbumForm from '../AlbumForm';

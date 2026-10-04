@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { addPlaylistSongThunk, selectUserPlaylists } from '../../store/playlists';
 import './AddPLSong.css';
@@ -9,7 +9,7 @@ let nextMenuId = 0;
 
 const AddPLSongButton = ({ songId, userId }) => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const menuRef = useRef();
     const toggleRef = useRef();
     const menuIdRef = useRef(null);
@@ -63,7 +63,7 @@ const AddPLSongButton = ({ songId, userId }) => {
         toggleRef.current.focus();
 
         if (playlistId === 'new') {
-            history.push('/playlists/new');
+            navigate('/playlists/new');
         } else {
             dispatch(addPlaylistSongThunk(playlistId, songId));
         }

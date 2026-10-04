@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 // Catches an error thrown while rendering a page, so one bad payload shows a
 // message instead of unmounting the whole app. The navigation bar, footer and
