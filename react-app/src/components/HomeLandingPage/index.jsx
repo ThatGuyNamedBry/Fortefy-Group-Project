@@ -4,7 +4,7 @@ import { getAllAlbumsThunk } from '../../store/albums';
 import { getAllSongsThunk } from '../../store/songs';
 import { getAllPlaylistsThunk, selectUserPlaylists } from '../../store/playlists';
 import './HomeLandingPage.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import Carousel from '../Carousel';

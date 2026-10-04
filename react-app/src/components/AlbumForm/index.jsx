@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { createAlbumThunk, updateAlbumThunk } from '../../store/albums';
 import { serverErrors } from '../../helpers';
@@ -9,7 +9,7 @@ import './AlbumForm.css';
 const ALBUM_FIELDS = { artist: 'artist', name: 'name', year: 'year', genre: 'genre', art: 'art' };
 
 const AlbumForm = ({ album, formType }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     // '' rather than undefined when creating, so each input is controlled from
     // the first render instead of switching over on the first keystroke
@@ -58,7 +58,7 @@ const AlbumForm = ({ album, formType }) => {
             if (album.errors) {
                 setErrors(serverErrors(album.errors, ALBUM_FIELDS));
             } else {
-                history.push(`/albums/${album.payload.id}`);
+                navigate(`/albums/${album.payload.id}`);
             }
         } else {
             setErrors(frontEndErrorsObj);
@@ -67,9 +67,9 @@ const AlbumForm = ({ album, formType }) => {
 
     const handleCancelClick = () => {
         if (formType === 'Update Album') {
-            history.push(`/profile`);
+            navigate('/profile');
         } else {
-            history.goBack();
+            navigate(-1);
         }
     };
 

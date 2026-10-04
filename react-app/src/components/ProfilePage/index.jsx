@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router';
 import { getCurrentUserAllAlbumsThunk, selectUserAlbums } from '../../store/albums';
 import { getCurrentUserAllSongsThunk, selectUserSongs } from '../../store/songs';
 import { getCurrentUserAllPlaylistsThunk, selectUserPlaylists } from '../../store/playlists';

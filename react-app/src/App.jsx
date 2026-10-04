@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import LoginFormModal from './components/LoginFormModal';
 import SignupFormModal from './components/SignupFormModal';
 import { useModal } from './context/Modal';
@@ -25,13 +25,13 @@ import ErrorBoundary from './components/ErrorBoundary';
 // with weaker validation.
 function AuthModalRedirect({ modal: ModalForm }) {
     const { setModalContent } = useModal();
-    const history = useHistory();
+    const navigate = useNavigate();
     const loggedIn = useSelector((state) => Boolean(state.session.user));
 
     useEffect(() => {
         if (!loggedIn) setModalContent(<ModalForm />);
-        history.replace('/');
-    }, [ModalForm, loggedIn, setModalContent, history]);
+        navigate('/', { replace: true });
+    }, [ModalForm, loggedIn, setModalContent, navigate]);
 
     return null;
 }
@@ -52,7 +52,7 @@ function App() {
     }, [dispatch, userId]);
 
     const { pathname, search } = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { setModalContent } = useModal();
 
     useEffect(() => {
@@ -67,8 +67,8 @@ function App() {
         const oauthError = new URLSearchParams(search).get('oauth_error');
         if (!oauthError) return;
         setModalContent(<LoginFormModal errors={{ oauth: oauthError }} />);
-        history.replace(pathname);
-    }, [search, pathname, history, setModalContent]);
+        navigate(pathname, { replace: true });
+    }, [search, pathname, navigate, setModalContent]);
 
     return (
         <>
@@ -76,23 +76,25 @@ function App() {
             {isLoaded && (
                 <main>
                     <ErrorBoundary resetKey={pathname}>
-                        <Switch>
-                            <Route exact path="/" component={HomeLandingPage} />
-                            <Route exact path="/profile" component={ProfilePage} />
-                            <Route exact path="/search" component={SearchPage} />
-                            <Route path="/login">
-                                <AuthModalRedirect modal={LoginFormModal} />
-                            </Route>
-                            <Route path="/signup">
-                                <AuthModalRedirect modal={SignupFormModal} />
-                            </Route>
-                            <Route path="/albums/new" component={AlbumCreate} />
-                            <Route path="/playlists/new" component={PlaylistCreate} />
-                            <Route exact path="/playlists/liked" component={LikedSongs} />
-                            <Route path="/albums/:albumId/edit" component={AlbumUpdate} />
-                            <Route path="/albums/:albumId" component={AlbumDetails} />
-                            <Route path="/playlists/:playlistId" component={PlaylistDetails} />
-                        </Switch>
+                        <Routes>
+                            <Route path="/" element={<HomeLandingPage />} />
+                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/search" element={<SearchPage />} />
+                            <Route
+                                path="/login"
+                                element={<AuthModalRedirect modal={LoginFormModal} />}
+                            />
+                            <Route
+                                path="/signup"
+                                element={<AuthModalRedirect modal={SignupFormModal} />}
+                            />
+                            <Route path="/albums/new" element={<AlbumCreate />} />
+                            <Route path="/playlists/new" element={<PlaylistCreate />} />
+                            <Route path="/playlists/liked" element={<LikedSongs />} />
+                            <Route path="/albums/:albumId/edit" element={<AlbumUpdate />} />
+                            <Route path="/albums/:albumId" element={<AlbumDetails />} />
+                            <Route path="/playlists/:playlistId" element={<PlaylistDetails />} />
+                        </Routes>
                     </ErrorBoundary>
                 </main>
             )}

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchThunk, clearSearchResultsAction } from '../../store/search';
 import { setCurrentPlaylist, setCurrentSongIndex } from '../../store/player';

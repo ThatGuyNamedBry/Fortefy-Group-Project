@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { logout } from '../../store/session';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
@@ -11,7 +11,7 @@ function ProfileButton({ user }) {
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
     const buttonRef = useRef();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const openMenu = () => {
         if (showMenu) return;
@@ -52,7 +52,7 @@ function ProfileButton({ user }) {
     const handleLogout = async (e) => {
         e.preventDefault();
         await dispatch(logout());
-        history.replace('/');
+        navigate('/', { replace: true });
         closeMenu();
     };
 

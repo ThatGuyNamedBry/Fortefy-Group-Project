@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import './SearchBar.css';
 
 export const SEARCH_PATH = '/search';
@@ -12,7 +12,7 @@ export const searchUrl = (term) => {
 };
 
 function SearchBar() {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const inputRef = useRef();
     const timeoutRef = useRef();
@@ -39,16 +39,18 @@ function SearchBar() {
 
     useEffect(() => () => clearTimeout(timeoutRef.current), []);
 
+    // Any navigation cancels a pending search (above), so when one runs, this
+    // render's location is still the current one
     const goToSearch = (term) => {
-        const onSearchPage = history.location.pathname === SEARCH_PATH;
+        const onSearchPage = location.pathname === SEARCH_PATH;
         if (!term.trim() && !onSearchPage) return;
 
         // Replace while already on the results page so each keystroke doesn't
         // become its own history entry.
         if (onSearchPage) {
-            history.replace(searchUrl(term));
+            navigate(searchUrl(term), { replace: true });
         } else {
-            history.push(searchUrl(term));
+            navigate(searchUrl(term));
         }
     };
 
@@ -68,8 +70,8 @@ function SearchBar() {
     const handleClear = () => {
         clearTimeout(timeoutRef.current);
         setValue('');
-        if (history.location.pathname === SEARCH_PATH) {
-            history.replace(SEARCH_PATH);
+        if (location.pathname === SEARCH_PATH) {
+            navigate(SEARCH_PATH, { replace: true });
         }
         inputRef.current.focus();
     };

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import SearchBar from '../SearchBar';
@@ -11,7 +11,7 @@ function Navigation({ isLoaded }) {
         <nav aria-label="Main">
             <ul id="NavigationContainer">
                 <li id="nav-left">
-                    <NavLink exact to="/" className="nav-link">
+                    <NavLink end to="/" className="nav-link">
                         <i className="fas fa-home" aria-hidden="true"></i>Home
                     </NavLink>
                     <SearchBar />

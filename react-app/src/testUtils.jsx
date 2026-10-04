@@ -1,9 +1,15 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { MemoryRouter, useLocation } from 'react-router';
 import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 import { rootReducer } from './store';
+
+// Copies the router's current path onto `into`, for the test to read
+function LocationProbe({ into }) {
+    into.pathname = useLocation().pathname;
+    return null;
+}
 
 /**
  * Renders a component inside a real store and router, the way the app does,
@@ -17,13 +23,7 @@ export function renderWithStore(ui, { preloadedState, history = ['/'] } = {}) {
         <Provider store={store}>
             <MemoryRouter initialEntries={history} initialIndex={history.length - 1}>
                 {ui}
-                <Route
-                    path="*"
-                    render={({ location: current }) => {
-                        location.pathname = current.pathname;
-                        return null;
-                    }}
-                />
+                <LocationProbe into={location} />
             </MemoryRouter>
         </Provider>,
     );
