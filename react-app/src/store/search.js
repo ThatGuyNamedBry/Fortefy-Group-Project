@@ -53,7 +53,7 @@ export const searchThunk = (query) => async (dispatch) => {
         dispatch(receiveSongsAction(results.songs));
         dispatch(loadSearchResultsAction(query, results));
         return results;
-    } catch (err) {
+    } catch {
         dispatch(searchFailedAction(query));
         return null;
     }

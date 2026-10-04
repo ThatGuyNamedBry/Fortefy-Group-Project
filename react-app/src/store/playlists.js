@@ -200,12 +200,13 @@ const initialState = {
 
 const playlistReducer = (state = initialState, action) => {
     switch (action.type) {
-        case LOAD_PLAYLISTS:
+        case LOAD_PLAYLISTS: {
             const allPlaylistsObject = {};
             action.payload.forEach((playlist) => {
                 allPlaylistsObject[playlist.id] = playlist;
             });
             return { ...state, allPlaylists: allPlaylistsObject };
+        }
         case LOAD_USER_PLAYLISTS: {
             // The server's word on this user's playlists replaces what the
             // store had for them, one deleted elsewhere included
@@ -227,16 +228,18 @@ const playlistReducer = (state = initialState, action) => {
                 allPlaylists: { ...state.allPlaylists, [action.payload.id]: action.payload },
                 singlePlaylist: action.payload,
             };
-        case DELETE_PLAYLIST:
+        case DELETE_PLAYLIST: {
             const newPlaylists = { ...state.allPlaylists };
             delete newPlaylists[action.payload];
             return { ...state, allPlaylists: newPlaylists };
-        case LOAD_PLAYLIST_SONGS:
+        }
+        case LOAD_PLAYLIST_SONGS: {
             const playlistsSongsObject = {};
             action.payload.forEach((song) => {
                 playlistsSongsObject[song.playlistSongId] = song;
             });
             return { ...state, playlistSongs: playlistsSongsObject };
+        }
         default:
             return state;
     }

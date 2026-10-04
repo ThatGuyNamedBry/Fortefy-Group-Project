@@ -19,10 +19,14 @@ export const rootReducer = combineReducers({
 
 let enhancer;
 
-if (process.env.NODE_ENV === 'production') {
+if (import.meta.env.PROD) {
     enhancer = applyMiddleware(thunk);
 } else {
-    const logger = require('redux-logger').default;
+    // Imported only here, so production builds leave the logger out entirely.
+    // A CommonJS package: Vite's dev server hands its exports over as the
+    // default export, while Vitest (Node) also offers them by name
+    const reduxLogger = await import('redux-logger');
+    const logger = reduxLogger.logger ?? reduxLogger.default.logger;
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     enhancer = composeEnhancers(applyMiddleware(thunk, logger));
 }
