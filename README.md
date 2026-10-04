@@ -22,8 +22,8 @@
   - Users can sign up, log in, and log out. Passwords are stored hashed.
   - Users can use a demo log in to try the site.
   - Users can sign up or log in with their Google account (OAuth), from either the log in or the sign up modal.
-  - Anyone can browse and play every album and song. Liking songs, making playlists and uploading music need an account.
-  - The home page shows every album and a shuffled row of songs to play. Logged in, it also shows the user's library: their Liked Songs and their playlists.
+  - Anyone can browse and play every album, song and playlist. Liking songs, making playlists and uploading music need an account.
+  - The home page shows every album, a shuffled row of songs to play, and every user's playlists. Logged in, it also shows the user's library: their Liked Songs and their own playlists.
   - The profile page ("Manage Your Music") lists the user's albums, songs and playlists, with buttons to edit and delete their albums and songs and to delete their playlists.
 
 ## Songs

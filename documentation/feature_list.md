@@ -8,7 +8,7 @@ Fortefy, a Spotify clone, is a website for users to discover and share new music
 * Users can use a demo log in to try the site.
 * Users can sign up or log in with their Google account.
 * Users can't use certain features without logging in (like playlists and user likes, read only for songs and albums).
-* The home page shows every album and a row of songs to play. Logged in users also see their library there: their liked songs and their playlists.
+* The home page shows every album, a row of songs to play, and every user's playlists. Logged in users also see their library there: their liked songs and their own playlists.
 * Logged in users have a profile page listing their albums, songs and playlists.
 
 ## 2. Songs
