@@ -5,38 +5,37 @@
 - Project-URL https://fortefy.onrender.com/
 # Technologies Used
 - Frontend:
-    - React
+    - React 19, with React Router 7
     - Redux
-    - Javascript
-    - HTML
-    - CSS
+    - JavaScript, HTML and CSS
+    - Vite
 
 - Backend:
-    - Python
-    - Flask
+    - Python 3.12
+    - Flask 3, with Flask-Login and Flask-WTF
+    - SQLAlchemy 2: SQLite in development, Postgres in production
+    - AWS S3, for uploaded songs
+    - Google sign-in (OAuth), optional
+
 # Key Features
-- User Authentication:
-Users can sign up and log in to their accounts.
-Authentication is handled using a secure login system that hashes each stored password.
-- New account creation, log in, log out, and guest/demo login
-  - Users can sign up, log in, and log out.
+## Accounts
+  - Users can sign up, log in, and log out. Passwords are stored hashed.
   - Users can use a demo log in to try the site.
   - Users can sign up or log in with their Google account (OAuth), from either the log in or the sign up modal.
-  - Users can't use certain features without logging in (like playlists and user likes, read only for songs and albums).
-  - Logged in users are directed to their profile page which displays either a list of uploads, playlists, and or likes.
-  - Logged out users are directed to a page displaying all public playlists.
+  - Anyone can browse and play every album and song. Liking songs, making playlists and uploading music need an account.
+  - The home page shows every album and a shuffled row of songs to play. Logged in, it also shows the user's library: their Liked Songs and their playlists.
+  - The profile page ("Manage Your Music") lists the user's albums, songs and playlists, with buttons to edit and delete their albums and songs and to delete their playlists.
 
 ## Songs
-  - Users can create Songs.
-  - Users can read/view Songs.
-  - Users can update their uploaded Songs.
-  - Users can delete their uploaded Songs.
+  - Users can upload songs (MP3, M4A or WAV) to albums they created.
+  - Users can listen to every song.
+  - Users can rename and renumber their uploaded songs.
+  - Users can delete their uploaded songs.
 
 ## Albums
-  - Users can create/add songs to an album that they created.
+  - Users can create albums, and edit and delete the ones they created.
   - Users can read/view all albums.
-  - Users can remove songs from their albums.
-  - Users should be able to delete their albums.
+  - Users can add songs to their albums, and remove them.
 
 ## Likes
   - Users can create/add a like to a song.
@@ -46,7 +45,7 @@ Authentication is handled using a secure login system that hashes each stored pa
 
 ## Playlists
   - Users can view all of their playlists.
-  - Users can create a playlist.
+  - Users can create a playlist, and delete their playlists.
   - Users can add a song to one of their playlists.
   - Users can remove a song from their playlist.
 
@@ -56,7 +55,7 @@ Authentication is handled using a secure login system that hashes each stored pa
   - Users can view the results of their search, play any matching song, and jump to any matching album.
 
 ## AWS
-  - Album artwork and song url are both handled utilizing AWS to allow a more seemless user experience.
+  - Uploaded songs are stored in AWS S3, and play straight from there.
 
 # Screenshots:
 
@@ -72,225 +71,69 @@ The React H5 Audio Player https://www.npmjs.com/package/react-h5-audio-player wa
 
 The website is fully responsive and works on various screen sizes.
 
-# API Documentation
+# Documentation
 
-## Albums
+- [API reference](./documentation/api.md): every route, what it takes, and what it sends back.
+- [Database schema](./documentation/database_schema.md): the tables and how they relate.
+- [App structure](./documentation/app_structure.md): where things live in the repository.
+- [Deploying to Render](./documentation/README.md#deploying-to-render).
+- [Contributing](./CONTRIBUTING.md): the branch and pull request flow, tests, seed data and S3 credentials.
 
-### Get all Albums
+# Running locally
 
-Returns all albums in the database
+You need Python 3.12 and Node.js 24, the versions in `.python-version` and
+`.node-version`.
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /api/albums
-  * Body: None
+1. Create a virtual environment and install the Python dependencies. On
+   Windows, activate it with `.venv\Scripts\activate` instead.
 
-* Response
-    * Status Code: 200
-    * Headers:
-        * Content-Type: application/json
-    * Body:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements-dev.txt
+   ```
 
-    ```json
-    [
-    {
-        "art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
-        "artist": "Pink Floyd",
-        "genre": "Psychedelic Rock",
-        "id": 1,
-        "name": "The Dark Side of the Moon",
-        "songs": [
-            {
-                "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
-                "album_id": 1,
-                "artist": "Pink Floyd",
-                "duration": 65,
-                "id": 1,
-                "likes": [],
-                "name": "Speak to Me",
-                "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Speak+to+Me.mp3",
-                "track_number": 1,
-                "user": {
-                    "id": 1,
-                    "username": "Demo"
-                },
-                "user_id": 1
-            },
-            {
-                "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
-                "album_id": 1,
-                "artist": "Pink Floyd",
-                "duration": 169,
-                "id": 2,
-                "likes": [],
-                "name": "Breathe (In the Air)",
-                "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3",
-                "track_number": 2,
-                "user": {
-                    "id": 1,
-                    "username": "Demo"
-                },
-                "user_id": 1
-            }
-        ],
-        "user": {
-            "id": 1,
-            "username": "Demo"
-        },
-        "year": 1973
-    }
-    ]
-    ```
+2. Create a **.env** file from the example:
 
-### Get a single Album
+   ```bash
+   cp .env.example .env
+   ```
 
-Returns a single album in the database
+   Then set `SECRET_KEY` in it to a long random string, for example the output
+   of `python -c "import secrets; print(secrets.token_hex(32))"`. The rest can
+   stay as it is: `DATABASE_URL` points at a SQLite file, and `SCHEMA` only
+   matters on Postgres in production. Uploading songs needs S3 credentials (see
+   [Contributing](./CONTRIBUTING.md#s3-credentials)), and Google login needs the
+   [setup below](#setting-up-google-login-optional); both are optional.
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /api/albums/:id
-  * Body: None
+3. Create the database and fill it with the seed data:
 
-* Response
-    * Status Code: 200
-    * Headers:
-        * Content-Type: application/json
-    * Body:
+   ```bash
+   flask db upgrade
+   flask seed all
+   ```
 
-    ```json
-    {
-    "art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
-    "artist": "Pink Floyd",
-    "genre": "Psychedelic Rock",
-    "id": 1,
-    "name": "The Dark Side of the Moon",
-    "songs": [
-        {
-            "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
-            "album_id": 1,
-            "artist": "Pink Floyd",
-            "duration": 65,
-            "id": 1,
-            "likes": [],
-            "name": "Speak to Me",
-            "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Speak+to+Me.mp3",
-            "track_number": 1,
-            "user": {
-                "id": 1,
-                "username": "Demo"
-            },
-            "user_id": 1
-        },
-        {
-            "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
-            "album_id": 1,
-            "artist": "Pink Floyd",
-            "duration": 169,
-            "id": 2,
-            "likes": [],
-            "name": "Breathe (In the Air)",
-            "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3",
-            "track_number": 2,
-            "user": {
-                "id": 1,
-                "username": "Demo"
-            },
-            "user_id": 1
-        }
-    ],
-    "user": {
-        "id": 1,
-        "username": "Demo"
-    },
-    "year": 1973
-    }
-    ```
+4. Start Flask, which serves the API on http://localhost:5000:
 
-## Search
+   ```bash
+   flask run
+   ```
 
-### Search Songs and Albums
+5. In a second terminal, install the frontend's dependencies and start its
+   development server:
 
-Returns the songs whose name or artist contains the search term, and the albums whose name or artist contains the search term. Matching is case-insensitive. Results whose name starts with the term are listed first, then the rest alphabetically, up to 50 of each. A blank term returns empty lists.
+   ```bash
+   npm install --prefix react-app
+   npm start --prefix react-app
+   ```
 
-* Require Authentication: false
-* Request
-  * Method: GET
-  * URL: /api/search?q=:term
-  * Body: None
+6. Open http://localhost:3000. The development server sends `/api` requests on
+   to Flask. To log in, use the "Continue with Demo User" button.
 
-* Response
-    * Status Code: 200
-    * Headers:
-        * Content-Type: application/json
-    * Body:
-
-    ```json
-    {
-    "songs": [
-        {
-            "album_art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
-            "album_id": 1,
-            "album_name": "The Dark Side of the Moon",
-            "artist": "Pink Floyd",
-            "duration": 169,
-            "id": 2,
-            "likes": [],
-            "name": "Breathe (In the Air)",
-            "song_url": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/Breathe+(In+the+Air).mp3",
-            "track_number": 2,
-            "user": {
-                "id": 1,
-                "username": "Demo"
-            },
-            "user_id": 1
-        }
-    ],
-    "albums": [
-        {
-            "art": "https://fortefy-song-url.s3.us-east-2.amazonaws.com/Pink+Floyd/The+Dark+Side+of+the+Moon/The+Dark+Side+of+the+Moon.jpg",
-            "artist": "Pink Floyd",
-            "genre": "Psychedelic Rock",
-            "id": 1,
-            "name": "The Dark Side of the Moon",
-            "songs": [],
-            "user": {
-                "id": 1,
-                "username": "Demo"
-            },
-            "year": 1973
-        }
-    ]
-    }
-    ```
-
-## Installation Instructions
-
-1. Install dependencies
-```bash
-pipenv install -r requirements.txt
-```
-2. Create a **.env** file based on the example with proper settings for your development environment
-
-4. Replace the value for `SCHEMA` with a unique name, **making sure you use the snake_case convention**.
-
-6. Get into your pipenv, migrate your database, seed your database, and run your Flask app
-
-```bash
-pipenv shell
-```
-```bash
-flask db upgrade
-```
-```bash
-flask seed all
-```
-```bash
-flask run
-```
-
-7. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
+Instead of steps 5 and 6, `npm run build --prefix react-app` builds the
+frontend into `react-app/build`, which Flask then serves itself on
+http://localhost:5000, the way production does. See the
+[react-app README](./react-app/README.md) for the frontend's other commands.
 
 ## Setting up Google Login (optional)
 
@@ -331,6 +174,10 @@ GOOGLE_REDIRECT_URI=http://localhost:3000/api/auth/oauth/google/callback
 Signing in with a Google account whose email already has a ƒorteƒy account links
 the two, so that account keeps working with either its password or Google.
 
+
+# Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 # Contributors
 Alex Basso
