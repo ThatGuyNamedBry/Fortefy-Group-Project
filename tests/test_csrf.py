@@ -7,8 +7,10 @@ request refused for a missing header shows the cookie alone is not enough.
 """
 
 import re
+import time
 
 import pytest
+from itsdangerous import TimestampSigner
 
 from conftest import ApiClient, flask_app, make_album, make_playlist, make_song
 from app.models import Album, Like, Playlist, PlaylistSong, Song, db
@@ -128,3 +130,14 @@ def test_signup_without_the_token_is_a_401(client):
     assert response.status_code == 401
     assert response.get_json() == {'errors': {'csrf_token': 'The CSRF token is missing.'}}
     assert 'email' not in client.get('/api/auth/').get_json()
+
+
+def test_the_token_lasts_as_long_as_the_session(as_alice, monkeypatch):
+    # A tab left open for two hours: its cookie still holds the token from the
+    # last response it got
+    later = int(time.time()) + 2 * 60 * 60
+    monkeypatch.setattr(TimestampSigner, 'get_timestamp', lambda self: later)
+
+    response = as_alice.post('/api/auth/logout')
+
+    assert response.status_code == 200, response.get_json()

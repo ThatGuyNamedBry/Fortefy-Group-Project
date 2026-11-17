@@ -39,7 +39,8 @@ refuses a missing or wrong token with `400` (`401` on login and signup):
 { "errors": { "csrf_token": "The CSRF token is missing." } }
 ```
 
-`GET`s never need it, so Google sign-in's redirects work without it.
+A token stays good for as long as the session does. `GET`s never need it, so
+Google sign-in's redirects work without it.
 
 **Errors.** Every error is a JSON object with an `errors` key:
 
