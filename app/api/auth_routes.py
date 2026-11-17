@@ -6,7 +6,6 @@ from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from app.oauth import oauth, google_enabled, unique_username
-from app.api.csrf import csrf_token_from_request
 from flask_login import current_user, login_user, logout_user
 
 auth_routes = Blueprint('auth', __name__)
@@ -42,9 +41,6 @@ def login():
     Logs a user in
     """
     form = LoginForm()
-    # Put the token the client sent into the form by hand so that
-    # validate_on_submit can be used
-    form['csrf_token'].data = csrf_token_from_request()
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
@@ -69,7 +65,6 @@ def sign_up():
     Creates a new user and logs them in
     """
     form = SignUpForm()
-    form['csrf_token'].data = csrf_token_from_request()
     if form.validate_on_submit():
         user = User(
             username=form.data['username'], email=form.data['email'], password=form.data['password']

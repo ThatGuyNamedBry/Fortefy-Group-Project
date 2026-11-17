@@ -11,6 +11,8 @@ def test_an_unknown_api_route_is_a_json_404(client):
 
 
 def test_the_wrong_method_is_a_json_405(client):
+    # Not a CSRF error, even without the token: no route matched, so there is
+    # nothing to protect
     response = client.send('PATCH', '/api/albums', csrf=False)
 
     assert response.status_code == 405

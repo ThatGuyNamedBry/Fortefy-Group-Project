@@ -8,6 +8,7 @@ from urllib.parse import parse_qs, urlparse
 
 import pytest
 from authlib.integrations.base_client.errors import OAuthError
+from flask import redirect
 
 import app.api.auth_routes as auth_routes
 from conftest import make_user
@@ -19,6 +20,9 @@ class FakeGoogle:
     def __init__(self, userinfo=None, error=False):
         self.userinfo = userinfo
         self.error = error
+
+    def authorize_redirect(self, redirect_uri):
+        return redirect(f'https://accounts.google.com/o/oauth2/v2/auth?redirect_uri={redirect_uri}')
 
     def authorize_access_token(self):
         if self.error:
@@ -78,6 +82,23 @@ def test_a_new_google_user_gets_an_account(client, google):
         'google-123',
         None,
     )
+
+
+def test_google_sign_in_needs_no_csrf_token(client, google):
+    # Both legs are plain GET navigations, which cannot carry the header: the
+    # button is a link, and Google sends the browser back with a redirect
+    google(userinfo=userinfo())
+
+    start = client.get('/api/auth/oauth/google')
+    back = client.get('/api/auth/oauth/google/callback')
+
+    assert start.status_code == 302
+    assert start.headers['Location'].startswith('https://accounts.google.com/')
+    assert parse_qs(urlparse(start.headers['Location']).query)['redirect_uri'] == [
+        'http://localhost/api/auth/oauth/google/callback'
+    ]
+    assert back.status_code == 302 and back.headers['Location'] == '/'
+    assert client.get('/api/auth/').get_json()['email'] == 'gina@example.com'
 
 
 def test_an_existing_email_is_linked_not_duplicated(client, google, alice):

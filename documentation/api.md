@@ -31,14 +31,22 @@ _Login required_ answers `401` without it:
 
 **CSRF.** Every response sets a `csrf_token` cookie. Send its value back in an
 `X-CSRFToken` header on every `POST`, `PUT` and `DELETE`, as the frontend's
-`csrfHeaders()` does. The routes that take a body check it, and report a
-missing or wrong token as a validation error on `csrf_token`.
+`csrfHeaders()` does; the cookie alone is not enough. Every one of those
+routes checks it before doing anything else, the login check included, and
+refuses a missing or wrong token with `400` (`401` on login and signup):
+
+```json
+{ "errors": { "csrf_token": "The CSRF token is missing." } }
+```
+
+`GET`s never need it, so Google sign-in's redirects work without it.
 
 **Errors.** Every error is a JSON object with an `errors` key:
 
 | status | when | `errors` |
 |---|---|---|
 | `400` | a body fails validation | an object with the first message for each field that failed, e.g. `{ "year": "Number must be between 1 and 9999." }` |
+| `400` | a `POST`, `PUT` or `DELETE` without the CSRF token | `{ "csrf_token": "The CSRF token is missing." }` |
 | `401` | login or signup fails validation | the same object, e.g. `{ "password": "Password was incorrect." }` |
 | `401` | a _Login required_ route without a session | `["Unauthorized"]` |
 | `403` | changing something that belongs to someone else | a message, e.g. `"Album does not belong to user"` |
