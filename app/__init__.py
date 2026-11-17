@@ -6,6 +6,7 @@ from flask_wtf.csrf import generate_csrf
 from flask_login import LoginManager
 from .models import db, User
 from .api import user_routes, auth_routes, album_routes, playlist_routes, song_routes, search_routes
+from .api.csrf import check_csrf
 from .seeds import seed_commands
 from .config import Config
 from .oauth import init_oauth
@@ -59,6 +60,10 @@ def https_redirect():
             url = request.url.replace('http://', 'https://', 1)
             code = 301
             return redirect(url, code=code)
+
+
+# Every request that changes something has to send the token back
+app.before_request(check_csrf)
 
 
 @app.after_request

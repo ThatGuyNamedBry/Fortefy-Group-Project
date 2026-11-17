@@ -20,6 +20,13 @@ class Config:
     # before sending, so nobody waits for a doomed upload to finish.
     MAX_CONTENT_LENGTH = 50 * 1024 * 1024
 
+    # A CSRF token lasts as long as the session it belongs to, rather than
+    # Flask-WTF's default of an hour. The cookie only gets a fresh one when a
+    # response comes back, so with the limit a tab left alone for an hour had
+    # its next like, delete or logout refused. Another site cannot read the
+    # token however old it is.
+    WTF_CSRF_TIME_LIMIT = None
+
     # Google OAuth. Left as None when the credentials are not in the .env, which
     # is how /api/auth/oauth/providers knows to tell the frontend not to render
     # the "Continue with Google" button.

@@ -3,7 +3,6 @@ from flask_login import login_required, current_user
 from app.models import db, Playlist, PlaylistSong, Song
 from app.forms import PlaylistForm
 from app.api.auth_routes import validation_errors_to_error_object
-from app.api.csrf import csrf_token_from_request
 
 playlist_routes = Blueprint('playlists', __name__)
 
@@ -39,7 +38,6 @@ def get_user_playlists():
 @login_required
 def create_new_playlist():
     form = PlaylistForm()
-    form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
         new_playlist = Playlist(
@@ -116,7 +114,6 @@ def remove_playlist_song(playlist_id, playlist_song_id):
 @login_required
 def edit_playlist(id):
     form = PlaylistForm()
-    form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
         playlist = db.session.get(Playlist, id)

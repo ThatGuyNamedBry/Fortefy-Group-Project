@@ -21,7 +21,7 @@ documentation/      These docs
 | `config.py` | settings, read from the environment (`.env` locally) |
 | `api/` | one blueprint per resource, each mounted under `/api` |
 | `api/aws_helper.py` | uploads songs to S3 and deletes them again |
-| `api/csrf.py` | reads the CSRF token from the `X-CSRFToken` header |
+| `api/csrf.py` | checks the `X-CSRFToken` header on every request that changes something |
 | `models/` | the SQLAlchemy models; each has a `to_dict()` that is the API's JSON for it |
 | `forms/` | WTForms forms that validate request bodies |
 | `oauth.py` | Google sign-in, through Authlib |

@@ -4,7 +4,6 @@ from app.models import Album, db, Song
 from app.forms import AlbumForm, CreateSongForm
 from app.api.auth_routes import validation_errors_to_error_object
 from app.api.aws_helper import get_unique_filename, upload_file_to_s3, remove_file_from_s3
-from app.api.csrf import csrf_token_from_request
 from mutagen import MutagenError
 from mutagen.mp3 import MP3
 from mutagen.mp4 import MP4
@@ -83,7 +82,6 @@ def delete_album(id):
 @login_required
 def create_new_album():
     form = AlbumForm()
-    form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
         new_album = Album(
@@ -109,7 +107,6 @@ def create_new_album():
 def create_album_song(id):
 
     form = CreateSongForm()
-    form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
         album = db.session.get(Album, id)
@@ -167,7 +164,6 @@ def create_album_song(id):
 @login_required
 def edit_album(id):
     form = AlbumForm()
-    form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
         album = db.session.get(Album, id)

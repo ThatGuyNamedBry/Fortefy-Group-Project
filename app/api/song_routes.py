@@ -7,7 +7,6 @@ from app.forms import SongForm
 from app.api.aws_helper import remove_file_from_s3
 
 from app.api.auth_routes import validation_errors_to_error_object
-from app.api.csrf import csrf_token_from_request
 
 song_routes = Blueprint('song', __name__)
 
@@ -147,7 +146,6 @@ def delete_song(id):
 @login_required
 def edit_song(id):
     form = SongForm()
-    form['csrf_token'].data = csrf_token_from_request()
 
     if form.validate_on_submit():
         current_song = db.session.get(Song, id)
